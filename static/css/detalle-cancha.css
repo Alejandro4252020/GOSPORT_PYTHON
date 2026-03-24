@@ -1,0 +1,18 @@
+/* NAVBAR CARRITO */
+
+.navbar{
+background:#000000 !important;
+}
+
+.navbar .nav-link{
+color:white !important;
+font-weight:500;
+}
+
+.navbar .nav-link:hover{
+color:#dbe9ff !important;
+}
+
+.navbar-brand span{
+color:white !important;
+}

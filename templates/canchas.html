@@ -1,0 +1,284 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Canchas</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- CSS -->
+<link rel="stylesheet" href="{% static 'css/canchas.css' %}">
+<link rel="icon" type="image/png" href="{% static 'img/icono.jpg' %}">
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav class="navbar navbar-dark bg-dark">
+<div class="container">
+
+<a class="navbar-brand d-flex align-items-center" href="/">
+<img src="{% static 'img/icono.jpg' %}" style="height:40px; margin-right:10px;" alt="Logo">
+<span class="fw-bold text-white">GOSPORT</span>
+</a>
+
+<ul class="navbar-nav flex-row gap-3">
+
+<li class="nav-item">
+<a class="nav-link text-white" href="/">Inicio</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link text-white" href="/canchas">Canchas</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link text-white" href="/perfil">Mi Perfil</a>
+</li>
+
+<li class="nav-item">
+<a class="btn btn-danger" href="/logout">Cerrar Sesión</a>
+</li>
+
+</ul>
+
+</div>
+</nav>
+
+
+<!-- CONTENIDO -->
+
+<div class="container mt-4">
+
+<h1 class="mb-4" style="cursor:pointer;" onclick="sortByPrice()">
+Canchas
+</h1>
+
+
+<!-- CARRUSEL -->
+
+<div class="carousel-container mb-5">
+
+<div class="carousel-track">
+
+<img src="{% static 'img/carruselcancha1.jpg' %}" alt="Cancha 1">
+<img src="{% static 'img/carruselcancha2.jpg' %}" alt="Cancha 2">
+<img src="{% static 'img/carruselcancha3.jpg' %}" alt="Cancha 3">
+<img src="{% static 'img/carruselcancha4.jpg' %}" alt="Cancha 4">
+<img src="{% static 'img/carruselcancha5.jpg' %}" alt="Cancha 5">
+
+</div>
+
+</div>
+
+
+<div class="row">
+
+<!-- TARJETAS -->
+
+<div class="col-md-9">
+
+<div class="row" id="productList">
+
+{% for cancha in canchas %}
+
+<div class="col-md-6 mb-4 card-container"
+data-price="{{ cancha.precio }}"
+id="cancha-{{ forloop.counter }}">
+
+<div class="card h-100">
+
+<img src="{% static 'img/' %}{{ cancha.imagen }}"
+class="card-img-top"
+alt="{{ cancha.nombre }}"
+onclick="openModal('{% static 'img/' %}{{ cancha.imagen }}','{{ cancha.nombre }}','{{ cancha.precio }}')">
+
+<div class="card-body text-center">
+
+<h5 class="card-title">
+{{ cancha.nombre }}
+</h5>
+
+<p class="text-success fw-bold">
+{{ cancha.precio }} COP
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+
+<!-- SIDEBAR -->
+
+<div class="col-md-3">
+
+<h4>Categorías</h4>
+
+<button type="button" class="btn btn-outline-dark w-100 mb-2"
+onclick="goToCat('cancha-1')">
+Canchas Sintéticas Bogotá Jardin Club
+</button>
+
+<button type="button" class="btn btn-outline-dark w-100 mb-2"
+onclick="goToCat('cancha-2')">
+Canchas Sintéticas Jompibe
+</button>
+
+<button type="button" class="btn btn-outline-dark w-100 mb-2"
+onclick="goToCat('cancha-3')">
+Complejo Deportivo Unión Bosa
+</button>
+
+<button type="button" class="btn btn-outline-dark w-100 mb-2"
+onclick="goToCat('cancha-4')">
+Cancha La Florida
+</button>
+
+<button type="button" class="btn btn-outline-dark w-100 mb-2"
+onclick="goToCat('cancha-5')">
+Club Deportivo Union Bosa
+</button>
+
+<button type="button" class="btn btn-outline-dark w-100 mb-2"
+onclick="goToCat('cancha-6')">
+Canchas Futbol Asovivir
+</button>
+
+<button type="button" class="btn btn-outline-dark w-100 mb-2"
+onclick="goToCat('cancha-7')">
+Canchas Bosa Santafe
+</button>
+
+<button type="button" class="btn btn-outline-dark w-100 mb-2"
+onclick="goToCat('cancha-8')">
+Cancha Sintética Fútbol 5
+</button>
+
+</div>
+
+
+<!-- MODAL -->
+
+<div id="modal" class="modal" style="display:none;">
+
+<div class="modal-content text-center">
+
+<img id="modalImg" class="img-fluid mb-3" alt="Cancha">
+
+<h3 id="modalDesc"></h3>
+
+<h4 id="modalPrice" style="color:#00e676"></h4>
+
+<button type="button" class="btn btn-primary mt-3" onclick="closeModal()">
+Cerrar
+</button>
+
+</div>
+
+</div>
+
+
+<!-- SCRIPTS -->
+
+<script>
+
+/* CARRUSEL */
+
+const track = document.querySelector(".carousel-track");
+
+if(track){
+
+const imgs = track.querySelectorAll("img");
+
+imgs.forEach(img=>{
+track.appendChild(img.cloneNode(true));
+});
+
+}
+
+
+/* MODAL */
+
+function openModal(img, nombre, precio){
+
+document.getElementById("modalImg").src = img;
+document.getElementById("modalDesc").textContent = nombre;
+document.getElementById("modalPrice").textContent = precio + " COP";
+
+document.getElementById("modal").style.display = "flex";
+
+}
+
+function closeModal(){
+
+document.getElementById("modal").style.display = "none";
+
+}
+
+
+/* IR A CATEGORÍA */
+
+function goToCat(id){
+
+const el = document.getElementById(id);
+
+if(!el) return;
+
+window.scrollTo({
+top: el.offsetTop - 20,
+behavior: "smooth"
+});
+
+}
+
+
+/* ORDENAR POR PRECIO */
+
+function sortByPrice(){
+
+const list = document.getElementById("productList");
+
+const items = Array.from(list.querySelectorAll(".card-container"));
+
+items.sort((a,b)=>
+parseInt(a.dataset.price) - parseInt(b.dataset.price)
+);
+
+items.forEach(i=>{
+list.appendChild(i);
+});
+
+}
+
+</script>
+
+
+<!-- FOOTER -->
+
+<footer class="text-center py-3 mt-4 bg-dark text-white">
+
+<p>
+© 2026 GoSports - Sistema de gestión deportiva
+</p>
+
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,349 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Catálogo</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="{% static 'css/estilos-catalogo.css' %}">
+<link rel="icon" type="image/png" href="{% static 'img/icono.jpg' %}">
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav class="navbar navbar-expand-lg bg-white shadow-sm py-3">
+
+<div class="container d-flex align-items-center justify-content-between">
+
+<a class="navbar-brand d-flex align-items-center" href="/">
+<img src="{% static 'img/icono.jpg' %}" class="me-2" style="height:40px;" alt="Logo">
+<span class="fw-bold">GOSPORT</span>
+</a>
+
+<div class="collapse navbar-collapse">
+
+<ul class="navbar-nav ms-auto">
+
+<li class="nav-item">
+<a class="nav-link" href="/">Inicio</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="/canchas">Canchas</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="/perfil">Mi Perfil</a>
+</li>
+
+<li class="nav-item">
+<a class="btn btn-danger ms-3" href="/logout">Cerrar Sesión</a>
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</nav>
+
+
+<div class="page-wrapper">
+
+<div class="content">
+
+<h1 style="color:#000000;cursor:pointer;" onclick="sortByPrice()">
+Tienda
+</h1>
+
+
+<!-- CARRUSEL -->
+
+<section>
+
+<div class="carousel">
+
+<div class="carousel-track">
+
+<img src="{% static 'img/uniforme1.jpg' %}" alt="Uniforme 1">
+<img src="{% static 'img/uniforme2.jpg' %}" alt="Uniforme 2">
+<img src="{% static 'img/uniforme3.jpg' %}" alt="Uniforme 3">
+<img src="{% static 'img/uniforme4.jpg' %}" alt="Uniforme 4">
+<img src="{% static 'img/uniforme5.jpg' %}" alt="Uniforme 5">
+
+</div>
+
+</div>
+
+</section>
+
+
+<div class="vertical-list">
+
+  <!-- CAMISETAS -->
+  <div class="categoria-container" id="camisetas">
+    <h2 class="categoria-titulo">Camisetas</h2>
+    <div class="producto-grid">
+      <div class="card producto" data-price="85000">
+        <img src="{% static 'img/camisetafutsal.jpg' %}"
+             alt="Camiseta deportiva"
+             onclick="openModal('{% static 'img/camisetafutsal.jpg' %}','Camiseta Azul fresca','$85.000')">
+        <p>Camiseta deportiva fresca</p>
+        <p class="price">$85.000</p>
+      </div>
+      <div class="card producto" data-price="80000">
+        <img src="{% static 'img/Uniforme-Gambeta.jpg' %}"
+             alt="Uniforme Gambeta"
+             onclick="openModal('{% static 'img/Uniforme-Gambeta.jpg' %}','Uniforme Gambeta','$80.000')">
+        <p>Uniforme Gambeta</p>
+        <p class="price">$80.000</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANTALONETAS -->
+  <div class="categoria-container" id="pantalonetas">
+    <h2 class="categoria-titulo">Pantalonetas</h2>
+    <div class="producto-grid">
+      <div class="card producto" data-price="90000">
+        <img src="{% static 'img/pantaloneta1.jpg' %}"
+             alt="Pantaloneta Blanca"
+             onclick="openModal('{% static 'img/pantaloneta1.jpg' %}','Pantaloneta Blanca','$90.000')">
+        <p>Pantaloneta Blanca</p>
+        <p class="price">$90.000</p>
+      </div>
+      <div class="card producto" data-price="98000">
+        <img src="{% static 'img/pantaloneta2.jpg' %}"
+             alt="Pantaloneta Negra"
+             onclick="openModal('{% static 'img/pantaloneta2.jpg' %}','Pantaloneta Negra','$98.000')">
+        <p>Pantaloneta ligera</p>
+        <p class="price">$98.000</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ZAPATILLAS -->
+  <div class="categoria-container" id="zapatillas">
+    <h2 class="categoria-titulo">Zapatillas</h2>
+    <div class="producto-grid">
+      <div class="card producto" data-price="92000">
+        <img src="{% static 'img/tenisgambeta1.png' %}"
+             alt="Zapatillas Gamba"
+             onclick="openModal('{% static 'img/tenisgambeta1.png' %}','Zapatillas rojas','$92.000')">
+        <p>Zapatillas Gamba</p>
+        <p class="price">$92.000</p>
+      </div>
+      <div class="card producto" data-price="110000">
+        <img src="{% static 'img/GAMBETAJ7.png' %}"
+             alt="Zapatillas J7"
+             onclick="openModal('{% static 'img/GAMBETAJ7.png' %}','Zapatillas Gamba J7','$110.000')">
+        <p>Zapatillas Gamba J7</p>
+        <p class="price">$110.000</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BALONES -->
+  <div class="categoria-container" id="balones">
+    <h2 class="categoria-titulo">Balones</h2>
+    <div class="producto-grid">
+      <div class="card producto" data-price="105000">
+        <img src="{% static 'img/BALON1.png' %}"
+             alt="Balón Futsal"
+             onclick="openModal('{% static 'img/BALON1.png' %}','Balón de Futsal','$105.000')">
+        <p>Balón de Futsal</p>
+        <p class="price">$105.000</p>
+      </div>
+      <div class="card producto" data-price="105000">
+        <img src="{% static 'img/BALON2.png' %}"
+             alt="Balón Fútbol"
+             onclick="openModal('{% static 'img/BALON2.png' %}','Balón resistente','$105.000')">
+        <p>Balón de Fútbol resistente</p>
+        <p class="price">$105.000</p>
+      </div>
+    </div>
+  </div>
+
+ <!-- MEDIAS -->
+<div class="categoria-container" id="medias">
+  <h2 class="categoria-titulo">Medias</h2>
+  <div class="producto-grid">
+
+    <div class="card producto" data-price="15000">
+      <img src="{% static 'img/media1.jpg' %}"
+           alt="Medias deportivas"
+           onclick="openModal('{% static 'img/media1.jpg' %}','Medias deportivas','$15.000')">
+      <p>Medias deportivas</p>
+      <p class="price">$15.000</p>
+    </div>
+
+    <div class="card producto" data-price="18000">
+      <img src="{% static 'img/media2.jpg' %}"
+           alt="Medias de compresión"
+           onclick="openModal('{% static 'img/media2.jpg' %}','Medias de compresión','$18.000')">
+      <p>Medias de compresión</p>
+      <p class="price">$18.000</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- MORRALES -->
+<div class="categoria-container" id="morales">
+  <h2 class="categoria-titulo">Morrales</h2>
+
+  <div class="producto-grid">
+
+    <div class="card producto" data-price="12000">
+      <img src="{% static 'img/morral1.jpg' %}"
+           class="card-img-top"
+           alt="Morral deportivo"
+           onclick="openModal('{% static 'img/morral1.jpg' %}','Morral deportivo','$12.000')">
+
+      <div class="card-body text-center">
+        <p>Morral deportivo</p>
+        <p class="price">$12.000</p>
+      </div>
+    </div>
+
+<div class="card producto" data-price="15000">
+
+<img src="{% static 'img/maleta1.jpg' %}"
+     class="card-img-top"
+     alt="Morral profesional"
+     onclick="openModal('{% static 'img/maleta1.jpg' %}','Morral profesional','$15.000')">
+
+<div class="card-body text-center">
+<p>Morral profesional</p>
+<p class="price">$15.000</p>
+</div>
+
+</div>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<h2>Categorías</h2>
+
+<button type="button" class="category-btn" onclick="goToCat('camisetas')">Camisetas</button>
+<button type="button" class="category-btn" onclick="goToCat('pantalonetas')">Pantalonetas</button>
+<button type="button" class="category-btn" onclick="goToCat('zapatillas')">Zapatillas</button>
+<button type="button" class="category-btn" onclick="goToCat('balones')">Balones</button>
+<button type="button" class="category-btn" onclick="goToCat('medias')">Medias</button>
+<button type="button" class="category-btn" onclick="goToCat('morales')">Morrales</button>
+</div>
+
+</div>
+
+
+<!-- MODAL -->
+
+<div id="modal" class="modal">
+
+<div class="modal-content">
+
+<img id="modalImg" alt="Producto">
+
+<h3 id="modalDesc"></h3>
+
+<h2 id="modalPrice" style="color:#00e676"></h2>
+
+<button type="button" class="carrito">Añadir al carrito</button>
+
+<button type="button" class="close" onclick="closeModal()">Cerrar</button>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* CARRUSEL */
+
+const track = document.querySelector(".carousel-track");
+
+if(track){
+
+const imgs = track.querySelectorAll("img");
+
+imgs.forEach(img=>{
+track.appendChild(img.cloneNode(true));
+});
+
+}
+
+/* MODAL */
+
+function openModal(img, desc, price){
+
+document.getElementById("modalImg").src = img;
+document.getElementById("modalDesc").textContent = desc;
+document.getElementById("modalPrice").textContent = price;
+
+document.getElementById("modal").style.display = "flex";
+
+}
+
+function closeModal(){
+
+document.getElementById("modal").style.display = "none";
+
+}
+
+/* IR A CATEGORÍA */
+
+function goToCat(id){
+
+const el = document.getElementById(id);
+
+if(!el) return;
+
+window.scrollTo({
+top: el.offsetTop - 80,
+behavior:"smooth"
+});
+
+}
+
+/* ORDENAR POR PRECIO */
+
+function sortByPrice(){
+
+const grids = document.querySelectorAll(".producto-grid");
+
+grids.forEach(grid=>{
+
+const items = Array.from(grid.querySelectorAll(".producto"));
+
+items.sort((a,b)=>a.dataset.price - b.dataset.price);
+
+items.forEach(i=>grid.appendChild(i));
+
+});
+
+}
+
+</script>
+
+
+<footer class="text-center py-3 mt-4">
+
+<p>© 2026 GoSports - Sistema de gestión deportiva</p>
+
+</footer>
+
+</body>
+</html>
