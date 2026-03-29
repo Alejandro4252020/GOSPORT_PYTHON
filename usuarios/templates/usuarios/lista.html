@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Usuarios</title>
+    <link rel="stylesheet" href="{% static 'usuarios/styles.css' %}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <h2>GOSPORT</h2>
+    <div>
+        <a href="#">Inicio</a>
+        <a href="#">Reservas</a>
+        <a href="#" class="btn-logout">Cerrar Sesión</a>
+    </div>
+</div>
+
+<div class="container">
+
+<h1>Gestión de Usuarios</h1>
+
+<!-- BOTONES -->
+<div class="top-buttons">
+    <a href="/crear/" class="btn btn-green">Nuevo Usuario</a>
+    <a href="/productos/" class="btn btn-blue">Ir al CRUD de productos</a>
+    <a href="/canchas/" class="btn btn-blue"">Ir al CRUD de Canchas</a>
+</div>
+
+<!-- BUSCADOR -->
+<form method="GET" class="search-box">
+    <h3>Buscar usuarios</h3>
+
+   <input type="text" name="id" placeholder="ID" value="{{ request.GET.id }}">
+<input type="text" name="username" placeholder="Username" value="{{ request.GET.username }}">
+
+   <select name="rol">
+    <option value="">-- Todos --</option>
+    <option value="admin" {% if request.GET.rol == "admin" %}selected{% endif %}>admin</option>
+    <option value="user" {% if request.GET.rol == "user" %}selected{% endif %}>user</option>
+</select>
+
+    <button type="submit">Buscar</button>
+</form>
+
+<!-- EXPORT -->
+<div class="export-buttons">
+<a href="/pdf/" class="btn btn-red">PDF</a>
+<a href="/excel/" class="btn btn-excel">Excel</a>
+<a href="/txt/" class="btn btn-gray2">TXT</a>
+<a href="#" onclick="window.print()" class="btn btn-cyan">Imprimir</a>
+</div>
+
+<!-- TABLA -->
+<div class="table-container">
+<table>
+    <tr>
+        <th>#</th>
+        <th>Nombre de Usuario</th>
+        <th>Rol</th>
+        <th>Acciones</th>
+    </tr>
+
+    {% for usuario in usuarios %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ usuario.username }}</td>
+        <td>{{ usuario.rol }}</td>
+        <td>
+            <a href="/editar/{{ usuario.id }}/" class="btn-edit">Editar</a>
+            <a href="/eliminar/{{ usuario.id }}/" class="btn-delete">Eliminar</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    © 2026 GoSports - Sistema de gestión deportiva
+</div>
+
+</body>
+</html>

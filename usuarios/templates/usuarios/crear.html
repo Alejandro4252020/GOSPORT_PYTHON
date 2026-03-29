@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crear Usuario</title>
+    <link rel="stylesheet" href="{% static 'usuarios/styles.css' %}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <h2>GOSPORT</h2>
+    <div>
+        <a href="/">Usuarios</a>
+        <a href="#">Reservas</a>
+        <a href="#" class="btn-logout">Cerrar Sesión</a>
+    </div>
+</div>
+
+<!-- FORM CENTRADO -->
+<div class="form-wrapper">
+
+    <div class="form-card">
+        <h2>Crear Usuario</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label>Nombre de usuario:</label>
+            <input type="text" name="username" required>
+
+            <label>Correo electrónico:</label>
+            <input type="email" name="email" required>
+
+            <label>Contraseña:</label>
+            <input type="password" name="password" required>
+
+            <label>Rol:</label>
+            <select name="rol">
+                <option value="admin">admin</option>
+                <option value="user">user</option>
+            </select>
+
+            <div class="form-buttons">
+                <a href="/" class="btn-cancel">Cancelar</a>
+                <button type="submit" class="btn-dark">Guardar</button>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    © 2026 GoSports - Sistema de gestión deportiva
+</div>
+
+</body>
+</html>

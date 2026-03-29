@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+
+<h2>Editar Cancha</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <input type="text" name="nombre" value="{{ cancha.nombre }}" class="form-control mb-2">
+    <input type="text" name="ubicacion" value="{{ cancha.ubicacion }}" class="form-control mb-2">
+    <input type="number" name="precio" value="{{ cancha.precio }}" class="form-control mb-2">
+
+    <button class="btn btn-success">Actualizar</button>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Crear Producto</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <input type="text" name="nombre" placeholder="Nombre" required>
+    <input type="number" name="precio" placeholder="Precio" required>
+    <input type="number" name="stock" placeholder="Stock" required>
+
+    <textarea name="descripcion" placeholder="Descripción"></textarea>
+
+    <input type="file" name="imagen">
+
+    <button class="btn btn-green" type="submit">Guardar</button>
+</form>
+
+<a href="/productos/">Volver</a>
+
+{% endblock %}

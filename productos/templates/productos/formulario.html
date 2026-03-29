@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card shadow p-4 col-md-6 mx-auto">
+
+    <h3 class="mb-3">📝 Formulario de Producto</h3>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label>Nombre</label>
+            {{ form.nombre }}
+        </div>
+
+        <div class="mb-3">
+            <label>Precio</label>
+            {{ form.precio }}
+        </div>
+
+        <div class="mb-3">
+            <label>Stock</label>
+            {{ form.stock }}
+        </div>
+
+        <button type="submit" class="btn btn-green">Guardar</button>
+        <a href="/productos/" class="btn btn-secondary">Cancelar</a>
+    </form>
+
+</div>
+
+{% endblock %}

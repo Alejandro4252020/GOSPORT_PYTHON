@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Usuario</title>
+    <link rel="stylesheet" href="{% static 'usuarios/styles.css' %}">
+</head>
+<body>
+
+<div class="navbar">
+    <h2>GO Sport</h2>
+    <div>
+        <a href="/">Inicio</a>
+        <a href="#">Usuarios</a>
+    </div>
+</div>
+
+<div class="form-container">
+
+    <div class="form-card">
+        <h2>Editar Usuario</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label>Nombre de usuario:</label>
+            <input type="text" name="username" value="{{ usuario.username }}" required>
+
+            <label>Correo electrónico:</label>
+            <input type="email" name="email" value="{{ usuario.email }}" required>
+
+            <label>Contraseña (opcional):</label>
+            <input type="password" name="password">
+
+            <label>Rol:</label>
+            <select name="rol">
+                <option value="ADMIN" {% if usuario.rol == "ADMIN" %}selected{% endif %}>ADMIN</option>
+                <option value="USER" {% if usuario.rol == "USER" %}selected{% endif %}>USER</option>
+            </select>
+
+            <button type="submit">Actualizar</button>
+        </form>
+
+        <br>
+        <a class="btn" href="/">Volver</a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

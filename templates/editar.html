@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Editar Cancha</h1>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <input type="text" name="nombre" value="{{ cancha.nombre }}" required>
+    <input type="text" name="ubicacion" value="{{ cancha.ubicacion }}" required>
+    <input type="number" name="precio" value="{{ cancha.precio }}" required>
+
+    <button type="submit">Actualizar</button>
+</form>
+
+<a href="{% url 'lista_canchas' %}">Volver</a>
+
+{% endblock %}

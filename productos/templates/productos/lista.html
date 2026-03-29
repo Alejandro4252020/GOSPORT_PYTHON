@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Lista de Productos</h1>
+
+<a class="btn btn-green" href="/productos/crear/">Nuevo Producto</a>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<div class="table-container">
+<table>
+    <tr>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th>Acciones</th>
+    </tr>
+
+    {% for producto in productos %}
+    <tr>
+        <td>{{ producto.nombre }}</td>
+        <td>{{ producto.precio }}</td>
+        <td>{{ producto.stock }}</td>
+        <td>
+            <a href="/productos/editar/{{ producto.id }}/" class="btn-edit">Editar</a>
+            <a href="/productos/eliminar/{{ producto.id }}/" class="btn-delete">Eliminar</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+
+{% endblock %}

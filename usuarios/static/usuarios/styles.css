@@ -1,0 +1,350 @@
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+/* BODY */
+body{
+    font-family: Arial, sans-serif;
+    background:#e5e7eb;
+}
+
+/* NAVBAR */
+.navbar{
+    background:#000;
+    color:#fff;
+    padding:15px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.navbar a{
+    color:#fff;
+    text-decoration:none;
+    margin-left:20px;
+    font-size:14px;
+}
+
+.btn-logout{
+    background:#ef4444;
+    padding:6px 12px;
+    border-radius:5px;
+}
+
+/* CONTENEDOR */
+.container{
+    width:80%;
+    margin:30px auto;
+}
+
+/* TITULO */
+h1{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+/* BOTONES SUPERIORES */
+.top-buttons{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.btn{
+    padding:10px 15px;
+    border:none;
+    border-radius:6px;
+    text-decoration:none;
+    color:#fff;
+    font-size:14px;
+    margin:5px;
+    display:inline-block;
+}
+
+.btn-green{ background:#16a34a; }
+.btn-blue{ background:#2563eb; }
+.btn-gray{ background:#6b7280; }
+
+/* BUSCADOR */
+.search-box{
+    background:#fff;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.search-box input,
+.search-box select{
+    padding:8px;
+    margin:5px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+.search-box button{
+    background:#2563eb;
+    color:#fff;
+    padding:8px 15px;
+    border:none;
+    border-radius:5px;
+}
+
+/* BOTONES EXPORT */
+.export-buttons{
+    margin-bottom:15px;
+}
+
+.btn-red{ background:#ef4444; }
+.btn-excel{ background:#16a34a; }
+.btn-gray2{ background:#6b7280; }
+.btn-cyan{ background:#06b6d4; }
+
+/* TABLA */
+.table-container{
+    background:#fff;
+    padding:20px;
+    border-radius:10px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#cbd5e1;
+    padding:10px;
+}
+
+td{
+    padding:10px;
+    text-align:center;
+    border-top:1px solid #ddd;
+}
+
+/* BOTONES ACCIONES */
+.btn-edit{
+    background:#facc15;
+    color:#000;
+    padding:5px 10px;
+    border-radius:5px;
+    text-decoration:none;
+}
+
+.btn-delete{
+    background:#ef4444;
+    color:#fff;
+    padding:5px 10px;
+    border-radius:5px;
+    text-decoration:none;
+}
+
+/* FOOTER */
+.footer{
+    text-align:center;
+    margin-top:30px;
+    padding:10px;
+    background:#000;
+    color:#fff;
+}
+
+.input-cantidad {
+    width: 50px;
+    padding: 3px;
+    margin-right: 5px;
+}
+
+.btn-buy {
+    background: #28a745;
+    color: white;
+    padding: 5px 8px;
+    border: none;
+    border-radius: 5px;
+}
+
+.btn-buy:hover {
+    background: #218838;
+}
+
+.btn-sin-stock {
+    background: gray;
+    color: white;
+    padding: 5px 8px;
+    border-radius: 5px;
+}
+
+.stock-bajo {
+    color: red;
+    font-weight: bold;
+}
+
+.input-cantidad {
+    width: 60px;
+    padding: 4px;
+    margin-right: 5px;
+}
+
+.alert {
+    background: #d4edda;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+/* CENTRADO */
+.form-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+/* CARD */
+.form-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 350px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.form-card.wide {
+    width: 600px;
+}
+
+/* TITULO */
+.form-card h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* INPUTS */
+.form-card input,
+.form-card select,
+.form-card textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+/* BOTÓN PRINCIPAL */
+.btn-dark {
+    width: 100%;
+    background: black;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* BOTÓN CANCELAR */
+.btn-cancel {
+    background: gray;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+/* BOTONES FORM */
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    background: black;
+    color: white;
+}
+
+.navbar a {
+    color: white;
+    margin-left: 15px;
+    text-decoration: none;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    padding: 10px;
+    background: black;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}/* ===== CONTENEDOR ===== */
+.form-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+/* ===== TARJETA ===== */
+.form-card {
+    background: white;
+    padding: 40px;
+    width: 400px;
+    border-radius: 15px;
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.1);
+}
+
+/* ===== TITULO ===== */
+.form-card h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* ===== INPUTS ===== */
+.form-group input,
+.form-group textarea,
+.form-row input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+}
+
+/* ===== DOS COLUMNAS ===== */
+.form-row {
+    display: flex;
+    gap: 10px;
+}
+
+/* ===== BOTON ===== */
+.btn-save {
+    width: 100%;
+    padding: 12px;
+    background: #22c55e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* ===== BOTON HOVER ===== */
+.btn-save:hover {
+    background: #16a34a;
+}
+
+/* ===== LINK VOLVER ===== */
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    text-decoration: none;
+    color: #2563eb;
+}

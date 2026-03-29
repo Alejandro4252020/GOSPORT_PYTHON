@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GO Sport</title>
+    <link rel="stylesheet" href="{% static 'usuarios/styles.css' %}">
+</head>
+<body>
+
+<div class="navbar">
+    <h2>GOSPORT</h2>
+    <div>
+        <a href="#">Inicio</a>
+        <a href="#">Reservas</a>
+        <a href="#" class="btn-logout">Cerrar Sesión</a>
+    </div>
+</div>
+
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<div class="footer">
+    © 2026 GoSports - Sistema de gestión deportiva
+</div>
+
+</body>
+</html>
