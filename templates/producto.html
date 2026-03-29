@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Producto</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/tarjetaproducto.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/icono.jpg' %}">
+</head>
+
+<body class="bg-light">
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg bg-white shadow-sm py-3">
+    <div class="container d-flex align-items-center justify-content-between">
+
+        <a class="navbar-brand d-flex align-items-center" href="/">
+            <img src="{% static 'img/icono.jpg' %}" class="me-2" style="height:40px">
+            <span class="fw-bold">GOSPORT</span>
+        </a>
+
+        <div>
+            <a class="nav-link d-inline" href="/catalogo/">Tienda GS</a>
+            <a class="nav-link d-inline" href="/canchas/">Canchas</a>
+            <a class="nav-link d-inline" href="/perfil/">Mi Perfil</a>
+            <a class="btn btn-danger ms-3" href="/logout">Cerrar Sesión</a>
+        </div>
+
+    </div>
+</nav>
+
+<!-- CONTENIDO -->
+<div class="container my-5">
+
+    <!-- BOTÓN VOLVER -->
+    <div class="text-start mb-3">
+        <a href="/" class="btn btn-secondary">Volver</a>
+    </div>
+
+    <div class="card shadow-sm p-4">
+        <div class="row g-4 align-items-center">
+
+            <!-- IMAGEN -->
+            <div class="col-md-6 text-center">
+                <img src="{% static 'img/' %}{{ producto.imagen }}"
+                     class="img-fluid"
+                     style="max-height:300px;">
+            </div>
+
+            <!-- INFO -->
+            <div class="col-md-6">
+
+                <h2 class="fw-bold">{{ producto.nombre }}</h2>
+
+                <span class="badge bg-success mb-3">Disponible</span>
+
+                <p class="mt-3 text-muted">
+                    {{ producto.descripcion|default:"Sin descripción" }}
+                </p>
+
+                <h4 class="text-primary fw-bold mt-3">
+                    ${{ producto.precio }} COP
+                </h4>
+
+                <!-- CANTIDAD -->
+                <div class="mb-3">
+                    <label class="form-label">Cantidad:</label>
+                    <input type="number" id="cantidad" class="form-control" min="1" value="1">
+                </div>
+
+                <!-- FORM -->
+                <form method="post" action="/carrito/">
+                    {% csrf_token %}
+                    <input type="hidden" name="productoId" value="{{ producto.id }}">
+                    <input type="hidden" name="cantidad" id="cantidadHidden">
+
+                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                        Comprar ahora
+                    </button>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPT -->
+<script>
+    const cantidadInput = document.getElementById("cantidad");
+    const cantidadHidden = document.getElementById("cantidadHidden");
+
+    cantidadInput.addEventListener("change", () => {
+        cantidadHidden.value = cantidadInput.value;
+    });
+
+    cantidadHidden.value = cantidadInput.value;
+</script>
+
+<!-- FOOTER -->
+<footer class="text-center py-3 mt-4">
+    <p>© 2026 GoSports - Sistema de gestión deportiva</p>
+</footer>
+
+</body>
+</html>

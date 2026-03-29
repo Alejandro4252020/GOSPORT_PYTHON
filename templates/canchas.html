@@ -105,9 +105,10 @@ onclick="openModal('{% static 'img/' %}{{ cancha.imagen }}','{{ cancha.nombre }}
 <div class="card-body text-center">
 
 <h5 class="card-title">
-{{ cancha.nombre }}
+<a href="{% url 'cancha_detalle' cancha.id %}">
+    {{ cancha.nombre }}
+</a>
 </h5>
-
 <p class="text-success fw-bold">
 {{ cancha.precio }} COP
 </p>
@@ -175,25 +176,29 @@ Cancha Sintética Fútbol 5
 
 
 <!-- MODAL -->
-
 <div id="modal" class="modal" style="display:none;">
 
-<div class="modal-content text-center">
+  <div class="modal-content text-center">
 
-<img id="modalImg" class="img-fluid mb-3" alt="Cancha">
+    <img id="modalImg" class="img-fluid mb-3" alt="Cancha">
 
-<h3 id="modalDesc"></h3>
+    <h3 id="modalDesc"></h3>
 
-<h4 id="modalPrice" style="color:#00e676"></h4>
+    <h4 id="modalPrice" style="color:#00e676"></h4>
 
-<button type="button" class="btn btn-primary mt-3" onclick="closeModal()">
-Cerrar
-</button>
+    <!-- Botón Descripción -->
+    <button type="button" class="btn btn-success mt-2" onclick="alert(document.getElementById('modalDesc').textContent)">
+      Descripción
+    </button>
+
+    <!-- Botón Cerrar -->
+    <button type="button" class="btn btn-primary mt-2" onclick="closeModal()">
+      Cerrar
+    </button>
+
+  </div>
 
 </div>
-
-</div>
-
 
 <!-- SCRIPTS -->
 

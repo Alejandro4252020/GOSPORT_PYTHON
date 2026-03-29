@@ -1,0 +1,129 @@
+/* ------------------------------
+   RESET BÁSICO
+--------------------------------*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;           /* Para layout con footer abajo */
+    display: flex;
+    flex-direction: column;
+    background: #d5d8df;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ------------------------------
+   NAVBAR
+--------------------------------*/
+.navbar {
+    background: linear-gradient(90deg, #000000, #1b1b1b) !important;
+    padding: 10px 0;
+}
+
+.navbar .navbar-brand span {
+    color: #ffffff !important;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.navbar .nav-link {
+    color: #ffffff !important;
+    font-weight: 500;
+    margin-left: 15px;
+    transition: 0.3s;
+}
+
+.navbar .nav-link:hover {
+    color: #dbe9ff !important;
+    transform: translateY(-1px);
+}
+
+/* ------------------------------
+   CONTENIDO PRINCIPAL
+--------------------------------*/
+main {
+    flex: 1;   /* Hace que el contenido crezca y empuje el footer abajo */
+    padding: 40px 20px;
+}
+
+/* ------------------------------
+   IMAGEN PRODUCTO
+--------------------------------*/
+.img-producto {
+    width: 100%;
+    height: 350px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+/* ------------------------------
+   SELECTOR DE CANTIDAD
+--------------------------------*/
+#cantidad {
+    width: 60px;
+    text-align: center;
+    padding: 5px;
+    font-size: 1rem;
+}
+
+/* ------------------------------
+   BOTONES
+--------------------------------*/
+.btn-success {
+    padding: 12px 25px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-success:hover {
+    background-color: #00c864 !important;
+}
+
+/* VOLVER */
+.btn-volver {
+    display: inline-block;
+    padding: 12px 25px;
+    background: #000000;
+    color: #ffffff !important;
+    border: none;
+    font-size: 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-volver:hover {
+    background: #333333;
+}
+
+/* ------------------------------
+   FOOTER
+--------------------------------*/
+footer {
+    background: #000000;
+    color: #ffffff;
+    padding: 15px 0;
+    text-align: center;
+}
+
+footer p {
+    margin: 0;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+/* ------------------------------
+   RESPONSIVE
+--------------------------------*/
+@media (max-width: 768px) {
+    .img-producto {
+        height: 250px;
+    }
+}

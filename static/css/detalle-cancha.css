@@ -16,3 +16,24 @@ color:#dbe9ff !important;
 .navbar-brand span{
 color:white !important;
 }
+/* FOOTER ABAJO SIEMPRE */
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+main {
+  flex: 1;
+}
+
+/* ESTILO DEL FOOTER */
+footer {
+  background: #f8f9fa; /* gris claro tipo Bootstrap */
+  border-top: 1px solid #ddd;
+  color: #555;
+}
