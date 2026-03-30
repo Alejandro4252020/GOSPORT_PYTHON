@@ -50,8 +50,7 @@
 </nav>
 
 <!-- CONTENIDO -->
-
-<div class="container mt-4">
+<div class="container mt-4 flex-grow-1">
 
 <h2 class="mb-4">Carrito de Compras</h2>
 
@@ -84,66 +83,44 @@ Tu carrito está vacío.
 
 {% for c in carrito %}
 
-{% for id, producto in productos.items %}
-
-{% if id == c.productoId %}
-
 <tr>
 
 <td>
-<img src="{% static 'img/' %}{{ producto.imagen }}"
+<img src="{% static 'img/' %}{{ c.imagen }}"
 class="img-fluid"
 style="max-height:80px;">
 </td>
 
 <td>
-{{ producto.nombre }}
+{{ c.nombre }}
 </td>
 
 <td>
-$ {{ producto.precio }}
+$ {{ c.precio }}
 </td>
 
 <td class="text-center">
-
-<form action="/carrito/reducir" method="post" class="d-inline">
-{% csrf_token %}
-<input type="hidden" name="productoId" value="{{ c.productoId }}">
-<button class="btn btn-sm btn-outline-secondary">-</button>
-</form>
 
 <span class="mx-2 fw-bold">
 {{ c.cantidad }}
 </span>
 
-<form action="/carrito/agregar" method="post" class="d-inline">
-{% csrf_token %}
-<input type="hidden" name="productoId" value="{{ c.productoId }}">
-<button class="btn btn-sm btn-outline-success">+</button>
-</form>
-
 </td>
 
 <td>
-$ {{ producto.precio|floatformat:0 }}
+$ {{ c.precio|floatformat:0 }}
 </td>
 
 <td>
-
-<form action="/carrito/eliminar" method="post">
-{% csrf_token %}
-<input type="hidden" name="productoId" value="{{ c.productoId }}">
-<button class="btn btn-sm btn-outline-danger">
-Eliminar
-</button>
+<form action="/carrito/eliminar/" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="productoId" value="{{ c.id }}">
+    <button class="btn btn-sm btn-outline-danger">Eliminar</button>
 </form>
-
 </td>
 
 </tr>
 
-{% endif %}
-{% endfor %}
 {% endfor %}
 
 </tbody>
@@ -158,12 +135,9 @@ Total:
 $ {{ total }}
 </span>
 </h4>
-
-<form action="/carrito/vaciar" method="post">
-{% csrf_token %}
-<button class="btn btn-warning">
-Vaciar Carrito
-</button>
+<form action="/carrito/vaciar/" method="post">
+    {% csrf_token %}
+    <button class="btn btn-warning">Vaciar Carrito</button>
 </form>
 
 </div>
@@ -174,7 +148,7 @@ Vaciar Carrito
 
 </div>
 
-<footer class="text-center py-3 mt-4 bg-white shadow-sm">
+<footer class="text-center py-3 mt-4 bg-dark text-white">
 <p class="mb-0">
 © 2026 GoSports - Sistema de gestión deportiva
 </p>

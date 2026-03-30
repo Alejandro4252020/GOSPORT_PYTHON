@@ -97,138 +97,142 @@ Tienda
     <div class="producto-grid">
       <div class="card producto" data-price="85000">
         <img src="{% static 'img/camisetafutsal.jpg' %}"
-             alt="Camiseta deportiva"
-             onclick="openModal('{% static 'img/camisetafutsal.jpg' %}','Camiseta Azul fresca','$85.000')">
+     alt="Camiseta deportiva"
+     data-id="1"
+     onclick="openModal('{% static 'img/camisetafutsal.jpg' %}','Camiseta Azul fresca','$85.000', 4)">
         <p>Camiseta deportiva fresca</p>
         <p class="price">$85.000</p>
       </div>
       <div class="card producto" data-price="80000">
         <img src="{% static 'img/Uniforme-Gambeta.jpg' %}"
-             alt="Uniforme Gambeta"
-             onclick="openModal('{% static 'img/Uniforme-Gambeta.jpg' %}','Uniforme Gambeta','$80.000')">
+     alt="Uniforme Gambeta"
+     data-id="2"
+     onclick="openModal('{% static 'img/Uniforme-Gambeta.jpg' %}','Uniforme Gambeta','$80.000', 15)">
         <p>Uniforme Gambeta</p>
         <p class="price">$80.000</p>
       </div>
     </div>
   </div>
 
-  <!-- PANTALONETAS -->
-  <div class="categoria-container" id="pantalonetas">
-    <h2 class="categoria-titulo">Pantalonetas</h2>
-    <div class="producto-grid">
-      <div class="card producto" data-price="90000">
-        <img src="{% static 'img/pantaloneta1.jpg' %}"
-             alt="Pantaloneta Blanca"
-             onclick="openModal('{% static 'img/pantaloneta1.jpg' %}','Pantaloneta Blanca','$90.000')">
-        <p>Pantaloneta Blanca</p>
-        <p class="price">$90.000</p>
-      </div>
-      <div class="card producto" data-price="98000">
-        <img src="{% static 'img/pantaloneta2.jpg' %}"
-             alt="Pantaloneta Negra"
-             onclick="openModal('{% static 'img/pantaloneta2.jpg' %}','Pantaloneta Negra','$98.000')">
-        <p>Pantaloneta ligera</p>
-        <p class="price">$98.000</p>
-      </div>
+ <!-- PANTALONETAS -->
+<div class="categoria-container" id="pantalonetas">
+  <h2 class="categoria-titulo">Pantalonetas</h2>
+  <div class="producto-grid">
+    <div class="card producto" data-price="90000">
+      <img src="{% static 'img/pantaloneta1.jpg' %}"
+           alt="Pantaloneta Blanca"
+           data-id="3"
+           onclick="openModal('{% static 'img/pantaloneta1.jpg' %}','Pantaloneta Blanca','$90.000', 5)">
+      <p>Pantaloneta Blanca</p>
+      <p class="price">$90.000</p>
+    </div>
+    <div class="card producto" data-price="98000">
+      <img src="{% static 'img/pantaloneta2.jpg' %}"
+           alt="Pantaloneta Negra"
+           data-id="4"
+           onclick="openModal('{% static 'img/pantaloneta2.jpg' %}','Pantaloneta Negra','$98.000', 6)">
+      <p>Pantaloneta ligera</p>
+      <p class="price">$98.000</p>
     </div>
   </div>
+</div>
 
-  <!-- ZAPATILLAS -->
-  <div class="categoria-container" id="zapatillas">
-    <h2 class="categoria-titulo">Zapatillas</h2>
-    <div class="producto-grid">
-      <div class="card producto" data-price="92000">
-        <img src="{% static 'img/tenisgambeta1.png' %}"
-             alt="Zapatillas Gamba"
-             onclick="openModal('{% static 'img/tenisgambeta1.png' %}','Zapatillas rojas','$92.000')">
-        <p>Zapatillas Gamba</p>
-        <p class="price">$92.000</p>
-      </div>
-      <div class="card producto" data-price="110000">
-        <img src="{% static 'img/GAMBETAJ7.png' %}"
-             alt="Zapatillas J7"
-             onclick="openModal('{% static 'img/GAMBETAJ7.png' %}','Zapatillas Gamba J7','$110.000')">
-        <p>Zapatillas Gamba J7</p>
-        <p class="price">$110.000</p>
-      </div>
+<!-- ZAPATILLAS -->
+<div class="categoria-container" id="zapatillas">
+  <h2 class="categoria-titulo">Zapatillas</h2>
+  <div class="producto-grid">
+    <div class="card producto" data-price="92000">
+      <img src="{% static 'img/tenisgambeta1.png' %}"
+           alt="Zapatillas Gamba"
+           data-id="5"
+           onclick="openModal('{% static 'img/tenisgambeta1.png' %}','Zapatillas rojas','$92.000', 7)">
+      <p>Zapatillas Gamba</p>
+      <p class="price">$92.000</p>
+    </div>
+    <div class="card producto" data-price="110000">
+      <img src="{% static 'img/GAMBETAJ7.png' %}"
+           alt="Zapatillas J7"
+           data-id="6"
+           onclick="openModal('{% static 'img/GAMBETAJ7.png' %}','Zapatillas Gamba J7','$110.000', 8)">
+      <p>Zapatillas Gamba J7</p>
+      <p class="price">$110.000</p>
     </div>
   </div>
+</div>
 
-  <!-- BALONES -->
-  <div class="categoria-container" id="balones">
-    <h2 class="categoria-titulo">Balones</h2>
-    <div class="producto-grid">
-      <div class="card producto" data-price="105000">
-        <img src="{% static 'img/BALON1.png' %}"
-             alt="Balón Futsal"
-             onclick="openModal('{% static 'img/BALON1.png' %}','Balón de Futsal','$105.000')">
-        <p>Balón de Futsal</p>
-        <p class="price">$105.000</p>
-      </div>
-      <div class="card producto" data-price="105000">
-        <img src="{% static 'img/BALON2.png' %}"
-             alt="Balón Fútbol"
-             onclick="openModal('{% static 'img/BALON2.png' %}','Balón resistente','$105.000')">
-        <p>Balón de Fútbol resistente</p>
-        <p class="price">$105.000</p>
-      </div>
+<!-- BALONES -->
+<div class="categoria-container" id="balones">
+  <h2 class="categoria-titulo">Balones</h2>
+  <div class="producto-grid">
+    <div class="card producto" data-price="105000">
+      <img src="{% static 'img/BALON1.png' %}"
+           alt="Balón Futsal"
+           data-id="7"
+           onclick="openModal('{% static 'img/BALON1.png' %}','Balón de Futsal','$105.000', 9)">
+      <p>Balón de Futsal</p>
+      <p class="price">$105.000</p>
+    </div>
+    <div class="card producto" data-price="105000">
+      <img src="{% static 'img/BALON2.png' %}"
+           alt="Balón Fútbol"
+           data-id="8"
+           onclick="openModal('{% static 'img/BALON2.png' %}','Balón resistente','$105.000', 10)">
+      <p>Balón de Fútbol resistente</p>
+      <p class="price">$105.000</p>
     </div>
   </div>
+</div>
 
- <!-- MEDIAS -->
+<!-- MEDIAS -->
 <div class="categoria-container" id="medias">
   <h2 class="categoria-titulo">Medias</h2>
   <div class="producto-grid">
-
     <div class="card producto" data-price="15000">
       <img src="{% static 'img/media1.jpg' %}"
            alt="Medias deportivas"
-           onclick="openModal('{% static 'img/media1.jpg' %}','Medias deportivas','$15.000')">
+           data-id="9"
+           onclick="openModal('{% static 'img/media1.jpg' %}','Medias deportivas','$15.000', 11)">
       <p>Medias deportivas</p>
       <p class="price">$15.000</p>
     </div>
-
     <div class="card producto" data-price="18000">
       <img src="{% static 'img/media2.jpg' %}"
            alt="Medias de compresión"
-           onclick="openModal('{% static 'img/media2.jpg' %}','Medias de compresión','$18.000')">
+           data-id="10"
+           onclick="openModal('{% static 'img/media2.jpg' %}','Medias de compresión','$18.000', 12)">
       <p>Medias de compresión</p>
       <p class="price">$18.000</p>
     </div>
-
   </div>
 </div>
 
 <!-- MORRALES -->
 <div class="categoria-container" id="morales">
   <h2 class="categoria-titulo">Morrales</h2>
-
   <div class="producto-grid">
-
     <div class="card producto" data-price="12000">
       <img src="{% static 'img/morral1.jpg' %}"
            class="card-img-top"
            alt="Morral deportivo"
-           onclick="openModal('{% static 'img/morral1.jpg' %}','Morral deportivo','$12.000')">
-
+           data-id="11"
+           onclick="openModal('{% static 'img/morral1.jpg' %}','Morral deportivo','$12.000', 13)">
       <div class="card-body text-center">
         <p>Morral deportivo</p>
         <p class="price">$12.000</p>
       </div>
     </div>
-
-<div class="card producto" data-price="15000">
-
-<img src="{% static 'img/maleta1.jpg' %}"
-     class="card-img-top"
-     alt="Morral profesional"
-     onclick="openModal('{% static 'img/maleta1.jpg' %}','Morral profesional','$15.000')">
-
-<div class="card-body text-center">
-<p>Morral profesional</p>
-<p class="price">$15.000</p>
-</div>
-
+    <div class="card producto" data-price="15000">
+      <img src="{% static 'img/maleta1.jpg' %}"
+           class="card-img-top"
+           alt="Morral profesional"
+           data-id="12"
+           onclick="openModal('{% static 'img/maleta1.jpg' %}','Morral profesional','$15.000', 14)">
+      <div class="card-body text-center">
+        <p>Morral profesional</p>
+        <p class="price">$15.000</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- SIDEBAR -->
@@ -247,7 +251,6 @@ Tienda
 
 </div>
 
-
 <!-- MODAL -->
 
 <div id="modal" class="modal">
@@ -259,15 +262,18 @@ Tienda
 <h3 id="modalDesc"></h3>
 
 <h2 id="modalPrice" style="color:#00e676"></h2>
-
-<button type="button" class="carrito">Añadir al carrito</button>
+<form id="addToCartForm" action="{% url 'carrito' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="productoId" id="modalProductoId">
+    <input type="hidden" name="cantidad" value="1">
+    <button type="submit" class="carrito">Añadir al carrito</button>
+</form>
 
 <button type="button" class="close" onclick="closeModal()">Cerrar</button>
 
 </div>
 
 </div>
-
 
 <script>
 
@@ -287,57 +293,44 @@ track.appendChild(img.cloneNode(true));
 
 /* MODAL */
 
-function openModal(img, desc, price){
+function openModal(img, desc, price, id){
+    document.getElementById("modalImg").src = img;
+    document.getElementById("modalDesc").textContent = desc;
+    document.getElementById("modalPrice").textContent = price;
 
-document.getElementById("modalImg").src = img;
-document.getElementById("modalDesc").textContent = desc;
-document.getElementById("modalPrice").textContent = price;
+    // Asignar el id del producto al input oculto
+    document.getElementById("modalProductoId").value = id;
 
-document.getElementById("modal").style.display = "flex";
-
+    document.getElementById("modal").style.display = "flex";
 }
 
 function closeModal(){
-
 document.getElementById("modal").style.display = "none";
-
 }
 
 /* IR A CATEGORÍA */
 
 function goToCat(id){
-
 const el = document.getElementById(id);
-
 if(!el) return;
-
 window.scrollTo({
 top: el.offsetTop - 80,
 behavior:"smooth"
 });
-
 }
 
 /* ORDENAR POR PRECIO */
 
 function sortByPrice(){
-
 const grids = document.querySelectorAll(".producto-grid");
-
 grids.forEach(grid=>{
-
 const items = Array.from(grid.querySelectorAll(".producto"));
-
 items.sort((a,b)=>a.dataset.price - b.dataset.price);
-
 items.forEach(i=>grid.appendChild(i));
-
 });
-
 }
 
 </script>
-
 
 <footer class="text-center py-3 mt-4">
 
