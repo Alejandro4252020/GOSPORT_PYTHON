@@ -27,7 +27,7 @@ body {
 }
 
 .go {
-    color: #00ffcc;
+    color: #ffffff;
 }
 
 .sports {
@@ -96,14 +96,14 @@ main {
 
 /* BOTÓN */
 .btn-custom {
-    background: #00ffcc;
+    background: #0044ff;
     color: black;
     font-weight: bold;
     transition: 0.3s;
 }
 
 .btn-custom:hover {
-    background: #00ccaa;
+    background: #006dcc;
     transform: scale(1.03);
 }
 
@@ -139,7 +139,7 @@ body.light {
 
 body.light .card-form {
     background: white;
-    color: black;
+    color: #000000;
 }
 
 body.light .form-control {

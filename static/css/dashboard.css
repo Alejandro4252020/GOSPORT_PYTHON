@@ -1,12 +1,101 @@
-body {
-    background: #f5f5f5;
+/* ===== FONDO ===== */
+html, body {
+    height: 100%;
+    margin: 0;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: white;
+    min-height: 100vh;
+}
+
+/* ===== NAVBAR ===== */
+.topbar {
+    background: #000;
+    padding: 15px 30px;
+}
+
+.topbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.go {
+    color: #ffffff;
+}
+
+/* ===== USUARIO ===== */
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* ===== CONTENIDO ===== */
+main {
+    flex: 1;
+}
+
+/* ===== TITULO ===== */
+h3 {
+    margin-top: 20px;
+    font-weight: 600;
+}
+
+/* ===== CARDS ===== */
 .card {
-    border-radius: 15px;
+    border-radius: 18px;
     transition: 0.3s;
+    border: none;
+    background: rgba(255, 255, 255, 0.95);
+    color: black;
 }
 
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px) scale(1.02);
+}
+
+/* ===== FOOTER ===== */
+footer {
+    text-align: center;
+    padding: 15px;
+    background: #000000;
+    color: white;
+    margin-top: auto; /* 🔥 CLAVE para bajarlo */
+    position: relative;
+}
+
+/* BOTÓN DARK MODE */
+#themeToggle {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* ===== MODO CLARO ===== */
+body.light {
+    background: #f5f5f5;
+    color: rgb(255, 255, 255);
+}
+
+body.light .card {
+    background: white;
+}
+
+body.light .topbar {
+    background: #000000;
+}
+footer.light {
+    background: #000000;
 }
