@@ -1,0 +1,61 @@
+/* FONDO TIPO ESTADIO */
+.dashboard-body {
+    background: url("/static/img/bannerNuevo.jpg") no-repeat center center/cover;
+    height: 100vh;
+    position: relative;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* OSCURECER FONDO */
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+/* CONTENIDO ENCIMA */
+.container {
+    position: relative;
+    z-index: 1;
+}
+
+/* TARJETAS */
+.card-dashboard {
+    padding: 30px;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+    transition: 0.3s;
+}
+
+/* EFECTO HOVER */
+.card-dashboard:hover {
+    transform: scale(1.05);
+}
+
+/* COLORES TIPO IMAGEN */
+.green {
+    background: linear-gradient(135deg, #00c853, #1b5e20);
+}
+
+.blue {
+    background: linear-gradient(135deg, #2979ff, #0d47a1);
+}
+
+.orange {
+    background: linear-gradient(135deg, #ff6d00, #bf360c);
+}
+
+/* TEXTO */
+.card-dashboard h5 {
+    font-size: 18px;
+}
+
+.card-dashboard h2 {
+    font-size: 40px;
+}

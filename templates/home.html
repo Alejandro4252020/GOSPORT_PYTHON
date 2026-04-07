@@ -36,18 +36,14 @@ data-bs-target="#navbarNav"> <span class="navbar-toggler-icon"></span> </button>
 <ul class="navbar-nav ms-auto">
 
 {% if rol == "ADMIN" %}
-
 <li class="nav-item">
-<a class="nav-link" href="/usuarios">Usuarios</a>
+    <a class="nav-link fw-bold text-success" href="{% url 'dashboard' %}">
+        📊 Dashboard
+    </a>
 </li>
 {% endif %}
 
-{% if rol == "ADMIN" %}
 
-<li class="nav-item">
-<a class="nav-link" href="/reportes/reservas">Reservas</a>
-</li>
-{% endif %}
 
 <li class="nav-item">
 <a class="nav-link" href="/carrito">Mi Carrito</a>
@@ -95,6 +91,7 @@ Tu rol es: <span class="fw-semibold">ADMIN</span>
 <div class="banner-container my-4">
 <img src="{% static 'img/bannerNuevo.jpg' %}" class="banner-img w-100 rounded">
 </div>
+
 
 <!-- CANCHAS -->
 

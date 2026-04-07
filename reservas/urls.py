@@ -9,6 +9,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
 
+    path('dashboard/', views.dashboard, name='dashboard'),
+
     # CANCHAS
     path('canchas/', views.canchas, name='canchas'),
     path('canchas/<int:id>/', views.cancha_detalle, name='cancha_detalle'),
@@ -24,6 +26,7 @@ urlpatterns = [
     path('productos/<int:id>/', views.producto_detalle, name='producto_detalle'),
     path('carrito/eliminar/', views.eliminar_del_carrito, name='eliminar_del_carrito'),
     path('carrito/vaciar/', views.vaciar_carrito, name='vaciar_carrito'),
+
 ]
 
 # IMÁGENES MEDIA

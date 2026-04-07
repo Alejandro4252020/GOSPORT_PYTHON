@@ -27,16 +27,18 @@ def home(request):
         {"id":3, "nombre":"Cancha 3", "estado":"Disponible", "imagen":"canchabosa.jpg"},
     ]
 
-    # Productos destacados: Balón → Guayos → Uniforme
     productos_destacados = [
         next(p for p in PRODUCTOS if p["imagen"] == "balon1.png"),
         next(p for p in PRODUCTOS if p["imagen"] == "guayos1.jpg"),
         next(p for p in PRODUCTOS if p["imagen"] == "uniforme22.jpg"),
     ]
 
+    rol = "ADMIN"  # 👈 temporal
+
     return render(request, 'home.html', {
         "canchas": canchas,
-        "productos": productos_destacados
+        "productos": productos_destacados,
+        "rol": rol
     })
 
 # ------------------ CANCHAS ------------------
@@ -145,3 +147,17 @@ def vaciar_carrito(request):
     if request.method == 'POST':
         request.session['carrito'] = []
     return redirect('/carrito/')
+
+# ------------------ DASHBOARD ------------------
+def dashboard(request):
+    carrito = request.session.get('carrito', [])
+
+    total_productos = len(PRODUCTOS)
+    total_carrito = len(carrito)
+    total_dinero = sum(p["precio"] * p["cantidad"] for p in carrito)
+
+    return render(request, 'dashboard.html', {
+        "total_productos": total_productos,
+        "total_carrito": total_carrito,
+        "total_dinero": total_dinero
+    })
