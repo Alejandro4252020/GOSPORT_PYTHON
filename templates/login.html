@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - GoSports</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/login.css' %}?v=11">
+
+    <!-- Icono -->
+    <link rel="icon" href="{% static 'img/icono.jpg' %}">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="topbar">
+        <div class="topbar-content">
+            <div class="logo-title">
+                <span class="go">Go</span><span class="sports">Sports</span>
+            </div>
+            <a href="{% url 'register' %}" class="login-link">Registrarse</a>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <main>
+        <div class="login-container">
+
+            <!-- IZQUIERDA -->
+            <div class="logo-section">
+                <h1>GoSports</h1>
+                <p>
+                    Organiza tus reservas, administra tus canchas y mantén el control total de tu negocio deportivo.
+                </p>
+                <ul>
+                    <li>✔ Reservas en tiempo real</li>
+                    <li>✔ Gestión de clientes</li>
+                    <li>✔ Control de ingresos</li>
+                </ul>
+            </div>
+
+            <!-- DERECHA -->
+            <div class="card-form">
+                <h3 class="text-center mb-4">Iniciar Sesión</h3>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="error-msg">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+
+                <!-- FORMULARIO -->
+                <form method="POST" action="{% url 'login' %}" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <input type="email" 
+                               name="email" 
+                               class="form-control" 
+                               placeholder="Correo electrónico" 
+                               required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="password" 
+                               name="password" 
+                               id="password"
+                               class="form-control"
+                               placeholder="Contraseña"
+                               required
+                               minlength="8">
+                        <button type="button" class="btn" id="togglePass">👁</button>
+                    </div>
+                    <button type="submit" class="btn btn-custom w-100">
+                        Iniciar sesión
+                    </button>
+                </form>
+
+                <p class="text-center mt-3">
+                    ¿No tienes cuenta? <a href="{% url 'register' %}">Regístrate</a>
+                </p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        © 2025 GoSports
+    </footer>
+
+    <!-- JS MOSTRAR CONTRASEÑA -->
+    <script>
+        document.getElementById("togglePass").addEventListener("click", function () {
+            const pass = document.getElementById("password");
+            pass.type = pass.type === "password" ? "text" : "password";
+        });
+    </script>
+
+</body>
+</html>

@@ -9,51 +9,117 @@
 
     <!-- CSS PERSONALIZADO -->
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="icon" href="{% static 'img/icono.jpg' %}?v=2">
 </head>
 
-<body class="dashboard-body">
+<body>
 
-<div class="overlay"></div>
+<!-- ===== NAVBAR ===== -->
+<header class="topbar">
+    <div class="topbar-content">
 
-<div class="container py-5">
+        <!-- LOGO -->
+        <div class="logo-title">
+            <span class="go">Go</span><span class="sports">Sports</span>
+        </div>
 
-    <h1 class="text-center text-white mb-5">
-        ⚽ Dashboard Gosport
-    </h1>
+        <!-- BOTÓN USUARIOS (solo admin luego) -->
+        <div class="user-create">
+            <a href="" class="btn btn-light btn-sm">Usuarios</a>
+        </div>
 
-    <div class="row text-center g-4">
+        <!-- USUARIO -->
+        <div class="user-section">
+            <span class="text-white">{{ request.user.username }}</span>
+            <a href="{% url 'login' %}" class="btn btn-danger btn-sm">Salir</a>
+        </div>
 
-        <!-- CARD 1 -->
+    </div>
+</header>
+
+<!-- ===== CONTENIDO ===== -->
+<main class="container py-5">
+
+    <h2 class="text-dark text-center">⚽ Dashboard Gosport</h2>
+
+   <p class="text-center">
+    Tu Rol es:
+    <strong class="
+    {% if request.user.is_superuser %}text-danger
+    {% elif request.user.is_staff %}text-primary
+    {% else %}text-success
+    {% endif %}
+    ">
+        {{ rol }}
+    </strong>
+</p>
+
+    <div class="row text-center g-4 mt-3">
+
         <div class="col-md-4">
-            <div class="card-dashboard green">
+            <div class="card p-4">
                 <h5>Total Productos</h5>
-                <h2>{{ total_productos }}</h2>
+                <h2>📩{{ total_productos }}</h2>
             </div>
         </div>
 
-        <!-- CARD 2 -->
         <div class="col-md-4">
-            <div class="card-dashboard blue">
+            <div class="card p-4">
                 <h5>Productos en Carrito</h5>
-                <h2>{{ total_carrito }}</h2>
+                <h2>📩{{ total_carrito }}</h2>
             </div>
         </div>
 
-        <!-- CARD 3 -->
         <div class="col-md-4">
-            <div class="card-dashboard orange">
-                <h5>Total Dinero</h5>
-                <h2>${{ total_dinero }}</h2>
+            <div class="card p-4">
+                <h5>Total Dinero $</h5>
+                <h2>📩{{ total_dinero }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h5>Total Canchas</h5>
+                <h2>📩{{ total_canchas }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h5>Gráfica Reservas</h5>
+                <h2>📊</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h5>Soporte</h5>
+                <h2>📩</h2>
             </div>
         </div>
 
     </div>
 
-    <div class="text-center mt-5">
-        <a href="/" class="btn btn-light btn-lg">Volver al inicio</a>
-    </div>
+</main>
 
-</div>
+<!-- ===== FOOTER ===== -->
+<footer>
+    © 2025 GoSports
+    <button id="themeToggle" class="btn btn-sm btn-light">🌙</button>
+</footer>
+
+<!-- ===== SCRIPT ===== -->
+<script>
+    const toggleBtn = document.getElementById("themeToggle");
+
+    if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.body.classList.add("light");
+    }
+
+    toggleBtn.addEventListener("click", () => {
+        document.body.classList.toggle("light");
+    });
+</script>
 
 </body>
 </html>

@@ -33,7 +33,7 @@ def home(request):
         next(p for p in PRODUCTOS if p["imagen"] == "uniforme22.jpg"),
     ]
 
-    rol = "ADMIN"  # 👈 temporal
+    rol = "ADMIN"
 
     return render(request, 'home.html', {
         "canchas": canchas,
@@ -61,12 +61,6 @@ def cancha_detalle(request, id):
     canchas = [
         {"id":1,"nombre":"Canchas Sintéticas Bogotá Jardin Club","estado":"Disponible","imagen":"cancha1.jpg","descripcion":"Cancha sintética profesional","direccion":"Bogotá Bosa","precio":50000},
         {"id":2,"nombre":"Canchas Sintéticas Jompibe","estado":"Disponible","imagen":"cancha2.jpg","descripcion":"Cancha cubierta","direccion":"Bogotá","precio":60000},
-        {"id":3,"nombre":"Complejo Deportivo Unión Bosa","estado":"Disponible","imagen":"cancha14.jpg","descripcion":"Cancha sintética","direccion":"Bogotá","precio":55000},
-        {"id":4,"nombre":"Cancha La Florida","estado":"Disponible","imagen":"cancha4.jpg","descripcion":"Cancha sintética","direccion":"Bogotá","precio":40000},
-        {"id":5,"nombre":"Club Deportivo Union Bosa","estado":"Disponible","imagen":"cancha5.jpg","descripcion":"Cancha sintética","direccion":"Bogotá","precio":45000},
-        {"id":6,"nombre":"Canchas Futbol Asovivir","estado":"Disponible","imagen":"cancha6.jpg","descripcion":"Cancha sintética","direccion":"Bogotá","precio":50000},
-        {"id":7,"nombre":"Canchas Bosa Santafe","estado":"Disponible","imagen":"canchabosa.jpg","descripcion":"Cancha sintética","direccion":"Bogotá Bosa","precio":35000},
-        {"id":8,"nombre":"Cancha Sintética de Fútbol 5","estado":"Disponible","imagen":"cancha.jpg","descripcion":"Cancha sintética de fútbol 5","direccion":"Bogotá","precio":30000},
     ]
 
     cancha = next((c for c in canchas if c["id"] == id), None)
@@ -77,11 +71,13 @@ def reservar(request, id):
     if request.method == 'POST':
         horas = request.POST.get('horas')
         print(f"Reserva cancha {id} por {horas} horas")
-        return redirect('/canchas/')
+        return redirect('canchas')  #  corregido
 
 # ------------------ CATALOGO ------------------
 def catalogo(request):
-    return render(request, 'catalogo.html')
+    return render(request, 'catalogo.html', {
+        "productos": PRODUCTOS  #  corregido
+    })
 
 # ------------------ PERFIL ------------------
 def perfil(request):
@@ -92,7 +88,7 @@ def editar_perfil(request):
     if request.method == 'POST':
         nombre = request.POST.get('nombre')
         request.session['nombre'] = nombre
-        return redirect('/perfil/')
+        return redirect('perfil')  #  corregido
 
 # ------------------ CARRITO ------------------
 def carrito(request):
@@ -117,17 +113,16 @@ def carrito(request):
             })
             request.session['carrito'] = carrito_sesion
 
-        return redirect('/carrito/')
+        return redirect('carrito')  #  corregido
 
     carrito_sesion = request.session.get('carrito', [])
-
-    # 🔥 CALCULAR TOTAL
     total = sum(p["precio"] * p["cantidad"] for p in carrito_sesion)
 
     return render(request, 'carrito.html', {
         "carrito": carrito_sesion,
         "total": total
     })
+
 # ------------------ PRODUCTO DETALLE ------------------
 def producto_detalle(request, id):
     producto = next((p for p in PRODUCTOS if p["id"] == id), None)
@@ -140,13 +135,13 @@ def eliminar_del_carrito(request):
         carrito_sesion = request.session.get('carrito', [])
         carrito_sesion = [p for p in carrito_sesion if str(p["id"]) != str(producto_id)]
         request.session['carrito'] = carrito_sesion
-    return redirect('/carrito/')
+    return redirect('carrito')  #  corregido
 
 # ------------------ VACÍAR CARRITO ------------------
 def vaciar_carrito(request):
     if request.method == 'POST':
         request.session['carrito'] = []
-    return redirect('/carrito/')
+    return redirect('carrito')  #  corregido
 
 # ------------------ DASHBOARD ------------------
 def dashboard(request):

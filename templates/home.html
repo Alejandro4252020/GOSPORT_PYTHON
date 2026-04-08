@@ -1,11 +1,9 @@
 {% load static %}
 
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
-
 <meta charset="UTF-8">
 <title>ProductosCrud</title>
 
@@ -19,7 +17,6 @@
 <body>
 
 <!-- NAVBAR -->
-
 <nav class="navbar navbar-expand-lg bg-white shadow-sm py-3">
 <div class="container d-flex align-items-center justify-content-between">
 
@@ -29,7 +26,9 @@
 </a>
 
 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-data-bs-target="#navbarNav"> <span class="navbar-toggler-icon"></span> </button>
+data-bs-target="#navbarNav">
+<span class="navbar-toggler-icon"></span>
+</button>
 
 <div class="collapse navbar-collapse" id="navbarNav">
 
@@ -42,8 +41,6 @@ data-bs-target="#navbarNav"> <span class="navbar-toggler-icon"></span> </button>
     </a>
 </li>
 {% endif %}
-
-
 
 <li class="nav-item">
 <a class="nav-link" href="/carrito">Mi Carrito</a>
@@ -61,8 +58,11 @@ data-bs-target="#navbarNav"> <span class="navbar-toggler-icon"></span> </button>
 <a class="nav-link" href="/perfil">Mi Perfil</a>
 </li>
 
+<!-- BOTÓN CORREGIDO -->
 <li class="nav-item">
-<button class="btn btn-danger ms-3">Cerrar Sesión</button>
+<a href="{% url 'logout' %}" class="btn btn-danger ms-3">
+    Cerrar Sesión
+</a>
 </li>
 
 </ul>
@@ -71,7 +71,6 @@ data-bs-target="#navbarNav"> <span class="navbar-toggler-icon"></span> </button>
 </nav>
 
 <!-- CONTENIDO -->
-
 <div class="container py-5">
 <div class="card shadow-lg border-0 p-5 main-card">
 
@@ -80,23 +79,18 @@ Bienvenido a Gosport ¡Todo bien parcero!
 </h2>
 
 {% if rol == "ADMIN" %}
-
 <h3 class="text-center fs-5">
 Tu rol es: <span class="fw-semibold">ADMIN</span>
 </h3>
 {% endif %}
 
 <!-- BANNER -->
-
 <div class="banner-container my-4">
 <img src="{% static 'img/bannerNuevo.jpg' %}" class="banner-img w-100 rounded">
 </div>
 
-
 <!-- CANCHAS -->
-
 <div>
-
 <h4 class="text-center mb-4 fw-bold">
 Canchas Disponibles
 </h4>
@@ -104,7 +98,6 @@ Canchas Disponibles
 <div class="row row-cols-1 row-cols-md-3 g-3">
 
 {% for cancha in canchas %}
-
 <div class="col">
 <div class="p-3 text-center rounded border bg-light">
 
@@ -122,18 +115,16 @@ text-success
 text-danger
 {% endif %}
 ">
-
 {{ cancha.estado }}
-
 </p>
 
 <a href="/canchas/{{ cancha.id }}"
 class="btn btn-primary w-100">
-Ver </a>
+Ver
+</a>
 
 </div>
 </div>
-
 {% endfor %}
 
 </div>
@@ -149,9 +140,7 @@ Ver más
 <hr class="my-5">
 
 <!-- PRODUCTOS -->
-
 <div>
-
 <h4 class="text-center mb-4 fw-bold">
 Productos y Promociones
 </h4>
@@ -159,7 +148,6 @@ Productos y Promociones
 <div class="row row-cols-1 row-cols-md-3 g-3 justify-content-center">
 
 {% for producto in productos %}
-
 <div class="col">
 
 <div class="card shadow-sm product-card">
@@ -181,17 +169,15 @@ style="height:180px; object-fit:contain;">
 </div>
 
 <div class="card-footer bg-transparent border-0 p-2">
-
 <a href="/productos/{{ producto.id }}"
 class="btn btn-dark w-100">
-Comprar </a>
-
+Comprar
+</a>
 </div>
 
 </div>
 
 </div>
-
 {% endfor %}
 
 </div>

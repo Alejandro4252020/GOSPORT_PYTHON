@@ -4,7 +4,6 @@
 <html lang="es">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -20,74 +19,56 @@
 <body>
 
 <!-- NAVBAR -->
-
 <nav class="navbar navbar-expand-lg bg-white shadow-sm py-3">
+    <div class="container d-flex align-items-center justify-content-between">
 
-<div class="container d-flex align-items-center justify-content-between">
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+            <img src="{% static 'img/icono.jpg' %}" class="me-2" style="height:40px;" alt="Logo">
+            <span class="fw-bold">GOSPORT</span>
+        </a>
 
-<a class="navbar-brand d-flex align-items-center" href="/">
-<img src="{% static 'img/icono.jpg' %}" class="me-2" style="height:40px;" alt="Logo">
-<span class="fw-bold">GOSPORT</span>
-</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Inicio</a>
+                </li>
 
-<div class="collapse navbar-collapse">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'canchas' %}">Canchas</a>
+                </li>
 
-<ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'perfil' %}">Mi Perfil</a>
+                </li>
 
-<li class="nav-item">
-<a class="nav-link" href="/">Inicio</a>
-</li>
+                <li class="nav-item">
+                    <a class="btn btn-danger ms-3" href="{% url 'logout' %}">Cerrar Sesión</a>
+                </li>
+            </ul>
+        </div>
 
-<li class="nav-item">
-<a class="nav-link" href="/canchas">Canchas</a>
-</li>
-
-<li class="nav-item">
-<a class="nav-link" href="/perfil">Mi Perfil</a>
-</li>
-
-<li class="nav-item">
-<a class="btn btn-danger ms-3" href="/logout">Cerrar Sesión</a>
-</li>
-
-</ul>
-
-</div>
-
-</div>
-
+    </div>
 </nav>
 
-
 <div class="page-wrapper">
-
 <div class="content">
 
 <h1 style="color:#000000;cursor:pointer;" onclick="sortByPrice()">
 Tienda
 </h1>
 
-
 <!-- CARRUSEL -->
-
 <section>
-
 <div class="carousel">
-
 <div class="carousel-track">
-
 <img src="{% static 'img/uniforme1.jpg' %}" alt="Uniforme 1">
 <img src="{% static 'img/uniforme2.jpg' %}" alt="Uniforme 2">
 <img src="{% static 'img/uniforme3.jpg' %}" alt="Uniforme 3">
 <img src="{% static 'img/uniforme4.jpg' %}" alt="Uniforme 4">
 <img src="{% static 'img/uniforme5.jpg' %}" alt="Uniforme 5">
-
 </div>
-
 </div>
-
 </section>
-
 
 <div class="vertical-list">
 
@@ -236,11 +217,8 @@ Tienda
 </div>
 
 <!-- SIDEBAR -->
-
 <div class="sidebar">
-
 <h2>Categorías</h2>
-
 <button type="button" class="category-btn" onclick="goToCat('camisetas')">Camisetas</button>
 <button type="button" class="category-btn" onclick="goToCat('pantalonetas')">Pantalonetas</button>
 <button type="button" class="category-btn" onclick="goToCat('zapatillas')">Zapatillas</button>
@@ -252,15 +230,10 @@ Tienda
 </div>
 
 <!-- MODAL -->
-
 <div id="modal" class="modal">
-
 <div class="modal-content">
-
 <img id="modalImg" alt="Producto">
-
 <h3 id="modalDesc"></h3>
-
 <h2 id="modalPrice" style="color:#00e676"></h2>
 <form id="addToCartForm" action="{% url 'carrito' %}" method="post">
     {% csrf_token %}
@@ -268,74 +241,48 @@ Tienda
     <input type="hidden" name="cantidad" value="1">
     <button type="submit" class="carrito">Añadir al carrito</button>
 </form>
-
 <button type="button" class="close" onclick="closeModal()">Cerrar</button>
-
 </div>
-
 </div>
 
 <script>
-
 /* CARRUSEL */
-
 const track = document.querySelector(".carousel-track");
-
 if(track){
-
-const imgs = track.querySelectorAll("img");
-
-imgs.forEach(img=>{
-track.appendChild(img.cloneNode(true));
-});
-
+    const imgs = track.querySelectorAll("img");
+    imgs.forEach(img=>{ track.appendChild(img.cloneNode(true)); });
 }
 
 /* MODAL */
-
 function openModal(img, desc, price, id){
     document.getElementById("modalImg").src = img;
     document.getElementById("modalDesc").textContent = desc;
     document.getElementById("modalPrice").textContent = price;
-
-    // Asignar el id del producto al input oculto
     document.getElementById("modalProductoId").value = id;
-
     document.getElementById("modal").style.display = "flex";
 }
-
-function closeModal(){
-document.getElementById("modal").style.display = "none";
-}
+function closeModal(){ document.getElementById("modal").style.display = "none"; }
 
 /* IR A CATEGORÍA */
-
 function goToCat(id){
-const el = document.getElementById(id);
-if(!el) return;
-window.scrollTo({
-top: el.offsetTop - 80,
-behavior:"smooth"
-});
+    const el = document.getElementById(id);
+    if(!el) return;
+    window.scrollTo({ top: el.offsetTop - 80, behavior:"smooth" });
 }
 
 /* ORDENAR POR PRECIO */
-
 function sortByPrice(){
-const grids = document.querySelectorAll(".producto-grid");
-grids.forEach(grid=>{
-const items = Array.from(grid.querySelectorAll(".producto"));
-items.sort((a,b)=>a.dataset.price - b.dataset.price);
-items.forEach(i=>grid.appendChild(i));
-});
+    const grids = document.querySelectorAll(".producto-grid");
+    grids.forEach(grid=>{
+        const items = Array.from(grid.querySelectorAll(".producto"));
+        items.sort((a,b)=>a.dataset.price - b.dataset.price);
+        items.forEach(i=>grid.appendChild(i));
+    });
 }
-
 </script>
 
 <footer class="text-center py-3 mt-4">
-
 <p>© 2026 GoSports - Sistema de gestión deportiva</p>
-
 </footer>
 
 </body>

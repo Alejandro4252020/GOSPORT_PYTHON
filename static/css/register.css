@@ -1,0 +1,109 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e3a8a);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER */
+.topbar {
+    background: #020617;
+    padding: 15px 30px;
+}
+
+.topbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-title {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.go {
+    color: white;
+}
+
+.sports {
+    color: #3b82f6;
+}
+
+.login-link {
+    color: white;
+    text-decoration: none;
+}
+
+/* CENTRAR TODO */
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* CARD */
+.card-form {
+    background: #e5e7eb;
+    padding: 35px;
+    border-radius: 18px;
+    width: 340px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    color: black;
+    transition: transform 0.2s ease;
+}
+
+.card-form:hover {
+    transform: translateY(-3px);
+}
+
+/* INPUTS */
+.form-control {
+    border-radius: 10px;
+    padding: 12px;
+    background: #cbd5e1;
+    border: none;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    background: #dbeafe;
+}
+
+/* BOTÓN OJO */
+#togglePass {
+    background: #cbd5e1;
+    border: none;
+    border-radius: 10px;
+}
+
+/* BOTÓN */
+.btn-custom {
+    background: linear-gradient(90deg, #2563eb, #1d4ed8);
+    color: white;
+    border-radius: 10px;
+    padding: 12px;
+    font-weight: bold;
+    border: none;
+}
+
+.btn-custom:hover {
+    opacity: 0.9;
+}
+
+/* ERROR */
+.error-msg {
+    color: red;
+    font-size: 14px;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    color: white;
+    padding: 10px;
+    background-color: #020617;
+}

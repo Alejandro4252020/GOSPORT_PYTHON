@@ -1,18 +1,16 @@
-/* ===== RESET ===== */
+/* ===== FONDO ===== */
 html, body {
     height: 100%;
     margin: 0;
 }
 
-/* ===== FONDO GENERAL ===== */
 body {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
 
     background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
     color: white;
-    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
 }
 
 /* ===== NAVBAR ===== */
@@ -36,13 +34,6 @@ body {
     color: #ffffff;
 }
 
-.sports {
-    color: #3b82f6; /* toque verde pro */
-}
-.titulo-dashboard{
-    color: #000000;
-}
-
 /* ===== USUARIO ===== */
 .user-section {
     display: flex;
@@ -64,39 +55,23 @@ h3 {
 /* ===== CARDS ===== */
 .card {
     border-radius: 18px;
+    transition: 0.3s;
     border: none;
-    padding: 20px;
-
     background: rgba(255, 255, 255, 0.95);
     color: black;
-
-    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-    transition: all 0.3s ease;
 }
 
-/* HOVER EFECTO */
 .card:hover {
     transform: translateY(-8px) scale(1.02);
-}
-
-/* TITULOS EN CARDS */
-.card h5 {
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
-.card h2 {
-    font-size: 38px;
-    font-weight: bold;
 }
 
 /* ===== FOOTER ===== */
 footer {
     text-align: center;
     padding: 15px;
-    background: #000;
+    background: #000000;
     color: white;
-    margin-top: auto;
+    margin-top: auto; /* 🔥 CLAVE para bajarlo */
     position: relative;
 }
 
@@ -111,29 +86,16 @@ footer {
 /* ===== MODO CLARO ===== */
 body.light {
     background: #f5f5f5;
-    color: black;
+    color: rgb(255, 255, 255);
 }
 
 body.light .card {
     background: white;
-    color: black;
 }
 
 body.light .topbar {
-    background: #000;
+    background: #000000;
 }
-
-body.light footer {
-    background: #000;
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-    .card h2 {
-        font-size: 28px;
-    }
-
-    .logo-title {
-        font-size: 20px;
-    }
+footer.light {
+    background: #000000;
 }
