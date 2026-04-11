@@ -20,7 +20,7 @@
 <nav class="navbar navbar-expand-lg bg-white shadow-sm py-3">
 <div class="container d-flex align-items-center justify-content-between">
 
-<a class="navbar-brand d-flex align-items-center" href="/">
+<a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
 <img src="{% static 'img/icono.jpg' %}" class="me-2" style="height:40px;">
 <span class="fw-bold">GOSPORT</span>
 </a>
@@ -43,26 +43,32 @@ data-bs-target="#navbarNav">
 {% endif %}
 
 <li class="nav-item">
-<a class="nav-link" href="/carrito">Mi Carrito</a>
+<a class="nav-link" href="{% url 'carrito' %}">Mi Carrito</a>
 </li>
 
 <li class="nav-item">
-<a class="nav-link" href="/catalogo">Tienda GS</a>
+<a class="nav-link" href="{% url 'catalogo' %}">Tienda GS</a>
 </li>
 
 <li class="nav-item">
-<a class="nav-link" href="/canchas">Canchas</a>
+<a class="nav-link" href="{% url 'canchas' %}">Canchas</a>
 </li>
 
 <li class="nav-item">
-<a class="nav-link" href="/perfil">Mi Perfil</a>
+<a class="nav-link" href="{% url 'contacto' %}">Contacto</a>
 </li>
 
-<!-- BOTÓN CORREGIDO -->
 <li class="nav-item">
-<a href="{% url 'logout' %}" class="btn btn-danger ms-3">
-    Cerrar Sesión
-</a>
+<a class="nav-link" href="{% url 'perfil' %}">Mi Perfil</a>
+</li>
+
+<li class="nav-item">
+<form method="post" action="{% url 'auth:logout' %}" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger ms-3">
+        Cerrar Sesión
+    </button>
+</form>
 </li>
 
 </ul>
@@ -77,12 +83,6 @@ data-bs-target="#navbarNav">
 <h2 class="text-center">
 Bienvenido a Gosport ¡Todo bien parcero!
 </h2>
-
-{% if rol == "ADMIN" %}
-<h3 class="text-center fs-5">
-Tu rol es: <span class="fw-semibold">ADMIN</span>
-</h3>
-{% endif %}
 
 <!-- BANNER -->
 <div class="banner-container my-4">
@@ -102,7 +102,8 @@ Canchas Disponibles
 <div class="p-3 text-center rounded border bg-light">
 
 <img src="{% static 'img/' %}{{ cancha.imagen }}"
-style="height:140px; object-fit:cover;">
+style="height:140px; object-fit:cover;"
+onerror="this.src='{% static 'img/cancha.jpg' %}'">
 
 <h6 class="fw-bold mt-3">
 {{ cancha.nombre }}
@@ -118,19 +119,21 @@ text-danger
 {{ cancha.estado }}
 </p>
 
-<a href="/canchas/{{ cancha.id }}"
+<a href="{% url 'cancha_detalle' cancha.id %}"
 class="btn btn-primary w-100">
 Ver
 </a>
 
 </div>
 </div>
+{% empty %}
+<p class="text-center">No hay canchas disponibles</p>
 {% endfor %}
 
 </div>
 
 <div class="mt-3">
-<a class="btn btn-primary w-100" href="/canchas">
+<a class="btn btn-primary w-100" href="{% url 'canchas' %}">
 Ver más
 </a>
 </div>
@@ -154,7 +157,8 @@ Productos y Promociones
 
 <img src="{% static 'img/' %}{{ producto.imagen }}"
 class="product-img"
-style="height:180px; object-fit:contain;">
+style="height:180px; object-fit:contain;"
+onerror="this.src='{% static 'img/balon1.png' %}'">
 
 <div class="card-body text-center p-2">
 
@@ -169,7 +173,7 @@ style="height:180px; object-fit:contain;">
 </div>
 
 <div class="card-footer bg-transparent border-0 p-2">
-<a href="/productos/{{ producto.id }}"
+<a href="{% url 'producto_detalle' producto.id %}"
 class="btn btn-dark w-100">
 Comprar
 </a>
@@ -178,12 +182,14 @@ Comprar
 </div>
 
 </div>
+{% empty %}
+<p class="text-center">No hay productos disponibles</p>
 {% endfor %}
 
 </div>
 
 <div class="mt-3">
-<a class="btn btn-primary w-100" href="/catalogo">
+<a class="btn btn-primary w-100" href="{% url 'catalogo' %}">
 Ver más
 </a>
 </div>

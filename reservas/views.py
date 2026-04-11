@@ -1,6 +1,10 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
+from datetime import datetime
+import calendar
+from django.contrib.auth.decorators import login_required
 
-# ------------------ LISTA MAESTRA DE PRODUCTOS ------------------
+
 PRODUCTOS = [
     {"id":1, "nombre":"Balón", "precio":22000, "imagen":"balon1.png", "descripcion":"Balón profesional de futsal"},
     {"id":2, "nombre":"Guayos", "precio":220000, "imagen":"guayos1.jpg", "descripcion":"Guayos para césped sintético"},
@@ -19,6 +23,7 @@ PRODUCTOS = [
     {"id":15, "nombre":"Uniforme Gambeta", "precio":80000, "imagen":"Uniforme-Gambeta.jpg", "descripcion":"Uniforme Gambeta deportivo"},
 ]
 
+
 # ------------------ HOME ------------------
 def home(request):
     canchas = [
@@ -28,12 +33,18 @@ def home(request):
     ]
 
     productos_destacados = [
-        next(p for p in PRODUCTOS if p["imagen"] == "balon1.png"),
-        next(p for p in PRODUCTOS if p["imagen"] == "guayos1.jpg"),
-        next(p for p in PRODUCTOS if p["imagen"] == "uniforme22.jpg"),
+        PRODUCTOS[0],
+        PRODUCTOS[1],
+        PRODUCTOS[2],
     ]
 
-    rol = "ADMIN"
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            rol = "ADMIN"
+        else:
+            rol = "USUARIO"
+    else:
+        rol = "INVITADO"
 
     return render(request, 'home.html', {
         "canchas": canchas,
@@ -41,80 +52,146 @@ def home(request):
         "rol": rol
     })
 
+
+# ------------------ CONTACTO ------------------
+def contacto(request):
+    if request.method == "POST":
+        nombre = request.POST.get('nombre')
+        correo = request.POST.get('correo')
+        mensaje = request.POST.get('mensaje')
+
+        if nombre and correo and mensaje:
+            messages.success(request, "Muchas gracias por contactarnos.")
+            return redirect('contacto')
+
+    return render(request, 'contacto.html')
+
+
 # ------------------ CANCHAS ------------------
 def canchas(request):
     canchas = [
-        {"id":1,"nombre":"Canchas Sintéticas Bogotá Jardin Club","estado":"Disponible","imagen":"cancha1.jpg","descripcion":"Cancha sintética profesional","direccion":"Bogotá Bosa"},
-        {"id":2,"nombre":"Canchas Sintéticas Jompibe","estado":"Disponible","imagen":"cancha2.jpg","descripcion":"Cancha cubierta","direccion":"Bogotá"},
-        {"id":3,"nombre":"Complejo Deportivo Unión Bosa","estado":"Disponible","imagen":"cancha14.jpg","descripcion":"Cancha sintética","direccion":"Bogotá"},
-        {"id":4,"nombre":"Cancha La Florida","estado":"Disponible","imagen":"cancha4.jpg","descripcion":"Cancha sintética","direccion":"Bogotá"},
-        {"id":5,"nombre":"Club Deportivo Union Bosa","estado":"Disponible","imagen":"cancha5.jpg","descripcion":"Cancha sintética","direccion":"Bogotá"},
-        {"id":6,"nombre":"Canchas Futbol Asovivir","estado":"Disponible","imagen":"cancha6.jpg","descripcion":"Cancha sintética","direccion":"Bogotá"},
-        {"id":7,"nombre":"Canchas Bosa Santafe","estado":"Disponible","imagen":"canchabosa.jpg","descripcion":"Cancha sintética","direccion":"Bogotá Bosa"},
-        {"id":8,"nombre":"Cancha Sintética de Fútbol 5","estado":"Disponible","imagen":"cancha.jpg","descripcion":"Cancha sintética de fútbol 5","direccion":"Bogotá"},
+        {"id":1,"nombre":"Canchas Sintéticas Bogotá Jardin Club","precio":50000,"imagen":"Cancha1.jpg"},
+        {"id":2,"nombre":"Canchas Sintéticas Jompibe","precio":60000,"imagen":"cancha2.jpg"},
+        {"id":3,"nombre":"Complejo Deportivo Unión Bosa","precio":55000,"imagen":"cancha5.jpg"},
+        {"id":4,"nombre":"Cancha La Florida","precio":65000,"imagen":"cancha4.jpg"},
+        {"id":5,"nombre":"Club Deportivo Union Bosa","precio":50000,"imagen":"cancha6.jpg"},
+        {"id":6,"nombre":"Canchas Futbol Asovivir","precio":70000,"imagen":"cancha11.jpg"},
+        {"id":7,"nombre":"Canchas Bosa Santafe","precio":60000,"imagen":"cancha12.jpg"},
+        {"id":8,"nombre":"Cancha Sintética Fútbol 5","precio":58000,"imagen":"cancha13.jpg"},
     ]
 
     return render(request, 'canchas.html', {"canchas": canchas})
 
+
 # ------------------ DETALLE CANCHA ------------------
 def cancha_detalle(request, id):
     canchas = [
-        {"id":1,"nombre":"Canchas Sintéticas Bogotá Jardin Club","estado":"Disponible","imagen":"cancha1.jpg","descripcion":"Cancha sintética profesional","direccion":"Bogotá Bosa","precio":50000},
-        {"id":2,"nombre":"Canchas Sintéticas Jompibe","estado":"Disponible","imagen":"cancha2.jpg","descripcion":"Cancha cubierta","direccion":"Bogotá","precio":60000},
+        {"id":1,"nombre":"Canchas Sintéticas Bogotá Jardin Club","precio":50000,"imagen":"Cancha1.jpg"},
+        {"id":2,"nombre":"Canchas Sintéticas Jompibe","precio":60000,"imagen":"cancha2.jpg"},
+        {"id":3,"nombre":"Complejo Deportivo Unión Bosa","precio":55000,"imagen":"cancha5.jpg"},
+        {"id":4,"nombre":"Cancha La Florida","precio":65000,"imagen":"cancha4.jpg"},
+        {"id":5,"nombre":"Club Deportivo Union Bosa","precio":50000,"imagen":"cancha6.jpg"},
+        {"id":6,"nombre":"Canchas Futbol Asovivir","precio":70000,"imagen":"cancha11.jpg"},
+        {"id":7,"nombre":"Canchas Bosa Santafe","precio":60000,"imagen":"cancha12.jpg"},
+        {"id":8,"nombre":"Cancha Sintética Fútbol 5","precio":58000,"imagen":"cancha13.jpg"},
     ]
 
     cancha = next((c for c in canchas if c["id"] == id), None)
+
+    if not cancha:
+        messages.error(request, "Cancha no encontrada ❌")
+        return redirect('canchas')
+
     return render(request, 'cancha_detalle.html', {"cancha": cancha})
+
 
 # ------------------ RESERVAR ------------------
 def reservar(request, id):
-    if request.method == 'POST':
-        horas = request.POST.get('horas')
-        print(f"Reserva cancha {id} por {horas} horas")
-        return redirect('canchas')  #  corregido
+    canchas = [
+        {"id":1,"nombre":"Canchas Sintéticas Bogotá Jardin Club","precio":50000,"imagen":"Cancha1.jpg"},
+        {"id":2,"nombre":"Canchas Sintéticas Jompibe","precio":60000,"imagen":"cancha2.jpg"},
+        {"id":3,"nombre":"Complejo Deportivo Unión Bosa","precio":55000,"imagen":"cancha5.jpg"},
+        {"id":4,"nombre":"Cancha La Florida","precio":65000,"imagen":"cancha4.jpg"},
+        {"id":5,"nombre":"Club Deportivo Union Bosa","precio":50000,"imagen":"cancha6.jpg"},
+        {"id":6,"nombre":"Canchas Futbol Asovivir","precio":70000,"imagen":"cancha11.jpg"},
+        {"id":7,"nombre":"Canchas Bosa Santafe","precio":60000,"imagen":"cancha12.jpg"},
+        {"id":8,"nombre":"Cancha Sintética Fútbol 5","precio":58000,"imagen":"cancha13.jpg"},
+    ]
 
-# ------------------ CATALOGO ------------------
-def catalogo(request):
-    return render(request, 'catalogo.html', {
-        "productos": PRODUCTOS  #  corregido
+    cancha = next((c for c in canchas if c["id"] == id), None)
+
+    if not cancha:
+        messages.error(request, "Cancha no encontrada ❌")
+        return redirect('canchas')
+
+    hoy = datetime.now()
+    año, mes = hoy.year, hoy.month
+    _, total_dias = calendar.monthrange(año, mes)
+    dias = list(range(hoy.day, total_dias + 1))
+
+    horarios = ["08:00 AM","10:00 AM","12:00 PM","02:00 PM","04:00 PM","06:00 PM","08:00 PM"]
+
+    if request.method == 'POST':
+        dia = request.POST.get('dia')
+        horas = request.POST.get('horas')
+        personas = request.POST.get('personas')
+        horario = request.POST.get('horario')
+
+        if not dia or not horas or not personas or not horario:
+            messages.error(request, "Completa todos los campos ❌")
+            return redirect(request.path)
+
+        try:
+            dia = int(dia)
+            horas = int(horas)
+            personas = int(personas)
+        except ValueError:
+            messages.error(request, "Datos inválidos ❌")
+            return redirect(request.path)
+
+        total = cancha["precio"] * horas
+
+        request.session['reserva'] = {
+            "cancha": cancha["nombre"],
+            "fecha": f"{dia}/{mes}/{año}",
+            "horario": horario,
+            "personas": personas,
+            "horas": horas,
+            "total": total,
+            "imagen": cancha["imagen"]
+        }
+
+        return redirect('confirmacion_reserva')
+
+    return render(request, 'reservar.html', {
+        "cancha": cancha,
+        "dias": dias,
+        "mes": mes,
+        "año": año,
+        "horarios": horarios
     })
 
-# ------------------ PERFIL ------------------
-def perfil(request):
-    return render(request, 'perfil.html')
 
-# ------------------ EDITAR PERFIL ------------------
-def editar_perfil(request):
-    if request.method == 'POST':
-        nombre = request.POST.get('nombre')
-        request.session['nombre'] = nombre
-        return redirect('perfil')  #  corregido
+# ------------------ RESTO ------------------
+def catalogo(request):
+    return render(request, 'catalogo.html', {"productos": PRODUCTOS})
 
-# ------------------ CARRITO ------------------
+
+def ver_reserva(request, id):
+    reserva = {
+        "cancha": request.GET.get("cancha"),
+        "fecha": request.GET.get("fecha"),
+        "horario": request.GET.get("horario"),
+        "personas": request.GET.get("personas"),
+        "horas": request.GET.get("horas"),
+        "total": request.GET.get("total"),
+        "imagen": request.GET.get("imagen"),
+    }
+
+    return render(request, 'ver_reserva.html', {"reserva": reserva})
+
+
 def carrito(request):
-    if request.method == 'POST':
-        try:
-            producto_id = int(request.POST.get('productoId', 0))
-        except ValueError:
-            producto_id = 0
-
-        cantidad = int(request.POST.get('cantidad', 1))
-
-        producto = next((p for p in PRODUCTOS if p["id"] == producto_id), None)
-
-        if producto:
-            carrito_sesion = request.session.get('carrito', [])
-            carrito_sesion.append({
-                "id": producto["id"],
-                "nombre": producto["nombre"],
-                "precio": producto["precio"],
-                "imagen": producto["imagen"],
-                "cantidad": cantidad
-            })
-            request.session['carrito'] = carrito_sesion
-
-        return redirect('carrito')  #  corregido
-
     carrito_sesion = request.session.get('carrito', [])
     total = sum(p["precio"] * p["cantidad"] for p in carrito_sesion)
 
@@ -123,36 +200,61 @@ def carrito(request):
         "total": total
     })
 
-# ------------------ PRODUCTO DETALLE ------------------
+
 def producto_detalle(request, id):
     producto = next((p for p in PRODUCTOS if p["id"] == id), None)
     return render(request, 'producto.html', {"producto": producto})
 
-# ------------------ ELIMINAR DEL CARRITO ------------------
-def eliminar_del_carrito(request):
-    if request.method == 'POST':
-        producto_id = request.POST.get('productoId')
-        carrito_sesion = request.session.get('carrito', [])
-        carrito_sesion = [p for p in carrito_sesion if str(p["id"]) != str(producto_id)]
-        request.session['carrito'] = carrito_sesion
-    return redirect('carrito')  #  corregido
 
-# ------------------ VACÍAR CARRITO ------------------
+def eliminar_del_carrito(request):
+    request.session['carrito'] = []
+    return redirect('carrito')
+
+
 def vaciar_carrito(request):
-    if request.method == 'POST':
-        request.session['carrito'] = []
-    return redirect('carrito')  #  corregido
+    request.session['carrito'] = []
+    return redirect('carrito')
+
+
+def perfil(request):
+    return render(request, 'perfil.html')
+
+
+def editar_perfil(request):
+    return redirect('perfil')
+
 
 # ------------------ DASHBOARD ------------------
+@login_required
 def dashboard(request):
-    carrito = request.session.get('carrito', [])
+    if request.user.is_superuser:
+        rol = "superadmin"
+    elif request.user.is_staff:
+        rol = "staff"
+    else:
+        rol = "usuario"
 
-    total_productos = len(PRODUCTOS)
-    total_carrito = len(carrito)
-    total_dinero = sum(p["precio"] * p["cantidad"] for p in carrito)
+    context = {
+        "rol": rol,
+        "total_productos": len(PRODUCTOS),
+        "total_carrito": len(request.session.get("carrito", [])),
+        "total_dinero": 0,
+        "total_canchas": 8,
+    }
 
-    return render(request, 'dashboard.html', {
-        "total_productos": total_productos,
-        "total_carrito": total_carrito,
-        "total_dinero": total_dinero
-    })
+    return render(request, "dashboard.html", context)
+
+
+def confirmar(request):
+    reserva = request.session.get('reserva')
+    return render(request, 'confirmar.html', {"reserva": reserva})
+
+
+def confirmacion_reserva(request):
+    reserva = request.session.get('reserva')
+
+    if not reserva:
+        messages.error(request, "No hay reserva ❌")
+        return redirect('canchas')
+
+    return render(request, 'confirmacion.html', {"reserva": reserva})

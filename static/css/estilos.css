@@ -1,0 +1,95 @@
+/* FONDO GENERAL */
+body{
+    background:#f5f5f5;
+}
+
+/* CONTENEDOR */
+.container{
+    margin-top:40px;
+}
+
+/* TARJETA FORMULARIO */
+.card{
+    border:none;
+    border-radius:10px;
+    overflow:hidden;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 10px 20px rgba(0,0,0,0.2);
+}
+
+/* TITULO */
+h3{
+    font-weight:bold;
+}
+
+/* INPUTS */
+.form-control{
+    border-radius:8px;
+    border:1px solid #ccc;
+    transition:0.3s;
+}
+
+.form-control:focus{
+    border-color:#198754;
+    box-shadow:0 0 5px rgba(25,135,84,0.3);
+}
+
+/* BOTÓN ENVIAR */
+.btn-success{
+    transition:0.3s;
+    font-weight:500;
+}
+
+.btn-success:hover{
+    transform:translateY(-2px);
+    box-shadow:0 5px 10px rgba(0,0,0,0.2);
+}
+
+/* BOTÓN VOLVER */
+.btn-dark{
+    transition:0.3s;
+}
+
+.btn-dark:hover{
+    transform:translateY(-2px);
+}
+
+/* NAVBAR */
+.navbar{
+    background:#000 !important;
+    padding:8px 0;
+    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+}
+
+.navbar-brand{
+    font-size:18px;
+    font-weight:bold;
+    color:#fff !important;
+}
+
+/* LOGO MÁS PEQUEÑO */
+.navbar-brand img{
+    width:30px;
+    height:30px;
+}
+
+/* FOOTER NEGRO Y MÁS DELGADO */
+.footer{
+    background:#000;
+    color:#fff;
+    padding:8px 0; /* 🔥 más pequeño */
+    margin-top:30px;
+    font-size:13px;
+    text-align:center;
+}
+
+/* CONTENIDO CENTRADO */
+.footer-content{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}

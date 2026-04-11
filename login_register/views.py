@@ -4,6 +4,10 @@ from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
+# ✅ IMPORTAR DESDE reservas (CLAVE)
+from reservas.models import Cancha, Producto
+
+
 # 📝 REGISTRO DE USUARIOS
 def register_view(request):
     if request.method == 'POST':
@@ -11,16 +15,14 @@ def register_view(request):
         username = request.POST.get('username').strip()
         password = request.POST.get('password')
 
-        # Validaciones
         if User.objects.filter(username=username).exists():
             messages.error(request, 'El usuario ya existe')
-            return redirect('register')
+            return redirect('auth:register')
 
         if User.objects.filter(email=email).exists():
             messages.error(request, 'El correo ya está registrado')
-            return redirect('register')
+            return redirect('auth:register')
 
-        # Crear usuario
         user = User.objects.create_user(
             username=username,
             email=email,
@@ -29,7 +31,7 @@ def register_view(request):
         user.save()
 
         messages.success(request, 'Usuario creado correctamente')
-        return redirect('login')
+        return redirect('auth:login')
 
     return render(request, 'register.html')
 
@@ -41,18 +43,15 @@ def login_view(request):
         password = request.POST.get('password')
 
         try:
-            # Buscar usuario por email
             user = User.objects.get(email=email)
 
-            # Validar contraseña
             if user.check_password(password):
-                login(request, user)  # Login exitoso
+                login(request, user)
 
-                # Redirección según rol
                 if user.is_superuser:
-                    return redirect('dashboard/')  # Superadmin al dashboard/
+                    return redirect('dashboard')  # ✅ corregido
                 else:
-                    return redirect('home/')  # Usuario normal al home/
+                    return redirect('home')       # ✅ corregido
 
             else:
                 messages.error(request, 'Correo o contraseña incorrectos')
@@ -66,13 +65,22 @@ def login_view(request):
 # 🔒 LOGOUT
 def logout_view(request):
     logout(request)
-    return redirect('login')
+    return redirect('auth:login')
 
 
 # 🏠 HOME PARA USUARIOS NORMALES
 @login_required
 def home(request):
-    return render(request, 'home.html')
+    canchas = Cancha.objects.all()
+    productos = Producto.objects.all()
+
+    context = {
+        'canchas': canchas,
+        'productos': productos,
+        'rol': "ADMIN" if request.user.is_superuser else "USER"
+    }
+
+    return render(request, 'home.html', context)
 
 
 # 👑 DASHBOARD SOLO PARA SUPERADMIN
