@@ -142,6 +142,30 @@ Ver más
 </a>
 </div>
 
+<!-- ✅ CANCHAS DE LA BD -->
+{% if canchas_db %}
+<h4 class="text-center mb-3 mt-5 fw-bold">📋 Canchas Registradas</h4>
+<div class="row row-cols-1 row-cols-md-3 g-3">
+{% for c in canchas_db %}
+<div class="col">
+<div class="p-3 text-center rounded border bg-light">
+{% if c.imagen %}
+<img src="{{ c.imagen.url }}"
+style="height:140px; object-fit:cover; width:100%; border-radius:8px;"
+alt="{{ c.nombre }}">
+{% else %}
+<img src="{% static 'img/cancha.jpg' %}"
+style="height:140px; object-fit:cover;"
+alt="Sin imagen">
+{% endif %}
+<h6 class="fw-bold mt-3">{{ c.nombre }}</h6>
+<p class="text-success fw-semibold">${{ c.precio }} COP</p>
+</div>
+</div>
+{% endfor %}
+</div>
+{% endif %}
+
 </div>
 
 <hr class="my-5">
@@ -199,6 +223,34 @@ Comprar
 Ver más
 </a>
 </div>
+
+<!-- ✅ PRODUCTOS DE LA BD -->
+{% if productos_db %}
+<h4 class="text-center mb-3 mt-5 fw-bold">📦 Productos Registrados</h4>
+<div class="row row-cols-1 row-cols-md-3 g-3 justify-content-center">
+{% for p in productos_db %}
+<div class="col">
+<div class="card shadow-sm product-card">
+{% if p.imagen %}
+<img src="{{ p.imagen.url }}"
+class="product-img"
+style="height:180px; object-fit:contain;"
+alt="{{ p.nombre }}">
+{% else %}
+<img src="{% static 'img/balon1.png' %}"
+class="product-img"
+style="height:180px; object-fit:contain;"
+alt="Sin imagen">
+{% endif %}
+<div class="card-body text-center p-2">
+<h6 class="fw-bold mb-1">{{ p.nombre }}</h6>
+<p class="text-success fw-semibold mb-0">${{ p.precio }} COP</p>
+</div>
+</div>
+</div>
+{% endfor %}
+</div>
+{% endif %}
 
 </div>
 

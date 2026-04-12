@@ -14,31 +14,50 @@ def register_view(request):
     if request.method == 'POST':
         email = request.POST.get('email', '').strip().lower()
         username = request.POST.get('username', '').strip()
-        password = request.POST.get('password')
+        password = request.POST.get('password', '')
+        password2 = request.POST.get('password2', '')
 
+        # ✅ Campos vacíos
+        if not email or not username or not password:
+            messages.error(request, 'Todos los campos son obligatorios')
+            return redirect('auth:register')
+
+        # ✅ Contraseñas coinciden
+        if password != password2:
+            messages.error(request, 'Las contraseñas no coinciden')
+            return redirect('auth:register')
+
+        # ✅ Longitud mínima
+        if len(password) < 8:
+            messages.error(request, 'La contraseña debe tener al menos 8 caracteres')
+            return redirect('auth:register')
+
+        # ✅ Usuario existente
         if User.objects.filter(username=username).exists():
             messages.error(request, 'El usuario ya existe')
             return redirect('auth:register')
 
+        # ✅ Correo existente
         if User.objects.filter(email=email).exists():
             messages.error(request, 'El correo ya está registrado')
             return redirect('auth:register')
 
+        # ✅ Crear en auth.User
         user = User.objects.create_user(
             username=username,
             email=email,
             password=password
         )
 
-        # ✅ Crear entrada en usuarios.Usuario (sincronización)
+        # ✅ Crear en usuarios.Usuario (sincronización)
         Usuario.objects.create(
             username=username,
             email=email,
-            password=user.password,  # Ya está hasheado
+            password=user.password,  # Ya hasheado
             rol='cliente'
         )
 
-        messages.success(request, 'Usuario creado correctamente')
+        messages.success(request, 'Cuenta creada correctamente ✅')
         return redirect('auth:login')
 
     return render(request, 'register.html')

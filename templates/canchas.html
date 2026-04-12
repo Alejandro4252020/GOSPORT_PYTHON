@@ -121,6 +121,49 @@ onclick="openModal('{% static 'img/' %}{{ cancha.imagen }}','{{ cancha.nombre }}
 
 </div>
 
+<!-- ✅ CANCHAS DE LA BD (creadas desde el CRUD) -->
+{% if canchas_db %}
+<h3 class="mt-5 mb-3">📋 Canchas del Sistema</h3>
+<div class="row" id="productListDB">
+
+{% for c in canchas_db %}
+
+<div class="col-md-6 mb-4 card-container"
+data-price="{{ c.precio }}"
+id="cancha-db-{{ c.id }}">
+
+<div class="card h-100">
+
+{% if c.imagen %}
+<img src="{{ c.imagen.url }}"
+class="card-img-top"
+alt="{{ c.nombre }}">
+{% else %}
+<img src="{% static 'img/cancha.jpg' %}" class="card-img-top" alt="Sin imagen">
+{% endif %}
+
+<div class="card-body text-center">
+<h5 class="card-title">{{ c.nombre }}</h5>
+<p class="text-muted">{{ c.tipo }} — {{ c.direccion }}</p>
+<p class="text-success fw-bold">${{ c.precio }} COP</p>
+
+{% if c.estado == "disponible" %}
+<span class="badge bg-success">Disponible</span>
+{% elif c.estado == "ocupado" %}
+<span class="badge bg-danger">Ocupado</span>
+{% else %}
+<span class="badge bg-warning text-dark">Mantenimiento</span>
+{% endif %}
+
+</div>
+</div>
+
+</div>
+{% endfor %}
+
+</div>
+{% endif %}
+
 </div>
 
 <div class="col-md-3">

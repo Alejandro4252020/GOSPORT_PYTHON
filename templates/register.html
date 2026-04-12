@@ -44,15 +44,27 @@
                 <input type="text" name="username" class="form-control" placeholder="Usuario" required autocomplete="username">
             </div>
 
-            <div class="input-group mb-3">
-                <input type="password" name="password" id="password" class="form-control"
-                    placeholder="Contraseña"
-                    required
-                    autocomplete="new-password"
-                    minlength="8">
-                    
-                <button type="button" class="btn" id="togglePass">👁</button>
-            </div>
+           <!-- Contraseña -->
+<div class="input-group mb-3">
+    <input type="password" name="password" id="password" class="form-control"
+        placeholder="Contraseña"
+        required
+        autocomplete="new-password"
+        minlength="8">
+        
+    <button type="button" class="btn" id="togglePass">👁</button>
+</div>
+
+<!-- Confirmar contraseña -->
+<div class="input-group mb-3">
+    <input type="password" name="password2" id="password2" class="form-control"
+        placeholder="Confirmar contraseña"
+        required
+        autocomplete="new-password"
+        minlength="8">
+        
+    <button type="button" class="btn" id="togglePass2">👁</button>
+</div>
 
             <button type="submit" class="btn btn-custom w-100">Registrarse</button>
         </form>
@@ -65,12 +77,63 @@
 </footer>
 
 <script>
-    // Mostrar / ocultar contraseña
+    // Toggle Password 1
     document.getElementById("togglePass").addEventListener("click", function () {
         const pass = document.getElementById("password");
         pass.type = pass.type === "password" ? "text" : "password";
+        this.textContent = pass.type === "password" ? "👁" : "🙈";
     });
 
+    // Toggle Password 2
+    document.getElementById("togglePass2").addEventListener("click", function () {
+        const pass = document.getElementById("password2");
+        pass.type = pass.type === "password" ? "text" : "password";
+        this.textContent = pass.type === "password" ? "👁" : "🙈";
+    });
+
+    // ✅ Validación en tiempo real
+    const pass1 = document.getElementById("password");
+    const pass2 = document.getElementById("password2");
+    const form = document.querySelector("form");
+
+    // Crear mensaje de ayuda
+    const matchMsg = document.createElement("small");
+    matchMsg.id = "matchMsg";
+    matchMsg.style.display = "none";
+    pass2.parentElement.after(matchMsg);
+
+    function checkMatch() {
+        if (pass2.value === "") {
+            matchMsg.style.display = "none";
+            pass2.style.borderColor = "";
+            return;
+        }
+        matchMsg.style.display = "block";
+        if (pass1.value === pass2.value) {
+            matchMsg.textContent = "✅ Las contraseñas coinciden";
+            matchMsg.style.color = "#28a745";
+            pass2.style.borderColor = "#28a745";
+        } else {
+            matchMsg.textContent = "❌ Las contraseñas no coinciden";
+            matchMsg.style.color = "#dc3545";
+            pass2.style.borderColor = "#dc3545";
+        }
+    }
+
+    pass1.addEventListener("input", checkMatch);
+    pass2.addEventListener("input", checkMatch);
+
+    // ✅ Bloquear envío si no coinciden
+    form.addEventListener("submit", function (e) {
+        if (pass1.value !== pass2.value) {
+            e.preventDefault();
+            alert("Las contraseñas no coinciden");
+        }
+        if (pass1.value.length < 8) {
+            e.preventDefault();
+            alert("La contraseña debe tener al menos 8 caracteres");
+        }
+    });
 </script>
 
 </body>

@@ -41,17 +41,24 @@ CANCHAS_PUBLICO = [
 
 # ------------------ HOME ------------------
 def home(request):
-    canchas = [
+    # Canchas hardcodeadas (respaldo)
+    canchas_estaticas = [
         {"id":1, "nombre":"Cancha 1", "estado":"Disponible", "imagen":"cancha1.jpg"},
         {"id":2, "nombre":"Cancha 2", "estado":"Ocupada", "imagen":"cancha2.jpg"},
         {"id":3, "nombre":"Cancha 3", "estado":"Disponible", "imagen":"canchabosa.jpg"},
     ]
+
+    # ✅ Canchas de la BD (creadas desde el CRUD)
+    canchas_db = CanchaDB.objects.all()[:6]
 
     productos_destacados = [
         PRODUCTOS[0],
         PRODUCTOS[1],
         PRODUCTOS[2],
     ]
+
+    # ✅ Productos de la BD (creados desde el CRUD)
+    productos_db = ProductoDB.objects.all()[:6]
 
     if request.user.is_authenticated:
         if request.user.is_superuser:
@@ -64,8 +71,10 @@ def home(request):
         rol = "INVITADO"
 
     return render(request, 'home.html', {
-        "canchas": canchas,
+        "canchas": canchas_estaticas,
+        "canchas_db": canchas_db,
         "productos": productos_destacados,
+        "productos_db": productos_db,
         "rol": rol
     })
 
@@ -86,7 +95,12 @@ def contacto(request):
 
 # ------------------ CANCHAS ------------------
 def canchas_publico(request):
-    return render(request, 'canchas.html', {"canchas": CANCHAS_PUBLICO})
+    # ✅ También pasar canchas de la BD
+    canchas_db = CanchaDB.objects.all()
+    return render(request, 'canchas.html', {
+        "canchas": CANCHAS_PUBLICO,
+        "canchas_db": canchas_db,
+    })
 
 
 # ------------------ DETALLE CANCHA ------------------
