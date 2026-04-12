@@ -4,15 +4,16 @@ from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-# ✅ IMPORTAR DESDE reservas (CLAVE)
-from reservas.models import Cancha, Producto
+from canchas.models import Cancha
+from productos.models import Producto
+from usuarios.models import Usuario
 
 
-# 📝 REGISTRO DE USUARIOS
+# 📝 REGISTRO
 def register_view(request):
     if request.method == 'POST':
-        email = request.POST.get('email').strip().lower()
-        username = request.POST.get('username').strip()
+        email = request.POST.get('email', '').strip().lower()
+        username = request.POST.get('username', '').strip()
         password = request.POST.get('password')
 
         if User.objects.filter(username=username).exists():
@@ -28,7 +29,14 @@ def register_view(request):
             email=email,
             password=password
         )
-        user.save()
+
+        # ✅ Crear entrada en usuarios.Usuario (sincronización)
+        Usuario.objects.create(
+            username=username,
+            email=email,
+            password=user.password,  # Ya está hasheado
+            rol='cliente'
+        )
 
         messages.success(request, 'Usuario creado correctamente')
         return redirect('auth:login')
@@ -36,10 +44,10 @@ def register_view(request):
     return render(request, 'register.html')
 
 
-# 🔑 LOGIN POR EMAIL
+# 🔑 LOGIN
 def login_view(request):
     if request.method == 'POST':
-        email = request.POST.get('email').strip().lower()
+        email = request.POST.get('email', '').strip().lower()
         password = request.POST.get('password')
 
         try:
@@ -48,10 +56,11 @@ def login_view(request):
             if user.check_password(password):
                 login(request, user)
 
-                if user.is_superuser:
-                    return redirect('dashboard')  # ✅ corregido
+                # ✅ admin y empleado → dashboard, cliente → home
+                if user.is_superuser or user.is_staff:
+                    return redirect('auth:dashboard')
                 else:
-                    return redirect('home')       # ✅ corregido
+                    return redirect('auth:home')
 
             else:
                 messages.error(request, 'Correo o contraseña incorrectos')
@@ -68,7 +77,7 @@ def logout_view(request):
     return redirect('auth:login')
 
 
-# 🏠 HOME PARA USUARIOS NORMALES
+# 🏠 HOME
 @login_required
 def home(request):
     canchas = Cancha.objects.all()
@@ -77,23 +86,25 @@ def home(request):
     context = {
         'canchas': canchas,
         'productos': productos,
-        'rol': "ADMIN" if request.user.is_superuser else "USER"
+        'rol': "ADMIN" if request.user.is_superuser else ("EMPLEADO" if request.user.is_staff else "USER")
     }
 
     return render(request, 'home.html', context)
 
 
-# 👑 DASHBOARD SOLO PARA SUPERADMIN
+# 👑 DASHBOARD
 @login_required
 def dashboard(request):
-    if not request.user.is_superuser:
-        return redirect('home')
+    # ✅ Admin y empleado pueden ver el dashboard
+    if not (request.user.is_superuser or request.user.is_staff):
+        return redirect('auth:home')
 
     context = {
         'rol': "Superadmin 👑",
-        'total_productos': 0,
+        'total_productos': Producto.objects.count(),
+        'total_canchas': Cancha.objects.count(),
         'total_carrito': 0,
         'total_dinero': 0,
-        'total_canchas': 0,
     }
+
     return render(request, 'dashboard.html', context)

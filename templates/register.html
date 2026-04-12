@@ -15,10 +15,11 @@
 <header class="topbar">
     <div class="topbar-content">
         <div class="logo-title">
+            <img src="{% static 'img/icono.jpg' %}" class="me-2" style="height:40px;"> 
             <span class="go">Go</span><span class="sports">Sports</span>
         </div>
 
-        <a href="/login" class="login-link">Login</a>
+        <a href="{% url 'auth:login' %}" class="login-link">Login</a>
     </div>
 </header>
 
@@ -70,16 +71,6 @@
         pass.type = pass.type === "password" ? "text" : "password";
     });
 
-    const toggleBtn = document.getElementById("themeToggle");
-
-    // Detectar modo del sistema
-    if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-        document.body.classList.add("light");
-    }
-
-    toggleBtn.addEventListener("click", () => {
-        document.body.classList.toggle("light");
-    });
 </script>
 
 </body>

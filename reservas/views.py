@@ -3,6 +3,9 @@ from django.contrib import messages
 from datetime import datetime
 import calendar
 from django.contrib.auth.decorators import login_required
+from .models import Reserva, Compra, DetalleCompra
+from canchas.models import Cancha as CanchaDB
+from productos.models import Producto as ProductoDB
 
 
 PRODUCTOS = [
@@ -24,6 +27,18 @@ PRODUCTOS = [
 ]
 
 
+CANCHAS_PUBLICO = [
+    {"id":1,"nombre":"Canchas Sintéticas Bogotá Jardin Club","precio":50000,"imagen":"Cancha1.jpg"},
+    {"id":2,"nombre":"Canchas Sintéticas Jompibe","precio":60000,"imagen":"cancha2.jpg"},
+    {"id":3,"nombre":"Complejo Deportivo Unión Bosa","precio":55000,"imagen":"cancha5.jpg"},
+    {"id":4,"nombre":"Cancha La Florida","precio":65000,"imagen":"cancha4.jpg"},
+    {"id":5,"nombre":"Club Deportivo Union Bosa","precio":50000,"imagen":"cancha6.jpg"},
+    {"id":6,"nombre":"Canchas Futbol Asovivir","precio":70000,"imagen":"cancha11.jpg"},
+    {"id":7,"nombre":"Canchas Bosa Santafe","precio":60000,"imagen":"cancha12.jpg"},
+    {"id":8,"nombre":"Cancha Sintética Fútbol 5","precio":58000,"imagen":"cancha13.jpg"},
+]
+
+
 # ------------------ HOME ------------------
 def home(request):
     canchas = [
@@ -41,6 +56,8 @@ def home(request):
     if request.user.is_authenticated:
         if request.user.is_superuser:
             rol = "ADMIN"
+        elif request.user.is_staff:
+            rol = "EMPLEADO"
         else:
             rol = "USUARIO"
     else:
@@ -62,67 +79,34 @@ def contacto(request):
 
         if nombre and correo and mensaje:
             messages.success(request, "Muchas gracias por contactarnos.")
-            return redirect('contacto')
+            return redirect('reservas:contacto')
 
     return render(request, 'contacto.html')
 
 
 # ------------------ CANCHAS ------------------
-def canchas(request):
-    canchas = [
-        {"id":1,"nombre":"Canchas Sintéticas Bogotá Jardin Club","precio":50000,"imagen":"Cancha1.jpg"},
-        {"id":2,"nombre":"Canchas Sintéticas Jompibe","precio":60000,"imagen":"cancha2.jpg"},
-        {"id":3,"nombre":"Complejo Deportivo Unión Bosa","precio":55000,"imagen":"cancha5.jpg"},
-        {"id":4,"nombre":"Cancha La Florida","precio":65000,"imagen":"cancha4.jpg"},
-        {"id":5,"nombre":"Club Deportivo Union Bosa","precio":50000,"imagen":"cancha6.jpg"},
-        {"id":6,"nombre":"Canchas Futbol Asovivir","precio":70000,"imagen":"cancha11.jpg"},
-        {"id":7,"nombre":"Canchas Bosa Santafe","precio":60000,"imagen":"cancha12.jpg"},
-        {"id":8,"nombre":"Cancha Sintética Fútbol 5","precio":58000,"imagen":"cancha13.jpg"},
-    ]
-
-    return render(request, 'canchas.html', {"canchas": canchas})
+def canchas_publico(request):
+    return render(request, 'canchas.html', {"canchas": CANCHAS_PUBLICO})
 
 
 # ------------------ DETALLE CANCHA ------------------
 def cancha_detalle(request, id):
-    canchas = [
-        {"id":1,"nombre":"Canchas Sintéticas Bogotá Jardin Club","precio":50000,"imagen":"Cancha1.jpg"},
-        {"id":2,"nombre":"Canchas Sintéticas Jompibe","precio":60000,"imagen":"cancha2.jpg"},
-        {"id":3,"nombre":"Complejo Deportivo Unión Bosa","precio":55000,"imagen":"cancha5.jpg"},
-        {"id":4,"nombre":"Cancha La Florida","precio":65000,"imagen":"cancha4.jpg"},
-        {"id":5,"nombre":"Club Deportivo Union Bosa","precio":50000,"imagen":"cancha6.jpg"},
-        {"id":6,"nombre":"Canchas Futbol Asovivir","precio":70000,"imagen":"cancha11.jpg"},
-        {"id":7,"nombre":"Canchas Bosa Santafe","precio":60000,"imagen":"cancha12.jpg"},
-        {"id":8,"nombre":"Cancha Sintética Fútbol 5","precio":58000,"imagen":"cancha13.jpg"},
-    ]
-
-    cancha = next((c for c in canchas if c["id"] == id), None)
+    cancha = next((c for c in CANCHAS_PUBLICO if c["id"] == id), None)
 
     if not cancha:
         messages.error(request, "Cancha no encontrada ❌")
-        return redirect('canchas')
+        return redirect('reservas:canchas_publico')
 
     return render(request, 'cancha_detalle.html', {"cancha": cancha})
 
 
 # ------------------ RESERVAR ------------------
 def reservar(request, id):
-    canchas = [
-        {"id":1,"nombre":"Canchas Sintéticas Bogotá Jardin Club","precio":50000,"imagen":"Cancha1.jpg"},
-        {"id":2,"nombre":"Canchas Sintéticas Jompibe","precio":60000,"imagen":"cancha2.jpg"},
-        {"id":3,"nombre":"Complejo Deportivo Unión Bosa","precio":55000,"imagen":"cancha5.jpg"},
-        {"id":4,"nombre":"Cancha La Florida","precio":65000,"imagen":"cancha4.jpg"},
-        {"id":5,"nombre":"Club Deportivo Union Bosa","precio":50000,"imagen":"cancha6.jpg"},
-        {"id":6,"nombre":"Canchas Futbol Asovivir","precio":70000,"imagen":"cancha11.jpg"},
-        {"id":7,"nombre":"Canchas Bosa Santafe","precio":60000,"imagen":"cancha12.jpg"},
-        {"id":8,"nombre":"Cancha Sintética Fútbol 5","precio":58000,"imagen":"cancha13.jpg"},
-    ]
-
-    cancha = next((c for c in canchas if c["id"] == id), None)
+    cancha = next((c for c in CANCHAS_PUBLICO if c["id"] == id), None)
 
     if not cancha:
         messages.error(request, "Cancha no encontrada ❌")
-        return redirect('canchas')
+        return redirect('reservas:canchas_publico')
 
     hoy = datetime.now()
     año, mes = hoy.year, hoy.month
@@ -150,10 +134,25 @@ def reservar(request, id):
             return redirect(request.path)
 
         total = cancha["precio"] * horas
+        fecha_str = f"{dia}/{mes}/{año}"
 
+        # Guardar en base de datos
+        reserva_obj = Reserva.objects.create(
+            usuario=request.user if request.user.is_authenticated else None,
+            cancha_nombre=cancha["nombre"],
+            fecha=fecha_str,
+            horario=horario,
+            personas=personas,
+            horas=horas,
+            total=total,
+            imagen=cancha["imagen"]
+        )
+
+        # También guardar en sesión para la confirmación
         request.session['reserva'] = {
+            "id": reserva_obj.id,
             "cancha": cancha["nombre"],
-            "fecha": f"{dia}/{mes}/{año}",
+            "fecha": fecha_str,
             "horario": horario,
             "personas": personas,
             "horas": horas,
@@ -161,7 +160,7 @@ def reservar(request, id):
             "imagen": cancha["imagen"]
         }
 
-        return redirect('confirmacion_reserva')
+        return redirect('reservas:confirmacion_reserva')
 
     return render(request, 'reservar.html', {
         "cancha": cancha,
@@ -170,7 +169,6 @@ def reservar(request, id):
         "año": año,
         "horarios": horarios
     })
-
 
 # ------------------ RESTO ------------------
 def catalogo(request):
@@ -192,6 +190,36 @@ def ver_reserva(request, id):
 
 
 def carrito(request):
+    # ✅ POST: agregar producto al carrito
+    if request.method == 'POST':
+        producto_id = int(request.POST.get('productoId', 0))
+        cantidad = int(request.POST.get('cantidad', 1))
+
+        producto = next((p for p in PRODUCTOS if p["id"] == producto_id), None)
+
+        if producto:
+            carrito_sesion = request.session.get('carrito', [])
+
+            # Verificar si ya existe en el carrito
+            existente = next((p for p in carrito_sesion if p["id"] == producto_id), None)
+
+            if existente:
+                existente["cantidad"] += cantidad
+            else:
+                carrito_sesion.append({
+                    "id": producto["id"],
+                    "nombre": producto["nombre"],
+                    "precio": producto["precio"],
+                    "imagen": producto["imagen"],
+                    "cantidad": cantidad,
+                })
+
+            request.session['carrito'] = carrito_sesion
+            messages.success(request, f'✅ "{producto["nombre"]}" agregado al carrito')
+
+        return redirect('reservas:carrito')
+
+    # ✅ GET: mostrar carrito
     carrito_sesion = request.session.get('carrito', [])
     total = sum(p["precio"] * p["cantidad"] for p in carrito_sesion)
 
@@ -207,13 +235,78 @@ def producto_detalle(request, id):
 
 
 def eliminar_del_carrito(request):
-    request.session['carrito'] = []
-    return redirect('carrito')
+    if request.method == 'POST':
+        producto_id = int(request.POST.get('productoId', 0))
+        carrito_sesion = request.session.get('carrito', [])
+        carrito_sesion = [p for p in carrito_sesion if p["id"] != producto_id]
+        request.session['carrito'] = carrito_sesion
+        messages.success(request, 'Producto eliminado del carrito ✅')
+    return redirect('reservas:carrito')
 
 
 def vaciar_carrito(request):
+    if request.method == 'POST':
+        request.session['carrito'] = []
+        messages.success(request, 'Carrito vaciado ✅')
+    return redirect('reservas:carrito')
+
+
+# ==========================================
+# COMPRAR — Finalizar compra y generar factura
+# ==========================================
+@login_required
+def comprar(request):
+    if request.method != 'POST':
+        return redirect('reservas:carrito')
+
+    carrito_sesion = request.session.get('carrito', [])
+
+    if not carrito_sesion:
+        messages.error(request, 'Tu carrito está vacío ❌')
+        return redirect('reservas:carrito')
+
+    total = sum(p["precio"] * p["cantidad"] for p in carrito_sesion)
+
+    # Crear la compra
+    compra = Compra.objects.create(
+        usuario=request.user,
+        total=total
+    )
+
+    # Crear los detalles
+    for item in carrito_sesion:
+        DetalleCompra.objects.create(
+            compra=compra,
+            producto_nombre=item["nombre"],
+            producto_imagen=item.get("imagen", ""),
+            precio=item["precio"],
+            cantidad=item["cantidad"]
+        )
+
+    # Vaciar el carrito
     request.session['carrito'] = []
-    return redirect('carrito')
+
+    messages.success(request, f'✅ Compra realizada — Factura: {compra.factura}')
+    return redirect('reservas:factura', compra_id=compra.id)
+
+
+# ==========================================
+# FACTURA — Vista imprimible
+# ==========================================
+@login_required
+def factura(request, compra_id):
+    compra = Compra.objects.filter(id=compra_id, usuario=request.user).first()
+
+    if not compra:
+        messages.error(request, 'Factura no encontrada ❌')
+        return redirect('reservas:carrito')
+
+    detalles = compra.detalles.all()
+
+    return render(request, 'factura.html', {
+        "compra": compra,
+        "detalles": detalles,
+    })
 
 
 def perfil(request):
@@ -221,7 +314,7 @@ def perfil(request):
 
 
 def editar_perfil(request):
-    return redirect('perfil')
+    return redirect('reservas:perfil')
 
 
 # ------------------ DASHBOARD ------------------
@@ -236,10 +329,11 @@ def dashboard(request):
 
     context = {
         "rol": rol,
-        "total_productos": len(PRODUCTOS),
+        "total_productos": ProductoDB.objects.count(),
         "total_carrito": len(request.session.get("carrito", [])),
         "total_dinero": 0,
-        "total_canchas": 8,
+        "total_canchas": CanchaDB.objects.count(),
+        "total_reservas": Reserva.objects.count(),
     }
 
     return render(request, "dashboard.html", context)
@@ -255,6 +349,6 @@ def confirmacion_reserva(request):
 
     if not reserva:
         messages.error(request, "No hay reserva ❌")
-        return redirect('canchas')
+        return redirect('reservas:canchas_publico')
 
     return render(request, 'confirmacion.html', {"reserva": reserva})

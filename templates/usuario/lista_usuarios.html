@@ -1,0 +1,201 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Usuarios</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- CSS propio -->
+    <link rel="stylesheet" href="{% static 'css/lista_usuarios.css' %}">
+
+    <!-- Icono -->
+    <link rel="icon" href="{% static 'img/icono.jpg' %}">
+
+    <style>
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-dark bg-dark px-4 no-print">
+    <img src="{% static 'img/icono.jpg' %}" class="me-2" style="height:40px;">
+    <a href="{% url 'reservas:home' %}" class="navbar-brand fw-bold text-white text-decoration-none">
+        GOSPORT
+    </a>
+
+    <div>
+        <a href="{% url 'reservas:home' %}" class="text-white me-3 text-decoration-none">Inicio</a>
+
+        <a href="{% url 'reportes:reporte_reservas' %}" class="text-white me-3 text-decoration-none">
+            Reservas
+        </a>
+
+        <!-- LOGOUT CORRECTO -->
+        <form method="post" action="{% url 'auth:logout' %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm">
+                Cerrar Sesión
+            </button>
+        </form>
+    </div>
+</nav>
+
+<div class="container mt-5">
+
+    <h2 class="text-center fw-bold mb-4">Gestión de Usuarios</h2>
+
+    <!-- BOTONES -->
+    <div class="text-center mb-4 no-print">
+        <a href="{% url 'usuarios:crear_usuario' %}" class="btn btn-success me-2">
+            ➕ Nuevo Usuario
+        </a>
+
+        <a href="{% url 'productos:lista_productos' %}" class="btn btn-primary me-2">
+            🛒 Productos
+        </a>
+
+        <a href="{% url 'canchas:lista_canchas' %}" class="btn btn-secondary">
+            ⚽ Canchas
+        </a>
+    </div>
+
+    <!-- BUSCADOR -->
+    <form method="GET" class="card shadow-sm p-4 mb-4 no-print">
+        <h5 class="mb-3">Buscar usuarios</h5>
+
+        <div class="row">
+            <div class="col-md-3">
+                <input type="text" name="id" class="form-control"
+                       placeholder="Buscar por ID"
+                       value="{{ request.GET.id }}">
+            </div>
+
+            <div class="col-md-3">
+                <input type="text" name="usuario" class="form-control"
+                       placeholder="Buscar usuario"
+                       value="{{ request.GET.usuario }}">
+            </div>
+
+            <div class="col-md-3">
+                <select name="rol" class="form-control">
+                    <option value="">-- Todos --</option>
+                    <option value="admin" {% if request.GET.rol == "admin" %}selected{% endif %}>Administrador</option>
+                    <option value="empleado" {% if request.GET.rol == "empleado" %}selected{% endif %}>Empleado</option>
+                    <option value="cliente" {% if request.GET.rol == "cliente" %}selected{% endif %}>Cliente</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary w-100">
+                    🔍 Buscar
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <!-- EXPORTACIONES -->
+    <div class="row g-3 mb-4 text-center no-print">
+        <div class="col-md-3 col-6">
+            <a href="{% url 'reportes:exportar_pdf' %}" class="btn btn-danger w-100">📄 PDF</a>
+        </div>
+
+        <div class="col-md-3 col-6">
+            <a href="{% url 'reportes:exportar_excel' %}" class="btn btn-success w-100">📊 Excel</a>
+        </div>
+
+        <div class="col-md-3 col-6">
+            <a href="{% url 'reportes:exportar_txt' %}" class="btn btn-secondary w-100">📄 TXT</a>
+        </div>
+
+        <div class="col-md-3 col-6">
+            <button onclick="imprimirTabla()" class="btn btn-info w-100">🖨️ Imprimir</button>
+        </div>
+    </div>
+
+    <!-- TABLA -->
+    <div class="card shadow-sm p-3" id="tablaUsuarios">
+        <div class="table-responsive">
+            <table class="table table-bordered text-center align-middle">
+                <thead class="table-primary">
+                    <tr>
+                        <th>#</th>
+                        <th>Usuario</th>
+                        <th>Rol</th>
+                        <th class="no-print">Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ usuario.username }}</td>
+                        <td>
+                            <span class="badge
+                                {% if usuario.rol == 'admin' %}bg-danger
+                                {% elif usuario.rol == 'empleado' %}bg-primary
+                                {% else %}bg-success
+                                {% endif %}">
+                                {{ usuario.get_rol_display }}
+                            </span>
+                        </td>
+                        <td class="no-print">
+                            <a href="{% url 'usuarios:editar_usuario' usuario.id %}" class="btn btn-warning btn-sm">
+                                ✏️ Editar
+                            </a>
+
+                            <form action="{% url 'usuarios:eliminar_usuario' usuario.id %}" method="POST" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('¿Eliminar a {{ usuario.username }}?')">
+                                    🗑️
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">No hay usuarios registrados</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<footer class="bg-dark text-white text-center mt-5 p-3 no-print">
+    © 2025 GoSports
+</footer>
+
+<script>
+function imprimirTabla() {
+    var contenido = document.getElementById('tablaUsuarios').innerHTML;
+    var ventana = window.open('', '', 'height=700,width=900');
+
+    ventana.document.write('<html><head><title>Usuarios</title>');
+    ventana.document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">');
+    ventana.document.write('</head><body>');
+    ventana.document.write('<h3 style="text-align:center;">Lista de Usuarios</h3>');
+    ventana.document.write(contenido);
+    ventana.document.write('</body></html>');
+
+    ventana.document.close();
+    ventana.print();
+}
+</script>
+
+</body>
+</html>

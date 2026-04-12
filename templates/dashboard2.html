@@ -24,7 +24,10 @@
     <!-- DERECHA -->
     <div class="user-section">
         <span class="text-white">{{ request.user.username }}</span>
-      <a href="{% url 'auth:logout' %}" class="btn btn-danger btn-sm">Salir</a>
+      <form method="post" action="{% url 'auth:logout' %}" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger btn-sm">Salir</button>
+      </form>
     </div>
 
 </div>
@@ -34,7 +37,7 @@
 <!-- CONTENIDO -->
 <div class="container mt-4">
 
-    <h3 class="text-center" style="color:#000000;">Bienvenido, {{ request.user.username }} 👋</h2>
+    <h3 class="text-center" style="color:#000000;">Bienvenido, {{ request.user.username }} 👋</h3>
 
     <div class="row mt-4">
 

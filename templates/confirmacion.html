@@ -14,7 +14,7 @@
 <!-- NAVBAR -->
 <nav class="navbar navbar-dark">
     <div class="container">
-      <a class="navbar-brand d-flex align-items-center" href="/">
+      <a class="navbar-brand d-flex align-items-center" href="{% url 'reservas:home' %}">
         <img src="{% static 'img/icono.jpg' %}" alt="logo" height="35" class="me-2">
         GOSPORT
       </a>
@@ -61,7 +61,7 @@
        imprimir recibo
         </a>
 
-        <a href="/canchas/" class="btn btn-dark w-100 mt-2">
+        <a href="{% url 'reservas:canchas_publico' %}" class="btn btn-dark w-100 mt-2">
             Volver
         </a>
 

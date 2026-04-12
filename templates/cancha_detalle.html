@@ -12,7 +12,7 @@
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="/">
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'reservas:home' %}">
             <img src="{% static 'img/icono.jpg' %}" style="height:40px; margin-right:10px;">
             <span>GOSPORT</span>
         </a>
@@ -21,9 +21,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="/canchas/">Canchas</a></li>
-                <li class="nav-item"><a class="nav-link" href="/contacto/">Contacto</a></li>
-                <li class="nav-item"><a class="nav-link" href="/perfil/">Perfil</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'reservas:canchas_publico' %}">Canchas</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'reservas:contacto' %}">Contacto</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'reservas:perfil' %}">Perfil</a></li>
             </ul>
         </div>
     </div>
@@ -54,7 +54,7 @@
             <p>Disfruta de una excelente cancha para jugar con tus amigos. Reserva fácilmente y asegura tu horario.</p>
 
             <!-- FORMULARIO -->
-            <form method="POST" action="/reservar/{{ cancha.id }}/">
+            <form method="POST" action="{% url 'reservas:reservar' cancha.id %}">
                 {% csrf_token %}
 
                 <div class="mb-3">
@@ -67,7 +67,7 @@
                 </button>
             </form>
 
-            <a href="/canchas/" class="btn btn-dark">← Volver</a>
+            <a href="{% url 'reservas:canchas_publico' %}" class="btn btn-dark">← Volver</a>
         </div>
 
     </div>

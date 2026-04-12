@@ -20,16 +20,19 @@
 <nav class="navbar navbar-expand-lg bg-white shadow-sm py-3">
     <div class="container d-flex align-items-center justify-content-between">
 
-        <a class="navbar-brand d-flex align-items-center" href="/">
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'reservas:home' %}">
             <img src="{% static 'img/icono.jpg' %}" class="me-2" style="height:40px">
             <span class="fw-bold">GOSPORT</span>
         </a>
 
         <div>
-            <a class="nav-link d-inline" href="/catalogo/">Tienda GS</a>
-            <a class="nav-link d-inline" href="/canchas/">Canchas</a>
-            <a class="nav-link d-inline" href="/perfil/">Mi Perfil</a>
-            <a class="btn btn-danger ms-3" href="/logout">Cerrar Sesión</a>
+            <a class="nav-link d-inline" href="{% url 'reservas:catalogo' %}">Tienda GS</a>
+            <a class="nav-link d-inline" href="{% url 'reservas:canchas_publico' %}">Canchas</a>
+            <a class="nav-link d-inline" href="{% url 'reservas:perfil' %}">Mi Perfil</a>
+            <form method="post" action="{% url 'auth:logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger ms-3">Cerrar Sesión</button>
+            </form>
         </div>
 
     </div>
@@ -40,7 +43,7 @@
 
     <!-- BOTÓN VOLVER -->
     <div class="text-start mb-3">
-        <a href="/" class="btn btn-secondary">Volver</a>
+        <a href="{% url 'reservas:home' %}" class="btn btn-secondary">Volver</a>
     </div>
 
     <div class="card shadow-sm p-4">
@@ -75,7 +78,7 @@
                 </div>
 
                 <!-- FORM -->
-                <form method="post" action="/carrito/">
+                <form method="post" action="{% url 'reservas:carrito' %}">
                     {% csrf_token %}
                     <input type="hidden" name="productoId" value="{{ producto.id }}">
                     <input type="hidden" name="cantidad" id="cantidadHidden">

@@ -18,7 +18,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
 
-        <a class="navbar-brand d-flex align-items-center" href="/">
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'reservas:home' %}">
             <img src="{% static 'img/icono.jpg' %}" alt="logo" width="40" height="40" class="me-2">
             GOSPORT
         </a>
@@ -69,7 +69,7 @@
                     </button>
                 </form>
 
-                <a href="/" class="btn btn-dark mt-3 w-100">
+                <a href="{% url 'reservas:home' %}" class="btn btn-dark mt-3 w-100">
                     ← Volver al inicio
                 </a>
 

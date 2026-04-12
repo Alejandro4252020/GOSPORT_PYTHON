@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -7,297 +6,318 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% load static %}
-
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Catálogo</title>
+<title>Tienda GoSport</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
 <link rel="stylesheet" href="{% static 'css/estilos-catalogo.css' %}">
 <link rel="icon" type="image/png" href="{% static 'img/icono.jpg' %}">
-
 </head>
 
 <body>
 
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg bg-white shadow-sm py-3">
-    <div class="container d-flex align-items-center justify-content-between">
+<div class="container d-flex align-items-center justify-content-between">
 
-        <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
-            <img src="{% static 'img/icono.jpg' %}" class="me-2" style="height:40px;" alt="Logo">
-            <span class="fw-bold">GOSPORT</span>
-        </a>
+<a class="navbar-brand d-flex align-items-center" href="{% url 'reservas:home' %}">
+<img src="{% static 'img/icono.jpg' %}" class="me-2" style="height:40px;" alt="Logo">
+<span class="fw-bold">GOSPORT</span>
+</a>
 
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home' %}">Inicio</a>
-                </li>
+<div class="collapse navbar-collapse">
+<ul class="navbar-nav ms-auto">
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'canchas' %}">Canchas</a>
-                </li>
+<li class="nav-item">
+<a class="nav-link" href="{% url 'reservas:home' %}">Inicio</a>
+</li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'perfil' %}">Mi Perfil</a>
-                </li>
+<li class="nav-item">
+<a class="nav-link" href="{% url 'reservas:canchas_publico' %}">Canchas</a>
+</li>
 
-                <li class="nav-item">
-                    <!-- 🔥 CORREGIDO -->
-                   <form method="post" action="{% url 'auth:logout' %}">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger">
-        Cerrar Sesión
-    </button>
+<li class="nav-item">
+<a class="nav-link" href="{% url 'reservas:carrito' %}">🛒 Carrito</a>
+</li>
+
+{% if request.user.is_superuser %}
+<li class="nav-item">
+<a class="nav-link" href="{% url 'usuarios:lista_usuarios' %}">Usuarios</a>
+</li>
+{% endif %}
+
+<li class="nav-item">
+<form method="post" action="{% url 'auth:logout' %}">
+{% csrf_token %}
+<button type="submit" class="btn btn-danger">
+Cerrar Sesión
+</button>
 </form>
-                </li>
-            </ul>
-        </div>
+</li>
 
-    </div>
+</ul>
+</div>
+
+</div>
 </nav>
 
+<!-- CONTENIDO -->
 <div class="page-wrapper">
+
 <div class="content">
 
-<h1 style="color:#000000;cursor:pointer;" onclick="sortByPrice()">
-Tienda
-</h1>
+<h1>Tienda GoSport</h1>
 
 <!-- CARRUSEL -->
 <section>
 <div class="carousel">
 <div class="carousel-track">
-<img src="{% static 'img/uniforme1.jpg' %}" alt="Uniforme 1">
-<img src="{% static 'img/uniforme2.jpg' %}" alt="Uniforme 2">
-<img src="{% static 'img/uniforme3.jpg' %}" alt="Uniforme 3">
-<img src="{% static 'img/uniforme4.jpg' %}" alt="Uniforme 4">
-<img src="{% static 'img/uniforme5.jpg' %}" alt="Uniforme 5">
+<img src="{% static 'img/uniforme1.jpg' %}">
+<img src="{% static 'img/uniforme2.jpg' %}">
+<img src="{% static 'img/uniforme3.jpg' %}">
+<img src="{% static 'img/uniforme4.jpg' %}">
+<img src="{% static 'img/uniforme5.jpg' %}">
 </div>
 </div>
 </section>
 
-<div class="vertical-list">
+<!-- ==================== CAMISETAS ==================== -->
+<div class="categoria-container" id="camisetas">
+<h2>🏃 Camisetas</h2>
+<div class="producto-grid">
 
-  <!-- CAMISETAS -->
-  <div class="categoria-container" id="camisetas">
-    <h2 class="categoria-titulo">Camisetas</h2>
-    <div class="producto-grid">
-      <div class="card producto" data-price="85000">
-        <img src="{% static 'img/camisetafutsal.jpg' %}"
-     alt="Camiseta deportiva"
-     data-id="1"
-     onclick="openModal('{% static 'img/camisetafutsal.jpg' %}','Camiseta Azul fresca','$85.000', 4)">
-        <p>Camiseta deportiva fresca</p>
-        <p class="price">$85.000</p>
-      </div>
-      <div class="card producto" data-price="80000">
-        <img src="{% static 'img/Uniforme-Gambeta.jpg' %}"
-     alt="Uniforme Gambeta"
-     data-id="2"
-     onclick="openModal('{% static 'img/Uniforme-Gambeta.jpg' %}','Uniforme Gambeta','$80.000', 15)">
-        <p>Uniforme Gambeta</p>
-        <p class="price">$80.000</p>
-      </div>
-    </div>
-  </div>
+<div class="card producto" data-price="85000">
+<img src="{% static 'img/camisetafutsal.jpg' %}"
+onclick="openModal('{% static 'img/camisetafutsal.jpg' %}','Camiseta Azul fresca','$85.000', 4)">
+<p>Camiseta Azul fresca</p>
+<span class="price">$85.000</span>
+</div>
 
- <!-- PANTALONETAS -->
+<div class="card producto" data-price="85000">
+<img src="{% static 'img/uniforme22.jpg' %}"
+onclick="openModal('{% static 'img/uniforme22.jpg' %}','Uniforme completo','$85.000', 3)">
+<p>Uniforme completo</p>
+<span class="price">$85.000</span>
+</div>
+
+<div class="card producto" data-price="80000">
+<img src="{% static 'img/Uniforme-Gambeta.jpg' %}"
+onclick="openModal('{% static 'img/Uniforme-Gambeta.jpg' %}','Uniforme Gambeta','$80.000', 15)">
+<p>Uniforme Gambeta</p>
+<span class="price">$80.000</span>
+</div>
+
+</div>
+</div>
+
+<!-- ==================== PANTALONETAS ==================== -->
 <div class="categoria-container" id="pantalonetas">
-  <h2 class="categoria-titulo">Pantalonetas</h2>
-  <div class="producto-grid">
-    <div class="card producto" data-price="90000">
-      <img src="{% static 'img/pantaloneta1.jpg' %}"
-           alt="Pantaloneta Blanca"
-           data-id="3"
-           onclick="openModal('{% static 'img/pantaloneta1.jpg' %}','Pantaloneta Blanca','$90.000', 5)">
-      <p>Pantaloneta Blanca</p>
-      <p class="price">$90.000</p>
-    </div>
-    <div class="card producto" data-price="98000">
-      <img src="{% static 'img/pantaloneta2.jpg' %}"
-           alt="Pantaloneta Negra"
-           data-id="4"
-           onclick="openModal('{% static 'img/pantaloneta2.jpg' %}','Pantaloneta Negra','$98.000', 6)">
-      <p>Pantaloneta ligera</p>
-      <p class="price">$98.000</p>
-    </div>
-  </div>
+<h2>🩳 Pantalonetas</h2>
+<div class="producto-grid">
+
+<div class="card producto" data-price="90000">
+<img src="{% static 'img/pantaloneta1.jpg' %}"
+onclick="openModal('{% static 'img/pantaloneta1.jpg' %}','Pantaloneta Blanca','$90.000', 5)">
+<p>Pantaloneta Blanca</p>
+<span class="price">$90.000</span>
 </div>
 
-<!-- ZAPATILLAS -->
+<div class="card producto" data-price="98000">
+<img src="{% static 'img/pantaloneta2.jpg' %}"
+onclick="openModal('{% static 'img/pantaloneta2.jpg' %}','Pantaloneta Negra','$98.000', 6)">
+<p>Pantaloneta Negra</p>
+<span class="price">$98.000</span>
+</div>
+
+</div>
+</div>
+
+<!-- ==================== ZAPATILLAS ==================== -->
 <div class="categoria-container" id="zapatillas">
-  <h2 class="categoria-titulo">Zapatillas</h2>
-  <div class="producto-grid">
-    <div class="card producto" data-price="92000">
-      <img src="{% static 'img/tenisgambeta1.png' %}"
-           alt="Zapatillas Gamba"
-           data-id="5"
-           onclick="openModal('{% static 'img/tenisgambeta1.png' %}','Zapatillas rojas','$92.000', 7)">
-      <p>Zapatillas Gamba</p>
-      <p class="price">$92.000</p>
-    </div>
-    <div class="card producto" data-price="110000">
-      <img src="{% static 'img/GAMBETAJ7.png' %}"
-           alt="Zapatillas J7"
-           data-id="6"
-           onclick="openModal('{% static 'img/GAMBETAJ7.png' %}','Zapatillas Gamba J7','$110.000', 8)">
-      <p>Zapatillas Gamba J7</p>
-      <p class="price">$110.000</p>
-    </div>
-  </div>
+<h2>👟 Zapatillas</h2>
+<div class="producto-grid">
+
+<div class="card producto" data-price="220000">
+<img src="{% static 'img/guayos1.jpg' %}"
+onclick="openModal('{% static 'img/guayos1.jpg' %}','Guayos','$220.000', 2)">
+<p>Guayos</p>
+<span class="price">$220.000</span>
 </div>
 
-<!-- BALONES -->
+<div class="card producto" data-price="92000">
+<img src="{% static 'img/tenisgambeta1.png' %}"
+onclick="openModal('{% static 'img/tenisgambeta1.png' %}','Zapatillas Gamba','$92.000', 7)">
+<p>Zapatillas Gamba</p>
+<span class="price">$92.000</span>
+</div>
+
+<div class="card producto" data-price="110000">
+<img src="{% static 'img/GAMBETAJ7.png' %}"
+onclick="openModal('{% static 'img/GAMBETAJ7.png' %}','Zapatillas Gamba J7','$110.000', 8)">
+<p>Zapatillas Gamba J7</p>
+<span class="price">$110.000</span>
+</div>
+
+</div>
+</div>
+
+<!-- ==================== BALONES ==================== -->
 <div class="categoria-container" id="balones">
-  <h2 class="categoria-titulo">Balones</h2>
-  <div class="producto-grid">
-    <div class="card producto" data-price="105000">
-      <img src="{% static 'img/BALON1.png' %}"
-           alt="Balón Futsal"
-           data-id="7"
-           onclick="openModal('{% static 'img/BALON1.png' %}','Balón de Futsal','$105.000', 9)">
-      <p>Balón de Futsal</p>
-      <p class="price">$105.000</p>
-    </div>
-    <div class="card producto" data-price="105000">
-      <img src="{% static 'img/BALON2.png' %}"
-           alt="Balón Fútbol"
-           data-id="8"
-           onclick="openModal('{% static 'img/BALON2.png' %}','Balón resistente','$105.000', 10)">
-      <p>Balón de Fútbol resistente</p>
-      <p class="price">$105.000</p>
-    </div>
-  </div>
+<h2>⚽ Balones</h2>
+<div class="producto-grid">
+
+<div class="card producto" data-price="22000">
+<img src="{% static 'img/balon1.png' %}"
+onclick="openModal('{% static 'img/balon1.png' %}','Balón','$22.000', 1)">
+<p>Balón profesional</p>
+<span class="price">$22.000</span>
 </div>
 
-<!-- MEDIAS -->
+<div class="card producto" data-price="105000">
+<img src="{% static 'img/BALON2.png' %}"
+onclick="openModal('{% static 'img/BALON2.png' %}','Balón de Fútbol resistente','$105.000', 10)">
+<p>Balón de Fútbol resistente</p>
+<span class="price">$105.000</span>
+</div>
+
+</div>
+</div>
+
+<!-- ==================== MEDIAS ==================== -->
 <div class="categoria-container" id="medias">
-  <h2 class="categoria-titulo">Medias</h2>
-  <div class="producto-grid">
-    <div class="card producto" data-price="15000">
-      <img src="{% static 'img/media1.jpg' %}"
-           alt="Medias deportivas"
-           data-id="9"
-           onclick="openModal('{% static 'img/media1.jpg' %}','Medias deportivas','$15.000', 11)">
-      <p>Medias deportivas</p>
-      <p class="price">$15.000</p>
-    </div>
-    <div class="card producto" data-price="18000">
-      <img src="{% static 'img/media2.jpg' %}"
-           alt="Medias de compresión"
-           data-id="10"
-           onclick="openModal('{% static 'img/media2.jpg' %}','Medias de compresión','$18.000', 12)">
-      <p>Medias de compresión</p>
-      <p class="price">$18.000</p>
-    </div>
-  </div>
+<h2>🧦 Medias</h2>
+<div class="producto-grid">
+
+<div class="card producto" data-price="15000">
+<img src="{% static 'img/media1.jpg' %}"
+onclick="openModal('{% static 'img/media1.jpg' %}','Medias deportivas','$15.000', 11)">
+<p>Medias deportivas</p>
+<span class="price">$15.000</span>
 </div>
 
-<!-- MORRALES -->
-<div class="categoria-container" id="morales">
-  <h2 class="categoria-titulo">Morrales</h2>
-  <div class="producto-grid">
-    <div class="card producto" data-price="12000">
-      <img src="{% static 'img/morral1.jpg' %}"
-           class="card-img-top"
-           alt="Morral deportivo"
-           data-id="11"
-           onclick="openModal('{% static 'img/morral1.jpg' %}','Morral deportivo','$12.000', 13)">
-      <div class="card-body text-center">
-        <p>Morral deportivo</p>
-        <p class="price">$12.000</p>
-      </div>
-    </div>
-    <div class="card producto" data-price="15000">
-      <img src="{% static 'img/maleta1.jpg' %}"
-           class="card-img-top"
-           alt="Morral profesional"
-           data-id="12"
-           onclick="openModal('{% static 'img/maleta1.jpg' %}','Morral profesional','$15.000', 14)">
-      <div class="card-body text-center">
-        <p>Morral profesional</p>
-        <p class="price">$15.000</p>
-      </div>
-    </div>
-  </div>
+<div class="card producto" data-price="18000">
+<img src="{% static 'img/media2.jpg' %}"
+onclick="openModal('{% static 'img/media2.jpg' %}','Medias de compresión','$18.000', 12)">
+<p>Medias de compresión</p>
+<span class="price">$18.000</span>
 </div>
+
+</div>
+</div>
+
+<!-- ==================== MORRALES ==================== -->
+<div class="categoria-container" id="morales">
+<h2>🎒 Morrales</h2>
+<div class="producto-grid">
+
+<div class="card producto" data-price="12000">
+<img src="{% static 'img/Morral1.jpg' %}"
+onclick="openModal('{% static 'img/Morral1.jpg' %}','Morral deportivo','$12.000', 13)">
+<p>Morral deportivo</p>
+<span class="price">$12.000</span>
+</div>
+
+<div class="card producto" data-price="15000">
+<img src="{% static 'img/maleta1.jpg' %}"
+onclick="openModal('{% static 'img/maleta1.jpg' %}','Morral profesional','$15.000', 14)">
+<p>Morral profesional</p>
+<span class="price">$15.000</span>
+</div>
+
+</div>
+</div>
+
+</div><!-- FIN content -->
 
 <!-- SIDEBAR -->
 <div class="sidebar">
 <h2>Categorías</h2>
-<button type="button" class="category-btn" onclick="goToCat('camisetas')">Camisetas</button>
-<button type="button" class="category-btn" onclick="goToCat('pantalonetas')">Pantalonetas</button>
-<button type="button" class="category-btn" onclick="goToCat('zapatillas')">Zapatillas</button>
-<button type="button" class="category-btn" onclick="goToCat('balones')">Balones</button>
-<button type="button" class="category-btn" onclick="goToCat('medias')">Medias</button>
-<button type="button" class="category-btn" onclick="goToCat('morales')">Morrales</button>
+
+<button onclick="goToCat('camisetas')">🏃 Camisetas</button>
+<button onclick="goToCat('pantalonetas')">🩳 Pantalonetas</button>
+<button onclick="goToCat('zapatillas')">👟 Zapatillas</button>
+<button onclick="goToCat('balones')">⚽ Balones</button>
+<button onclick="goToCat('medias')">🧦 Medias</button>
+<button onclick="goToCat('morales')">🎒 Morrales</button>
+
+<hr>
+<a href="{% url 'reservas:carrito' %}" class="sidebar-cart-btn">
+🛒 Ver Carrito
+</a>
 </div>
 
-</div>
+</div><!-- FIN page-wrapper -->
 
 <!-- MODAL -->
 <div id="modal" class="modal">
 <div class="modal-content">
-<img id="modalImg" alt="Producto">
+
+<span class="modal-close" onclick="closeModal()">✕</span>
+
+<img id="modalImg">
 <h3 id="modalDesc"></h3>
-<h2 id="modalPrice" style="color:#00e676"></h2>
-<form id="addToCartForm" action="{% url 'carrito' %}" method="post">
-    {% csrf_token %}
-    <input type="hidden" name="productoId" id="modalProductoId">
-    <input type="hidden" name="cantidad" value="1">
-    <button type="submit" class="carrito">Añadir al carrito</button>
+<h2 id="modalPrice"></h2>
+
+<!-- Cantidad -->
+<div class="modal-cantidad">
+    <label>Cantidad:</label>
+    <input type="number" id="modalCantidad" min="1" value="1">
+</div>
+
+<!-- Formulario hacia el carrito -->
+<form method="post" action="{% url 'reservas:carrito' %}">
+{% csrf_token %}
+<input type="hidden" id="modalProductoId" name="productoId">
+<input type="hidden" id="modalCantidadHidden" name="cantidad" value="1">
+<button type="submit" class="modal-btn-add">🛒 Añadir al carrito</button>
 </form>
-<button type="button" class="close" onclick="closeModal()">Cerrar</button>
+
+<button onclick="closeModal()" class="modal-btn-close">Cerrar</button>
+
 </div>
 </div>
 
+<!-- JS -->
 <script>
-/* CARRUSEL */
-const track = document.querySelector(".carousel-track");
-if(track){
-    const imgs = track.querySelectorAll("img");
-    imgs.forEach(img=>{ track.appendChild(img.cloneNode(true)); });
-}
 
-/* MODAL */
 function openModal(img, desc, price, id){
-    document.getElementById("modalImg").src = img;
-    document.getElementById("modalDesc").textContent = desc;
-    document.getElementById("modalPrice").textContent = price;
-    document.getElementById("modalProductoId").value = id;
-    document.getElementById("modal").style.display = "flex";
+document.getElementById("modalImg").src = img;
+document.getElementById("modalDesc").textContent = desc;
+document.getElementById("modalPrice").textContent = price;
+document.getElementById("modalProductoId").value = id;
+document.getElementById("modalCantidad").value = 1;
+document.getElementById("modalCantidadHidden").value = 1;
+document.getElementById("modal").style.display = "flex";
 }
-function closeModal(){ document.getElementById("modal").style.display = "none"; }
 
-/* IR A CATEGORÍA */
+function closeModal(){
+document.getElementById("modal").style.display = "none";
+}
+
+// Sincronizar cantidad visible con hidden
+document.getElementById("modalCantidad").addEventListener("input", function(){
+    document.getElementById("modalCantidadHidden").value = this.value;
+});
+
 function goToCat(id){
-    const el = document.getElementById(id);
-    if(!el) return;
-    window.scrollTo({ top: el.offsetTop - 80, behavior:"smooth" });
+const el = document.getElementById(id);
+if(el){
+window.scrollTo({ top: el.offsetTop - 80, behavior:"smooth" });
+}
 }
 
-/* ORDENAR POR PRECIO */
 function sortByPrice(){
-    const grids = document.querySelectorAll(".producto-grid");
-    grids.forEach(grid=>{
-        const items = Array.from(grid.querySelectorAll(".producto"));
-        items.sort((a,b)=>a.dataset.price - b.dataset.price);
-        items.forEach(i=>grid.appendChild(i));
-    });
+document.querySelectorAll(".producto-grid").forEach(grid=>{
+const items = Array.from(grid.querySelectorAll(".producto"));
+items.sort((a,b)=>a.dataset.price - b.dataset.price);
+items.forEach(i=>grid.appendChild(i));
+});
 }
+
 </script>
 
-<footer class="text-center py-3 mt-4">
-<p>© 2026 GoSports - Sistema de gestión deportiva</p>
+<!-- FOOTER -->
+<footer>
+<p>© 2026 GoSports — Todos los derechos reservados</p>
 </footer>
 
 </body>

@@ -21,7 +21,7 @@
 
 <div class="container d-flex align-items-center justify-content-between">
 
-<a class="navbar-brand d-flex align-items-center" href="/">
+<a class="navbar-brand d-flex align-items-center" href="{% url 'reservas:home' %}">
 <img src="{% static 'img/icono.jpg' %}" class="me-2" style="height:40px;">
 <span class="fw-bold text-white">GOSPORT</span>
 </a>
@@ -29,19 +29,19 @@
 <ul class="navbar-nav ms-auto">
 
 <li class="nav-item">
-<a class="nav-link" href="/">Inicio</a>
+<a class="nav-link" href="{% url 'reservas:home' %}">Inicio</a>
 </li>
 
 <li class="nav-item">
-<a class="nav-link" href="/catalogo">Tienda GS</a>
+<a class="nav-link" href="{% url 'reservas:catalogo' %}">Tienda GS</a>
 </li>
 
 <li class="nav-item">
-<a class="nav-link" href="/canchas">Canchas</a>
+<a class="nav-link" href="{% url 'reservas:canchas_publico' %}">Canchas</a>
 </li>
 
 <li class="nav-item">
-<a class="nav-link" href="/carrito">Carrito</a>
+<a class="nav-link" href="{% url 'reservas:carrito' %}">🛒 Carrito</a>
 </li>
 
 </ul>
@@ -52,12 +52,22 @@
 <!-- CONTENIDO -->
 <div class="container mt-4 flex-grow-1">
 
-<h2 class="mb-4">Carrito de Compras</h2>
+<h2 class="mb-4">🛒 Carrito de Compras</h2>
+
+<!-- MENSAJES -->
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+{{ message }}
+<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% endfor %}
+{% endif %}
 
 {% if carrito|length == 0 %}
 
 <div class="alert alert-info">
-Tu carrito está vacío.
+Tu carrito está vacío. <a href="{% url 'reservas:catalogo' %}" class="alert-link">Ir a la tienda</a>
 </div>
 
 {% endif %}
@@ -87,16 +97,16 @@ Tu carrito está vacío.
 
 <td>
 <img src="{% static 'img/' %}{{ c.imagen }}"
-class="img-fluid"
+class="img-fluid rounded"
 style="max-height:80px;">
 </td>
 
-<td>
+<td class="fw-bold">
 {{ c.nombre }}
 </td>
 
 <td>
-$ {{ c.precio }}
+${{ c.precio|floatformat:0 }}
 </td>
 
 <td class="text-center">
@@ -107,15 +117,16 @@ $ {{ c.precio }}
 
 </td>
 
-<td>
-$ {{ c.precio|floatformat:0 }}
+<td class="fw-bold text-success">
+{% widthratio c.precio 1 c.cantidad as subtotal %}
+${{ subtotal }}
 </td>
 
 <td>
-<form action="/carrito/eliminar/" method="post">
+<form action="{% url 'reservas:eliminar_del_carrito' %}" method="post">
     {% csrf_token %}
     <input type="hidden" name="productoId" value="{{ c.id }}">
-    <button class="btn btn-sm btn-outline-danger">Eliminar</button>
+    <button class="btn btn-sm btn-outline-danger">🗑 Eliminar</button>
 </form>
 </td>
 
@@ -127,18 +138,32 @@ $ {{ c.precio|floatformat:0 }}
 
 </table>
 
-<div class="d-flex justify-content-between align-items-center mt-4">
+<!-- TOTAL Y ACCIONES -->
+<hr>
+<div class="d-flex justify-content-between align-items-center mt-3">
 
-<h4>
+<h3>
 Total:
-<span class="fw-bold">
-$ {{ total }}
+<span class="fw-bold text-primary">
+$ {{ total|floatformat:0 }} COP
 </span>
-</h4>
-<form action="/carrito/vaciar/" method="post">
+</h3>
+
+<div class="d-flex gap-2">
+
+<form action="{% url 'reservas:vaciar_carrito' %}" method="post">
     {% csrf_token %}
-    <button class="btn btn-warning">Vaciar Carrito</button>
+    <button class="btn btn-outline-warning">🗑 Vaciar Carrito</button>
 </form>
+
+<form action="{% url 'reservas:comprar' %}" method="post">
+    {% csrf_token %}
+    <button class="btn btn-success btn-lg">
+        ✅ Comprar Ahora
+    </button>
+</form>
+
+</div>
 
 </div>
 
@@ -154,5 +179,6 @@ $ {{ total }}
 </p>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

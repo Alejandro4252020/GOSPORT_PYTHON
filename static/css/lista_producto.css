@@ -1,0 +1,130 @@
+/* ===== RESET ===== */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background: #f1f2f6;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    background: #1e272e;
+    color: white;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.nav-links a {
+    color: white;
+    margin-left: 15px;
+    text-decoration: none;
+}
+
+/* ===== CONTENEDOR ===== */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 30px auto;
+    flex: 1 0 auto;
+}
+
+/* ===== HEADER ===== */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* ===== BOTÓN AGREGAR ===== */
+.btn-agregar {
+    background: #1e90ff;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+/* ===== MENSAJES ===== */
+.mensajes {
+    list-style: none;
+    padding: 0;
+}
+
+.mensajes li {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.success {
+    background: #2ed573;
+    color: white;
+}
+
+.error {
+    background: #ff4757;
+    color: white;
+}
+
+/* ===== TABLA ===== */
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+.tabla th, .tabla td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+.tabla th {
+    background: #2f3542;
+    color: white;
+}
+
+/* ===== IMÁGENES ===== */
+.img-tabla {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* ===== BOTONES ===== */
+.btn {
+    padding: 5px 10px;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+.editar {
+    background: #ffa502;
+}
+
+.eliminar {
+    background: #ff4757;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    background: #1e272e;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: auto;
+}

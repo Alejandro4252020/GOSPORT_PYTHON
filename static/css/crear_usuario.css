@@ -1,0 +1,141 @@
+/* ===== RESET GLOBAL ===== */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background: #f1f2f6;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    background: #1e272e;
+    color: white;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.nav-links a {
+    color: white;
+    margin-left: 15px;
+    text-decoration: none;
+}
+
+.btn-logout {
+    background: #ff4757;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* ===== CONTENEDOR GENERAL ===== */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 30px auto;
+    flex: 1 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ===== FORMULARIO ===== */
+.card-form {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 380px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+
+/* TÍTULO */
+.card-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #2f3542;
+}
+
+/* LABELS */
+.card-form label {
+    display: block;
+    margin-top: 12px;
+    font-size: 14px;
+    color: #555;
+}
+
+/* INPUTS */
+.card-form input,
+.card-form select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #dcdde1;
+    transition: 0.3s;
+}
+
+/* EFECTO FOCUS */
+.card-form input:focus,
+.card-form select:focus {
+    border-color: #1e90ff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(30,144,255,0.3);
+}
+
+/* PASSWORD */
+.password-container {
+    display: flex;
+    align-items: center;
+}
+
+.password-container button {
+    margin-left: 5px;
+    padding: 10px;
+    border: none;
+    background: #dcdde1;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.password-container button:hover {
+    background: #ced6e0;
+}
+
+/* BOTÓN */
+.btn-submit {
+    width: 100%;
+    margin-top: 18px;
+    padding: 12px;
+    background: #1e272e;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-submit:hover {
+    background: #2f3542;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    background: #1e272e;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    flex-shrink: 0;
+    margin-top: auto;
+    width: 100%;
+}

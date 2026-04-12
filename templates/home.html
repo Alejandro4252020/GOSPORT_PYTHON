@@ -20,7 +20,7 @@
 <nav class="navbar navbar-expand-lg bg-white shadow-sm py-3">
 <div class="container d-flex align-items-center justify-content-between">
 
-<a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+<a class="navbar-brand d-flex align-items-center" href="{% url 'reservas:home' %}">
 <img src="{% static 'img/icono.jpg' %}" class="me-2" style="height:40px;">
 <span class="fw-bold">GOSPORT</span>
 </a>
@@ -34,32 +34,40 @@ data-bs-target="#navbarNav">
 
 <ul class="navbar-nav ms-auto">
 
-{% if rol == "ADMIN" %}
+{% if rol == "ADMIN" or rol == "EMPLEADO" %}
 <li class="nav-item">
-    <a class="nav-link fw-bold text-success" href="{% url 'dashboard' %}">
+    <a class="nav-link fw-bold text-success" href="{% url 'reservas:dashboard' %}">
         📊 Dashboard
     </a>
 </li>
 {% endif %}
 
+{% if rol == "ADMIN" %}
 <li class="nav-item">
-<a class="nav-link" href="{% url 'carrito' %}">Mi Carrito</a>
+    <a class="nav-link fw-bold text-warning" href="{% url 'usuarios:lista_usuarios' %}">
+        👥 Usuarios
+    </a>
+</li>
+{% endif %}
+
+<li class="nav-item">
+<a class="nav-link" href="{% url 'reservas:carrito' %}">Mi Carrito</a>
 </li>
 
 <li class="nav-item">
-<a class="nav-link" href="{% url 'catalogo' %}">Tienda GS</a>
+<a class="nav-link" href="{% url 'reservas:catalogo' %}">Tienda GS</a>
 </li>
 
 <li class="nav-item">
-<a class="nav-link" href="{% url 'canchas' %}">Canchas</a>
+<a class="nav-link" href="{% url 'reservas:canchas_publico' %}">Canchas</a>
 </li>
 
 <li class="nav-item">
-<a class="nav-link" href="{% url 'contacto' %}">Contacto</a>
+<a class="nav-link" href="{% url 'reservas:contacto' %}">Contacto</a>
 </li>
 
 <li class="nav-item">
-<a class="nav-link" href="{% url 'perfil' %}">Mi Perfil</a>
+<a class="nav-link" href="{% url 'reservas:perfil' %}">Mi Perfil</a>
 </li>
 
 <li class="nav-item">
@@ -86,7 +94,7 @@ Bienvenido a Gosport ¡Todo bien parcero!
 
 <!-- BANNER -->
 <div class="banner-container my-4">
-<img src="{% static 'img/bannerNuevo.jpg' %}" class="banner-img w-100 rounded">
+<img src="{% static 'img/bannerNuevo.jpg' %}" class="banner-img w-100 rounded" alt="Banner">
 </div>
 
 <!-- CANCHAS -->
@@ -101,25 +109,21 @@ Canchas Disponibles
 <div class="col">
 <div class="p-3 text-center rounded border bg-light">
 
-<img src="{% static 'img/' %}{{ cancha.imagen }}"
+<img 
+src="{% static 'img/' %}{{ cancha.imagen }}"
 style="height:140px; object-fit:cover;"
-onerror="this.src='{% static 'img/cancha.jpg' %}'">
+alt="{{ cancha.nombre }}"
+onerror="this.onerror=null;this.src='{% static 'img/cancha.jpg' %}'">
 
 <h6 class="fw-bold mt-3">
 {{ cancha.nombre }}
 </h6>
 
-<p class="fw-semibold 
-{% if cancha.estado == 'Disponible' %}
-text-success
-{% else %}
-text-danger
-{% endif %}
-">
+<p class="fw-semibold {% if cancha.estado == 'Disponible' %}text-success{% else %}text-danger{% endif %}">
 {{ cancha.estado }}
 </p>
 
-<a href="{% url 'cancha_detalle' cancha.id %}"
+<a href="{% url 'reservas:cancha_detalle' cancha.id %}"
 class="btn btn-primary w-100">
 Ver
 </a>
@@ -133,7 +137,7 @@ Ver
 </div>
 
 <div class="mt-3">
-<a class="btn btn-primary w-100" href="{% url 'canchas' %}">
+<a class="btn btn-primary w-100" href="{% url 'reservas:canchas_publico' %}">
 Ver más
 </a>
 </div>
@@ -155,10 +159,12 @@ Productos y Promociones
 
 <div class="card shadow-sm product-card">
 
-<img src="{% static 'img/' %}{{ producto.imagen }}"
+<img 
+src="{% static 'img/' %}{{ producto.imagen }}"
 class="product-img"
 style="height:180px; object-fit:contain;"
-onerror="this.src='{% static 'img/balon1.png' %}'">
+alt="{{ producto.nombre }}"
+onerror="this.onerror=null;this.src='{% static 'img/balon1.png' %}'">
 
 <div class="card-body text-center p-2">
 
@@ -173,7 +179,7 @@ onerror="this.src='{% static 'img/balon1.png' %}'">
 </div>
 
 <div class="card-footer bg-transparent border-0 p-2">
-<a href="{% url 'producto_detalle' producto.id %}"
+<a href="{% url 'reservas:producto_detalle' producto.id %}"
 class="btn btn-dark w-100">
 Comprar
 </a>
@@ -189,7 +195,7 @@ Comprar
 </div>
 
 <div class="mt-3">
-<a class="btn btn-primary w-100" href="{% url 'catalogo' %}">
+<a class="btn btn-primary w-100" href="{% url 'reservas:catalogo' %}">
 Ver más
 </a>
 </div>

@@ -1,6 +1,6 @@
 /* ===== RESET ===== */
 html, body {
-    height: 100%;
+    block-size: 100%;
     margin: 0;
 }
 
@@ -8,10 +8,8 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    color: white;
+    min-block-size: 100vh;
+    color: rgb(204, 200, 200);
     font-family: 'Segoe UI', sans-serif;
 }
 
@@ -57,7 +55,7 @@ main {
 
 /* ===== TITULO ===== */
 h3 {
-    margin-top: 20px;
+    margin-block-start: 20px;
     font-weight: 600;
 }
 
@@ -82,7 +80,7 @@ h3 {
 /* TITULOS EN CARDS */
 .card h5 {
     font-size: 18px;
-    margin-bottom: 10px;
+    margin-block-end: 10px;
 }
 
 .card h2 {
@@ -96,35 +94,8 @@ footer {
     padding: 15px;
     background: #000;
     color: white;
-    margin-top: auto;
+    margin-block-start: auto;
     position: relative;
-}
-
-/* BOTÓN DARK MODE */
-#themeToggle {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-/* ===== MODO CLARO ===== */
-body.light {
-    background: #f5f5f5;
-    color: black;
-}
-
-body.light .card {
-    background: white;
-    color: black;
-}
-
-body.light .topbar {
-    background: #000;
-}
-
-body.light footer {
-    background: #000;
 }
 
 /* ===== RESPONSIVE ===== */

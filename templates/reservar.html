@@ -16,7 +16,7 @@
 <!-- 🔥 NAVBAR AGREGADA -->
 <nav class="navbar navbar-expand-lg">
     <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="/canchas/">
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'reservas:canchas_publico' %}">
             <img src="{% static 'img/icono.jpg' %}" alt="Logo" class="me-2">
             GOSPORT
         </a>
@@ -99,7 +99,7 @@
 </div>
 
                 <button type="submit" class="btn btn-success w-100">Confirmar reserva</button>
-                <a href="/canchas/" class="btn btn-dark w-100 mt-2">Volver</a>
+                <a href="{% url 'reservas:canchas_publico' %}" class="btn btn-dark w-100 mt-2">Volver</a>
 
             </form>
 
