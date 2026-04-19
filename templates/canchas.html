@@ -135,15 +135,24 @@ id="cancha-db-{{ c.id }}">
 <div class="card h-100">
 
 {% if c.imagen %}
+<a href="{% url 'reservas:cancha_detalle_db' c.id %}">
 <img src="{{ c.imagen.url }}"
 class="card-img-top"
+style="cursor:pointer; height:220px; object-fit:cover;"
 alt="{{ c.nombre }}">
+</a>
 {% else %}
 <img src="{% static 'img/cancha.jpg' %}" class="card-img-top" alt="Sin imagen">
 {% endif %}
 
 <div class="card-body text-center">
-<h5 class="card-title">{{ c.nombre }}</h5>
+
+<h5 class="card-title">
+<a href="{% url 'reservas:cancha_detalle_db' c.id %}" style="text-decoration:none; color:inherit;">
+{{ c.nombre }}
+</a>
+</h5>
+
 <p class="text-muted">{{ c.tipo }} — {{ c.direccion }}</p>
 <p class="text-success fw-bold">${{ c.precio }} COP</p>
 
@@ -154,6 +163,12 @@ alt="{{ c.nombre }}">
 {% else %}
 <span class="badge bg-warning text-dark">Mantenimiento</span>
 {% endif %}
+
+<div class="mt-3">
+<a href="{% url 'reservas:cancha_detalle_db' c.id %}" class="btn btn-primary w-100">
+Ver detalle
+</a>
+</div>
 
 </div>
 </div>

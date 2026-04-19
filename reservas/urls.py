@@ -13,6 +13,7 @@ urlpatterns = [
     path('catalogo/', views.catalogo, name='catalogo'),
     path('canchas/', views.canchas_publico, name='canchas_publico'),
     path('canchas/<int:id>/', views.cancha_detalle, name='cancha_detalle'),
+    path('cancha-db/<int:id>/', views.cancha_detalle_db, name='cancha_detalle_db'),
     path('productos/<int:id>/', views.producto_detalle, name='producto_detalle'),
     path('contacto/', views.contacto, name='contacto'),
 

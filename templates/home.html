@@ -48,6 +48,11 @@ data-bs-target="#navbarNav">
         👥 Usuarios
     </a>
 </li>
+<li class="nav-item">
+    <a class="nav-link fw-bold text-info" href="{% url 'reportes:reporte_reservas' %}">
+        📋 Reservas
+    </a>
+</li>
 {% endif %}
 
 <li class="nav-item">
@@ -109,21 +114,25 @@ Canchas Disponibles
 <div class="col">
 <div class="p-3 text-center rounded border bg-light">
 
-<img 
-src="{% static 'img/' %}{{ cancha.imagen }}"
+{% if cancha.imagen %}
+<img src="{{ cancha.imagen.url }}"
+style="height:140px; object-fit:cover; width:100%; border-radius:8px;"
+alt="{{ cancha.nombre }}">
+{% else %}
+<img src="{% static 'img/cancha.jpg' %}"
 style="height:140px; object-fit:cover;"
-alt="{{ cancha.nombre }}"
-onerror="this.onerror=null;this.src='{% static 'img/cancha.jpg' %}'">
+alt="{{ cancha.nombre }}">
+{% endif %}
 
 <h6 class="fw-bold mt-3">
 {{ cancha.nombre }}
 </h6>
 
-<p class="fw-semibold {% if cancha.estado == 'Disponible' %}text-success{% else %}text-danger{% endif %}">
+<p class="fw-semibold text-success">
 {{ cancha.estado }}
 </p>
 
-<a href="{% url 'reservas:cancha_detalle' cancha.id %}"
+<a href="{% url 'reservas:cancha_detalle_db' cancha.id %}"
 class="btn btn-primary w-100">
 Ver
 </a>
@@ -142,30 +151,6 @@ Ver más
 </a>
 </div>
 
-<!-- ✅ CANCHAS DE LA BD -->
-{% if canchas_db %}
-<h4 class="text-center mb-3 mt-5 fw-bold">📋 Canchas Registradas</h4>
-<div class="row row-cols-1 row-cols-md-3 g-3">
-{% for c in canchas_db %}
-<div class="col">
-<div class="p-3 text-center rounded border bg-light">
-{% if c.imagen %}
-<img src="{{ c.imagen.url }}"
-style="height:140px; object-fit:cover; width:100%; border-radius:8px;"
-alt="{{ c.nombre }}">
-{% else %}
-<img src="{% static 'img/cancha.jpg' %}"
-style="height:140px; object-fit:cover;"
-alt="Sin imagen">
-{% endif %}
-<h6 class="fw-bold mt-3">{{ c.nombre }}</h6>
-<p class="text-success fw-semibold">${{ c.precio }} COP</p>
-</div>
-</div>
-{% endfor %}
-</div>
-{% endif %}
-
 </div>
 
 <hr class="my-5">
@@ -183,12 +168,17 @@ Productos y Promociones
 
 <div class="card shadow-sm product-card">
 
-<img 
-src="{% static 'img/' %}{{ producto.imagen }}"
+{% if producto.imagen %}
+<img src="{{ producto.imagen.url }}"
 class="product-img"
 style="height:180px; object-fit:contain;"
-alt="{{ producto.nombre }}"
-onerror="this.onerror=null;this.src='{% static 'img/balon1.png' %}'">
+alt="{{ producto.nombre }}">
+{% else %}
+<img src="{% static 'img/balon1.png' %}"
+class="product-img"
+style="height:180px; object-fit:contain;"
+alt="{{ producto.nombre }}">
+{% endif %}
 
 <div class="card-body text-center p-2">
 
@@ -203,10 +193,15 @@ onerror="this.onerror=null;this.src='{% static 'img/balon1.png' %}'">
 </div>
 
 <div class="card-footer bg-transparent border-0 p-2">
-<a href="{% url 'reservas:producto_detalle' producto.id %}"
-class="btn btn-dark w-100">
-Comprar
-</a>
+<form method="POST" action="{% url 'reservas:carrito' %}">
+{% csrf_token %}
+<input type="hidden" name="productoId" value="{{ producto.id }}">
+<input type="hidden" name="cantidad" value="1">
+<input type="hidden" name="source" value="db">
+<button type="submit" class="btn btn-dark w-100">
+🛒 Comprar
+</button>
+</form>
 </div>
 
 </div>
@@ -223,34 +218,6 @@ Comprar
 Ver más
 </a>
 </div>
-
-<!-- ✅ PRODUCTOS DE LA BD -->
-{% if productos_db %}
-<h4 class="text-center mb-3 mt-5 fw-bold">📦 Productos Registrados</h4>
-<div class="row row-cols-1 row-cols-md-3 g-3 justify-content-center">
-{% for p in productos_db %}
-<div class="col">
-<div class="card shadow-sm product-card">
-{% if p.imagen %}
-<img src="{{ p.imagen.url }}"
-class="product-img"
-style="height:180px; object-fit:contain;"
-alt="{{ p.nombre }}">
-{% else %}
-<img src="{% static 'img/balon1.png' %}"
-class="product-img"
-style="height:180px; object-fit:contain;"
-alt="Sin imagen">
-{% endif %}
-<div class="card-body text-center p-2">
-<h6 class="fw-bold mb-1">{{ p.nombre }}</h6>
-<p class="text-success fw-semibold mb-0">${{ p.precio }} COP</p>
-</div>
-</div>
-</div>
-{% endfor %}
-</div>
-{% endif %}
 
 </div>
 

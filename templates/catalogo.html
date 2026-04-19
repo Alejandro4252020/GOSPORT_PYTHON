@@ -226,6 +226,30 @@ onclick="openModal('{% static 'img/maleta1.jpg' %}','Morral profesional','$15.00
 </div>
 </div>
 
+<!-- ==================== PRODUCTOS DE LA BD ==================== -->
+{% if productos_db %}
+<div class="categoria-container" id="productos-db">
+<h2>🛍️ Nuevos Productos</h2>
+<div class="producto-grid">
+
+{% for producto in productos_db %}
+<div class="card producto" data-price="{{ producto.precio }}">
+{% if producto.imagen %}
+<img src="{{ producto.imagen.url }}"
+    onclick="openModalDB('{{ producto.imagen.url }}','{{ producto.nombre }}','{{ producto.precio }} COP', {{ producto.id }})">
+{% else %}
+<img src="{% static 'img/balon1.png' %}"
+    onclick="openModalDB('{% static 'img/balon1.png' %}','{{ producto.nombre }}','{{ producto.precio }} COP', {{ producto.id }})">
+{% endif %}
+<p>{{ producto.nombre }}</p>
+<span class="price">{{ producto.precio }} COP</span>
+</div>
+{% endfor %}
+
+</div>
+</div>
+{% endif %}
+
 </div><!-- FIN content -->
 
 <!-- SIDEBAR -->
@@ -238,6 +262,7 @@ onclick="openModal('{% static 'img/maleta1.jpg' %}','Morral profesional','$15.00
 <button onclick="goToCat('balones')">⚽ Balones</button>
 <button onclick="goToCat('medias')">🧦 Medias</button>
 <button onclick="goToCat('morales')">🎒 Morrales</button>
+<button onclick="goToCat('productos-db')">🛍️ Nuevos</button>
 
 <hr>
 <a href="{% url 'reservas:carrito' %}" class="sidebar-cart-btn">
@@ -268,6 +293,7 @@ onclick="openModal('{% static 'img/maleta1.jpg' %}','Morral profesional','$15.00
 {% csrf_token %}
 <input type="hidden" id="modalProductoId" name="productoId">
 <input type="hidden" id="modalCantidadHidden" name="cantidad" value="1">
+<input type="hidden" id="modalSource" name="source" value="hardcoded">
 <button type="submit" class="modal-btn-add">🛒 Añadir al carrito</button>
 </form>
 
@@ -284,6 +310,7 @@ document.getElementById("modalImg").src = img;
 document.getElementById("modalDesc").textContent = desc;
 document.getElementById("modalPrice").textContent = price;
 document.getElementById("modalProductoId").value = id;
+document.getElementById("modalSource").value = "hardcoded";
 document.getElementById("modalCantidad").value = 1;
 document.getElementById("modalCantidadHidden").value = 1;
 document.getElementById("modal").style.display = "flex";
@@ -291,6 +318,17 @@ document.getElementById("modal").style.display = "flex";
 
 function closeModal(){
 document.getElementById("modal").style.display = "none";
+}
+
+function openModalDB(img, desc, price, id){
+document.getElementById("modalImg").src = img;
+document.getElementById("modalDesc").textContent = desc;
+document.getElementById("modalPrice").textContent = price;
+document.getElementById("modalProductoId").value = id;
+document.getElementById("modalSource").value = "db";
+document.getElementById("modalCantidad").value = 1;
+document.getElementById("modalCantidadHidden").value = 1;
+document.getElementById("modal").style.display = "flex";
 }
 
 // Sincronizar cantidad visible con hidden

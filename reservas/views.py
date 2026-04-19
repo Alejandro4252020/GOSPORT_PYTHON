@@ -41,24 +41,9 @@ CANCHAS_PUBLICO = [
 
 # ------------------ HOME ------------------
 def home(request):
-    # Canchas hardcodeadas (respaldo)
-    canchas_estaticas = [
-        {"id":1, "nombre":"Cancha 1", "estado":"Disponible", "imagen":"cancha1.jpg"},
-        {"id":2, "nombre":"Cancha 2", "estado":"Ocupada", "imagen":"cancha2.jpg"},
-        {"id":3, "nombre":"Cancha 3", "estado":"Disponible", "imagen":"canchabosa.jpg"},
-    ]
-
-    # ✅ Canchas de la BD (creadas desde el CRUD)
-    canchas_db = CanchaDB.objects.all()[:6]
-
-    productos_destacados = [
-        PRODUCTOS[0],
-        PRODUCTOS[1],
-        PRODUCTOS[2],
-    ]
-
-    # ✅ Productos de la BD (creados desde el CRUD)
-    productos_db = ProductoDB.objects.all()[:6]
+    # ✅ Canchas y productos de la BD
+    canchas = CanchaDB.objects.all()[:6]
+    productos = ProductoDB.objects.all()[:6]
 
     if request.user.is_authenticated:
         if request.user.is_superuser:
@@ -71,10 +56,8 @@ def home(request):
         rol = "INVITADO"
 
     return render(request, 'home.html', {
-        "canchas": canchas_estaticas,
-        "canchas_db": canchas_db,
-        "productos": productos_destacados,
-        "productos_db": productos_db,
+        "canchas": canchas,
+        "productos": productos,
         "rol": rol
     })
 
@@ -114,9 +97,29 @@ def cancha_detalle(request, id):
     return render(request, 'cancha_detalle.html', {"cancha": cancha})
 
 
+# ------------------ DETALLE CANCHA BD ------------------
+def cancha_detalle_db(request, id):
+    from django.shortcuts import get_object_or_404
+    cancha = get_object_or_404(CanchaDB, id=id)
+    return render(request, 'cancha_detalle_db.html', {"cancha": cancha})
+
+
 # ------------------ RESERVAR ------------------
 def reservar(request, id):
+    # Intentar primero con canchas hardcodeadas
     cancha = next((c for c in CANCHAS_PUBLICO if c["id"] == id), None)
+
+    # Si no existe, intentar con la BD
+    cancha_db = None
+    if not cancha:
+        cancha_db = CanchaDB.objects.filter(id=id).first()
+        if cancha_db:
+            cancha = {
+                "id": cancha_db.id,
+                "nombre": cancha_db.nombre,
+                "precio": int(cancha_db.precio),
+                "imagen": cancha_db.imagen.name if cancha_db.imagen else "cancha.jpg",
+            }
 
     if not cancha:
         messages.error(request, "Cancha no encontrada ❌")
@@ -186,7 +189,8 @@ def reservar(request, id):
 
 # ------------------ RESTO ------------------
 def catalogo(request):
-    return render(request, 'catalogo.html', {"productos": PRODUCTOS})
+    productos_db = ProductoDB.objects.all()
+    return render(request, 'catalogo.html', {"productos": PRODUCTOS, "productos_db": productos_db})
 
 
 def ver_reserva(request, id):
@@ -208,23 +212,39 @@ def carrito(request):
     if request.method == 'POST':
         producto_id = int(request.POST.get('productoId', 0))
         cantidad = int(request.POST.get('cantidad', 1))
+        source = request.POST.get('source', 'hardcoded')
 
-        producto = next((p for p in PRODUCTOS if p["id"] == producto_id), None)
+        producto = None
+
+        if source == 'db':
+            # Buscar en la BD primero
+            producto_db = ProductoDB.objects.filter(id=producto_id).first()
+            if producto_db:
+                producto = {
+                    "id": f"db-{producto_db.id}",
+                    "nombre": producto_db.nombre,
+                    "precio": float(producto_db.precio),
+                    "imagen": producto_db.imagen.url if producto_db.imagen else "",
+                }
+        else:
+            # Buscar en productos hardcodeados
+            producto = next((p for p in PRODUCTOS if p["id"] == producto_id), None)
 
         if producto:
             carrito_sesion = request.session.get('carrito', [])
 
             # Verificar si ya existe en el carrito
-            existente = next((p for p in carrito_sesion if p["id"] == producto_id), None)
+            pid = producto["id"]
+            existente = next((p for p in carrito_sesion if p["id"] == pid), None)
 
             if existente:
                 existente["cantidad"] += cantidad
             else:
                 carrito_sesion.append({
-                    "id": producto["id"],
+                    "id": pid,
                     "nombre": producto["nombre"],
                     "precio": producto["precio"],
-                    "imagen": producto["imagen"],
+                    "imagen": producto.get("imagen", ""),
                     "cantidad": cantidad,
                 })
 
@@ -250,7 +270,11 @@ def producto_detalle(request, id):
 
 def eliminar_del_carrito(request):
     if request.method == 'POST':
-        producto_id = int(request.POST.get('productoId', 0))
+        raw_id = request.POST.get('productoId', '0')
+        try:
+            producto_id = int(raw_id)
+        except ValueError:
+            producto_id = raw_id
         carrito_sesion = request.session.get('carrito', [])
         carrito_sesion = [p for p in carrito_sesion if p["id"] != producto_id]
         request.session['carrito'] = carrito_sesion

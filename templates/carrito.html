@@ -96,9 +96,15 @@ Tu carrito está vacío. <a href="{% url 'reservas:catalogo' %}" class="alert-li
 <tr>
 
 <td>
+{% if '/media/' in c.imagen %}
+<img src="{{ c.imagen }}"
+class="img-fluid rounded"
+style="max-height:80px;">
+{% else %}
 <img src="{% static 'img/' %}{{ c.imagen }}"
 class="img-fluid rounded"
 style="max-height:80px;">
+{% endif %}
 </td>
 
 <td class="fw-bold">

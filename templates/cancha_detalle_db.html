@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ cancha.nombre }} - GoSport</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/detalle.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/icono.jpg' %}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'reservas:home' %}">
+            <img src="{% static 'img/icono.jpg' %}" style="height:40px; margin-right:10px;">
+            <span>GOSPORT</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="{% url 'reservas:canchas_publico' %}">Canchas</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'reservas:catalogo' %}">Tienda</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'reservas:contacto' %}">Contacto</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'reservas:perfil' %}">Perfil</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- CONTENIDO PRINCIPAL -->
+<main class="container mt-5">
+    <div class="row align-items-center">
+        
+        <!-- IMAGEN -->
+        <div class="col-md-6">
+            {% if cancha.imagen %}
+                <img src="{{ cancha.imagen.url }}"
+                     class="img-producto"
+                     alt="{{ cancha.nombre }}">
+            {% else %}
+                <img src="{% static 'img/cancha.jpg' %}"
+                     class="img-producto"
+                     alt="Sin imagen">
+            {% endif %}
+        </div>
+
+        <!-- INFO -->
+        <div class="col-md-6">
+            <h2>{{ cancha.nombre }}</h2>
+            <h4 class="text-success mb-3">${{ cancha.precio }} COP</h4>
+            
+            <p class="text-muted">{{ cancha.tipo }} — {{ cancha.direccion }}</p>
+            
+            <p>Disfruta de una excelente cancha para jugar con tus amigos. Reserva fácilmente y asegura tu horario.</p>
+
+            <div class="mb-3">
+                <strong>Capacidad:</strong> {{ cancha.capacidad }} personas
+            </div>
+
+            <div class="mb-3">
+                {% if cancha.estado == "disponible" %}
+                <span class="badge bg-success fs-6">✅ Disponible</span>
+                {% elif cancha.estado == "ocupado" %}
+                <span class="badge bg-danger fs-6">🔴 Ocupado</span>
+                {% else %}
+                <span class="badge bg-warning text-dark fs-6">⚠️ Mantenimiento</span>
+                {% endif %}
+            </div>
+
+            <!-- FORMULARIO RESERVAR -->
+            <form method="POST" action="{% url 'reservas:reservar' cancha.id %}">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="cantidad">Horas:</label>
+                    <input type="number" name="horas" id="cantidad" value="1" min="1" class="form-control">
+                </div>
+
+                <button type="submit" class="btn btn-success mb-3">
+                    ⚽ Reservar ahora
+                </button>
+            </form>
+
+            <a href="{% url 'reservas:canchas_publico' %}" class="btn btn-dark">← Volver</a>
+        </div>
+
+    </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="text-center mt-5">
+    <p>© 2026 GoSports - Sistema de gestión deportiva</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
