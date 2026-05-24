@@ -3,92 +3,115 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: Arial, sans-serif;
-    background: #f1f2f6;
+    font-family: "Rajdhani", "Segoe UI", sans-serif;
+
+    background:
+        linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)),
+        url('/static/img/cancha.jpg');
+
+    background-size: cover;
+    background-attachment: fixed;
+
     display: flex;
     flex-direction: column;
+    color: #fff;
 }
 
-/* ===== NAVBAR ===== */
-.navbar {
-    background: #1e272e;
-    color: white;
-    padding: 15px 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* ===== NAVBAR (FORZANDO SOBRE BOOTSTRAP) ===== */
+.navbar-gosport {
+    background: #000 !important;
+    padding: 15px 40px !important;
+
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+
+    border-bottom: 3px solid #00ff87 !important;
+    box-shadow: 0 0 15px rgba(0,255,135,0.4) !important;
 }
 
 .logo {
-    font-weight: bold;
-    font-size: 18px;
+    font-weight: 900;
+    font-size: 20px;
+    color: #00ff87;
+    letter-spacing: 2px;
 }
 
+/* LINKS */
 .nav-links a {
-    color: white;
-    margin-left: 15px;
+    color: #ccc;
+    margin-left: 20px;
     text-decoration: none;
+    font-weight: 600;
+    position: relative;
 }
 
-.btn-logout {
-    background: #ff4757;
-    padding: 5px 10px;
-    border-radius: 5px;
+.nav-links a::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background: #00ff87;
+    transition: 0.3s;
 }
 
-/* ===== CONTENEDOR GENERAL ===== */
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 30px auto;
-    flex: 1 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.nav-links a:hover {
+    color: #00ff87;
 }
 
-/* ===== FORMULARIO ===== */
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* ===== CONTENEDOR (PISANDO BOOTSTRAP) ===== */
+.gosport-container {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+
+    margin-top: 30px;
+}
+
+/* ===== CARD ===== */
 .card-form {
-    background: white;
+    background: rgba(0,0,0,0.85);
     padding: 30px;
-    border-radius: 12px;
+    border-radius: 15px;
     width: 380px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+
+    border: 2px solid #00ff87;
+    box-shadow: 0 0 25px rgba(0,255,135,0.3);
 }
 
-/* TÍTULO */
+/* ===== TITULO ===== */
 .card-form h2 {
     text-align: center;
     margin-bottom: 20px;
-    font-weight: bold;
-    color: #2f3542;
+    font-weight: 900;
+    color: #00ff87;
 }
 
-/* LABELS */
-.card-form label {
-    display: block;
-    margin-top: 12px;
-    font-size: 14px;
-    color: #555;
-}
-
-/* INPUTS */
+/* ===== INPUTS ===== */
 .card-form input,
 .card-form select {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
-    border-radius: 6px;
-    border: 1px solid #dcdde1;
-    transition: 0.3s;
+
+    border-radius: 8px;
+    border: 2px solid transparent;
+
+    background: #111;
+    color: #fff;
 }
 
-/* EFECTO FOCUS */
 .card-form input:focus,
 .card-form select:focus {
-    border-color: #1e90ff;
+    border-color: #00ff87;
     outline: none;
-    box-shadow: 0 0 5px rgba(30,144,255,0.3);
+    box-shadow: 0 0 10px rgba(0,255,135,0.6);
 }
 
 /* PASSWORD */
@@ -101,41 +124,37 @@ html, body {
     margin-left: 5px;
     padding: 10px;
     border: none;
-    background: #dcdde1;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.password-container button:hover {
-    background: #ced6e0;
+    background: #222;
+    border-radius: 8px;
+    color: #00ff87;
 }
 
 /* BOTÓN */
 .btn-submit {
     width: 100%;
-    margin-top: 18px;
+    margin-top: 20px;
     padding: 12px;
-    background: #1e272e;
-    color: white;
+
+    background: #00ff87;
+    color: #000;
+
     border: none;
-    border-radius: 6px;
+    border-radius: 30px;
+    font-weight: 900;
     cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
 }
 
 .btn-submit:hover {
-    background: #2f3542;
+    background: #00c96b;
+    box-shadow: 0 0 20px rgba(0,255,135,0.7);
 }
 
-/* ===== FOOTER ===== */
+/* FOOTER */
 .footer {
-    background: #1e272e;
-    color: white;
+    background: #000;
+    color: #777;
     text-align: center;
     padding: 10px;
-    flex-shrink: 0;
     margin-top: auto;
-    width: 100%;
+    border-top: 2px solid #00ff87;
 }

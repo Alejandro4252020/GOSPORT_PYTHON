@@ -1,6 +1,7 @@
 /* FONDO GENERAL */
 body{
-    background:#f5f5f5;
+    background: linear-gradient(135deg, #0a0f1f, #0d1b2a, #001f3f);
+    color:#ffffff;
 }
 
 /* CONTENEDOR */
@@ -8,61 +9,78 @@ body{
     margin-top:40px;
 }
 
-/* TARJETA FORMULARIO */
-.card{
+/* TARJETA FORMULARIO (EVITA BOOTSTRAP CONFLICTO) */
+.card:not(.shadow-lg){
     border:none;
-    border-radius:10px;
+    border-radius:12px;
     overflow:hidden;
     transition:0.3s;
+    background:#0d1b2a;
+    border:1px solid #00ff88;
+    color:#fff;
 }
 
-.card:hover{
+.card:not(.shadow-lg):hover{
     transform:translateY(-5px);
-    box-shadow:0 10px 20px rgba(0,0,0,0.2);
+    box-shadow:0 10px 25px rgba(0,255,136,0.2);
 }
 
 /* TITULO */
 h3{
     font-weight:bold;
+    color:#00ff88;
 }
 
 /* INPUTS */
 .form-control{
     border-radius:8px;
-    border:1px solid #ccc;
+    border:1px solid #00ff88;
     transition:0.3s;
+    background:#001f3f;
+    color:#fff;
 }
 
 .form-control:focus{
-    border-color:#198754;
-    box-shadow:0 0 5px rgba(25,135,84,0.3);
+    border-color:#00ff88;
+    box-shadow:0 0 8px rgba(0,255,136,0.4);
+    background:#001f3f;
+    color:#fff;
 }
 
 /* BOTÓN ENVIAR */
-.btn-success{
+button.btn-success,
+.btn-success:not(.navbar .btn-success){
     transition:0.3s;
     font-weight:500;
+    background:linear-gradient(135deg,#00ff88,#00c853);
+    border:none;
+    color:#000;
 }
 
+button.btn-success:hover,
 .btn-success:hover{
     transform:translateY(-2px);
-    box-shadow:0 5px 10px rgba(0,0,0,0.2);
+    box-shadow:0 5px 15px rgba(0,255,136,0.4);
 }
 
 /* BOTÓN VOLVER */
 .btn-dark{
     transition:0.3s;
+    background:#1b1b1b;
+    border:none;
 }
 
 .btn-dark:hover{
     transform:translateY(-2px);
+    background:#333;
 }
 
 /* NAVBAR */
-.navbar{
-    background:#000 !important;
+nav.navbar{
+    background:linear-gradient(90deg,#000000,#1b1b1b) !important;
     padding:8px 0;
-    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+    box-shadow:0 4px 10px rgba(0,0,0,0.5);
+    border-bottom:1px solid #00ff88;
 }
 
 .navbar-brand{
@@ -77,7 +95,7 @@ h3{
     height:30px;
 }
 
-/* FOOTER NEGRO Y CENTRADO */
+/* FOOTER */
 footer{
     background:#000;
     color:#fff;
@@ -85,52 +103,45 @@ footer{
     margin-top:30px;
     font-size:12px;
     text-align:center;
+    border-top:1px solid #00ff88;
 }
 
-/* CONTENIDO CENTRADO */
-.footer-content{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-
-/* TARJETA WHATSAPP */
+/* WHATSAPP CARD */
 .whatsapp-card{
     display:flex;
     align-items:center;
     gap:15px;
-    background:#fff;
+    background:#0d1b2a;
     border-radius:12px;
     padding:20px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.15);
-    border-left:5px solid #25D366;
+    box-shadow:0 8px 20px rgba(0,255,136,0.15);
+    border-left:5px solid #00ff88;
     transition:0.3s;
+    color:#fff;
 }
 
 .whatsapp-card:hover{
     transform:translateY(-5px);
 }
 
-/* ICONO */
 .whatsapp-card img{
     width:60px;
 }
 
-/* TEXTO */
 .whatsapp-card h5{
     margin:0;
     font-weight:bold;
+    color:#00ff88;
 }
 
 .whatsapp-card p{
     margin:0;
     font-size:14px;
-    color:#555;
+    color:#ccc;
 }
 
-/* LINK */
 .whatsapp-card a{
-    color:#25D366;
+    color:#00ff88;
     font-weight:500;
     text-decoration:none;
 }

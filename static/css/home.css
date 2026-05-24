@@ -1,16 +1,16 @@
-
 /* ------------------------------
-   ESTILOS GENERALES
+   ESTILOS GENERALES (FONDO DARK)
 --------------------------------*/
 body {
-    background: #d5d8df;
+    background: linear-gradient(135deg, #000000 0%, #020c2b 40%, #001f4d 100%);
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
+    color: #ffffff; /* 🔥 texto visible */
 }
 
 /* ------------------------------
-   NAVBAR
+   NAVBAR (SE MANTIENE)
 --------------------------------*/
 .navbar {
     background: linear-gradient(90deg, #000000, #1b1b1b);
@@ -45,18 +45,18 @@ body {
 }
 
 /* ------------------------------
-   TARJETA PRINCIPAL
+   TARJETA PRINCIPAL (GLASS)
 --------------------------------*/
 .card {
     border-radius: 25px !important;
-    background: #ffffffee;
+    background: rgba(255, 255, 255, 0.06); /* 🔥 efecto vidrio */
     width: 100% !important;
-    max-width: 1300px !important;   /* ✔ tarjeta más grande */
+    max-width: 1300px !important;
     padding: 35px !important;
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
     animation: fadeIn 0.6s ease-in-out;
 }
-
 
 /* Animación */
 @keyframes fadeIn {
@@ -68,7 +68,7 @@ body {
    TÍTULOS
 --------------------------------*/
 h2, h4 {
-    color: #000;
+    color: #ffffff;
     font-weight: 700;
 }
 
@@ -76,22 +76,22 @@ h2, h4 {
    TARJETAS DE CANCHAS
 --------------------------------*/
 .cancha-card {
-    background: #eef4ff;
-    border: 1px solid #c9d8ff;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(0,255,150,0.3);
     border-radius: 18px;
     padding: 25px;
     transition: 0.3s;
-    min-height: 300px;   /* ✔ más grande */
+    min-height: 300px;
 }
 
 .cancha-card:hover {
-    background: #ffffff;
+    background: rgba(255,255,255,0.08);
     transform: translateY(-6px);
-    box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 8px 25px rgba(0,255,150,0.2);
 }
 
 .cancha-card img {
-    width: 140%;
+    width: 100%;
     height: 210px;
     object-fit: cover;
     border-radius: 12px;
@@ -117,17 +117,18 @@ h2, h4 {
    PRODUCTOS Y PROMOCIONES
 --------------------------------*/
 .product-card {
-    background: #f2f2f2;
-    border: 1px solid #c9d8ff;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(0,255,150,0.3);
     border-radius: 15px;
     transition: 0.3s;
     padding: 10px;
-    max-width: 260px;   /* 🔽 ancho controlado */
+    max-width: 260px;
     margin: auto;
 }
+
 .product-img {
     width: 100%;
-    object-fit: contain;  /* no se deforma */
+    object-fit: contain;
     border-radius: 12px;
     transition: 0.3s;
 }
@@ -135,18 +136,19 @@ h2, h4 {
 .product-card h6 {
     font-size: 0.9rem;
     margin-bottom: 4px;
+    color: #ffffff;
 }
 
 .product-card p {
     font-size: 0.85rem;
     margin-bottom: 0;
+    color: #cccccc;
 }
 
-
 .product-card:hover {
-    background: #ffffff;
+    background: rgba(255,255,255,0.08);
     transform: translateY(-6px);
-    box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 8px 25px rgba(0,255,150,0.2);
 }
 
 .product-card img {
@@ -154,15 +156,12 @@ h2, h4 {
     height: 110px;
     object-fit: contain;
     border-radius: 10px;
-    
 }
 
-.text-success{
-    color: #10c41f !important;
-    font-weight: 700;
-}
-.text-primary{
-    color: #10c41f !important;
+/* PRECIOS */
+.text-success,
+.text-primary {
+    color: #00e676 !important;
     font-weight: 700;
 }
 
@@ -182,11 +181,12 @@ footer p {
     font-size: 0.9rem;
     letter-spacing: 0.5px;
 }
+
 /* ------------------------------
-   BOTÓN COMPRAR (VERDE)
+   BOTÓN COMPRAR
 --------------------------------*/
 .btn-success {
-    background-color: #000000; /* Verde elegante */
+    background-color: #000000;
     border: none;
     font-weight: 600;
     border-radius: 10px;
@@ -194,25 +194,25 @@ footer p {
 }
 
 .btn-success:hover {
-    background-color: #646464; /* Verde más oscuro */
+    background-color: #646464;
     transform: scale(1.03);
 }
+
 /* ------------------------------
-   BANNER PRINCIPAL ESTILO MCR
+   BANNER (AJUSTADO AL DARK)
 --------------------------------*/
 .banner-container {
     width: 100%;
-    background: #f3f3f3; /* gris suave como MCR */
+    background: transparent; /* 🔥 quita fondo gris */
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px 0; 
+    padding: 20px 0;
 }
 
 .banner-img {
-    width: 90%;       /* ocupa casi toda la pantalla */
-    max-width: 1200px; /* tamaño máximo como MCR */
-    border-radius: 5px;
-    object-fit: cover;
+    width: 90%;
+    max-width: 1200px;
     border-radius: 15px;
+    object-fit: cover;
 }

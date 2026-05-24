@@ -1,23 +1,32 @@
-/* NAVBAR CARRITO */
-
+/* ===== NAVBAR DEPORTIVO ===== */
 .navbar{
-background:#000000 !important;
+    background: rgba(0,0,0,0.85) !important;
+    backdrop-filter: blur(12px);
+    border-bottom: 2px solid #00ff87;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.7);
 }
 
+/* LINKS */
 .navbar .nav-link{
-color:white !important;
-font-weight:500;
+    color: #ffffff !important;
+    font-weight: 600;
+    transition: 0.3s;
 }
 
 .navbar .nav-link:hover{
-color:#dbe9ff !important;
+    color:#00ff87 !important;
+    text-shadow:0 0 10px #00ff87;
+    transform: translateY(-2px);
 }
 
+/* BRAND */
 .navbar-brand span{
-color:white !important;
+    color:#00ff87 !important;
+    font-weight: 900;
+    letter-spacing: 1px;
 }
-/* FOOTER ABAJO SIEMPRE */
 
+/* ===== LAYOUT GENERAL ===== */
 html, body {
   height: 100%;
   margin: 0;
@@ -26,14 +35,37 @@ html, body {
 body {
   display: flex;
   flex-direction: column;
+
+  /* 🔥 FONDO DEPORTIVO */
+  background:
+    radial-gradient(circle at top, rgba(0,255,135,0.12), transparent 40%),
+    linear-gradient(rgba(0,0,0,0.92), rgba(0,0,0,0.96)),
+    url('/static/img/cancha.jpg');
+
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
+  color: #fff;
+  font-family: "Segoe UI", sans-serif;
 }
+
 main {
   flex: 1;
 }
 
-/* ESTILO DEL FOOTER */
+/* ===== FOOTER DEPORTIVO ===== */
 footer {
-  background: #f8f9fa; /* gris claro tipo Bootstrap */
-  border-top: 1px solid #ddd;
-  color: #555;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  color: #9ca3af;
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+}
+
+/* EFECTO SUTIL */
+footer:hover {
+  border-top: 1px solid #00ff87;
 }

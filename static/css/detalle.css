@@ -8,26 +8,35 @@
 }
 
 html, body {
-    height: 100%;           /* Para layout con footer abajo */
+    height: 100%;
     display: flex;
     flex-direction: column;
-    background: #d5d8df;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+    /* 🔥 FONDO DEPORTIVO */
+    background:
+        linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.9)),
+        url('/static/img/cancha.jpg');
+    background-size: cover;
+    background-position: center;
+
+    color: #fff;
 }
 
 /* ------------------------------
    NAVBAR
 --------------------------------*/
 .navbar {
-    background: linear-gradient(90deg, #000000, #1b1b1b) !important;
-    padding: 10px 0;
+    background: linear-gradient(90deg, #000000, #111111) !important;
+    padding: 12px 0;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.6);
 }
 
-.navbar .navbar-brand span {
-    color: #ffffff !important;
-    font-size: 1.4rem;
-    letter-spacing: 1px;
+.navbar-brand span {
+    color: #00ff87 !important;
     font-weight: bold;
+    font-size: 1.4rem;
+    text-shadow: 0 0 8px #00ff87;
 }
 
 .navbar .nav-link {
@@ -38,15 +47,15 @@ html, body {
 }
 
 .navbar .nav-link:hover {
-    color: #dbe9ff !important;
-    transform: translateY(-1px);
+    color: #00ff87 !important;
+    transform: translateY(-2px);
 }
 
 /* ------------------------------
    CONTENIDO PRINCIPAL
 --------------------------------*/
 main {
-    flex: 1;   /* Hace que el contenido crezca y empuje el footer abajo */
+    flex: 1;
     padding: 40px 20px;
 }
 
@@ -56,67 +65,100 @@ main {
 .img-producto {
     width: 100%;
     height: 350px;
-    object-fit: contain;
-    border-radius: 10px;
+    object-fit: cover;
+    border-radius: 15px;
+
+    box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+    transition: 0.3s;
+}
+
+.img-producto:hover {
+    transform: scale(1.03);
 }
 
 /* ------------------------------
-   SELECTOR DE CANTIDAD
+   TARJETA INFO (sin cambiar HTML)
 --------------------------------*/
-#cantidad {
-    width: 60px;
-    text-align: center;
-    padding: 5px;
-    font-size: 1rem;
+.col-md-6:last-child {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(15px);
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+}
+
+/* ------------------------------
+   TITULOS
+--------------------------------*/
+h2 {
+    color: #00ff87;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(0,255,135,0.6);
+}
+
+h3 {
+    color: #00ff87;
+    text-shadow: 0 0 10px rgba(0,255,135,0.6);
+}
+
+/* ------------------------------
+   TEXTO
+--------------------------------*/
+p {
+    color: #ccc;
+}
+
+/* ------------------------------
+   INPUT
+--------------------------------*/
+.form-control {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    border-radius: 10px;
+}
+
+.form-control:focus {
+    border-color: #00ff87;
+    box-shadow: 0 0 10px #00ff87;
+    background: rgba(255,255,255,0.15);
 }
 
 /* ------------------------------
    BOTONES
 --------------------------------*/
 .btn-success {
-    padding: 12px 25px;
+    background: linear-gradient(45deg, #00ff87, #00c9ff);
+    border: none;
+    color: #000;
     font-weight: bold;
-    border-radius: 6px;
-    cursor: pointer;
+    border-radius: 10px;
     transition: 0.3s;
 }
 
 .btn-success:hover {
-    background-color: #00c864 !important;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #00ff87;
 }
 
-/* VOLVER */
-.btn-volver {
-    display: inline-block;
-    padding: 12px 25px;
-    background: #000000;
-    color: #ffffff !important;
-    border: none;
-    font-size: 16px;
-    border-radius: 6px;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background 0.3s;
+.btn-dark {
+    border-radius: 10px;
+    transition: 0.3s;
 }
 
-.btn-volver:hover {
-    background: #333333;
+.btn-dark:hover {
+    transform: translateY(-2px);
 }
 
 /* ------------------------------
    FOOTER
 --------------------------------*/
 footer {
-    background: #000000;
-    color: #ffffff;
+    background: #000;
+    color: #fff;
     padding: 15px 0;
     text-align: center;
-}
-
-footer p {
-    margin: 0;
-    font-size: 0.9rem;
-    letter-spacing: 0.5px;
+    border-top: 1px solid rgba(255,255,255,0.1);
 }
 
 /* ------------------------------

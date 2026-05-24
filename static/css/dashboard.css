@@ -4,25 +4,28 @@ html, body {
     margin: 0;
 }
 
-/* ===== FONDO GENERAL ===== */
+/* ===== FONDO GENERAL (DEPORTIVO PRO) ===== */
 body {
     display: flex;
     flex-direction: column;
     min-block-size: 100vh;
-    color: rgb(204, 200, 200);
     font-family: 'Segoe UI', sans-serif;
+
+    background: 
+        linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.9)),
+        url('/static/img/cancha.jpg');
+    background-size: cover;
+    background-position: center;
+
+    color: #131212;
 }
 
 /* ===== NAVBAR ===== */
 .topbar {
-    background: #000;
+    background: linear-gradient(90deg, #000000, #111111);
     padding: 15px 30px;
-}
-
-.topbar-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.6);
+    backdrop-filter: blur(10px);
 }
 
 .logo-title {
@@ -31,61 +34,129 @@ body {
 }
 
 .go {
-    color: #ffffff;
+    color: #090808;
 }
 
 .sports {
-    color: #3b82f6; /* toque verde pro */
+    color: #00ff87;
+    text-shadow: 0 0 10px #00ff87;
 }
-.titulo-dashboard{
-    color: #000000;
+
+/* BOTONES NAV */
+.topbar .btn-outline-light {
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.topbar .btn-outline-light:hover {
+    background: #00ff87;
+    color: #000 !important;
+    border-color: #00ff87;
+    box-shadow: 0 0 10px #00ff87;
 }
 
 /* ===== USUARIO ===== */
-.user-section {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+.user-section span {
+    font-weight: 600;
 }
 
 /* ===== CONTENIDO ===== */
 main {
     flex: 1;
+    animation: fadeIn 0.8s ease;
 }
 
 /* ===== TITULO ===== */
-h3 {
-    margin-block-start: 20px;
-    font-weight: 600;
-}
-
-/* ===== CARDS ===== */
-.card {
-    border-radius: 18px;
-    border: none;
-    padding: 20px;
-
-    background: rgba(255, 255, 255, 0.95);
-    color: black;
-
-    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-    transition: all 0.3s ease;
-}
-
-/* HOVER EFECTO */
-.card:hover {
-    transform: translateY(-8px) scale(1.02);
-}
-
-/* TITULOS EN CARDS */
-.card h5 {
-    font-size: 18px;
-    margin-block-end: 10px;
-}
-
-.card h2 {
-    font-size: 38px;
+h2 {
     font-weight: bold;
+    color: #00ff87;
+    text-shadow: 0 0 15px rgba(0,255,135,0.8);
+}
+
+/* ===== CARDS DASHBOARD ===== */
+.card-dashboard {
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(15px);
+
+    color: #070707;
+
+    box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Línea superior deportiva */
+.card-dashboard::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #00ff87, #00c9ff);
+    transition: 0.5s;
+}
+
+/* ANIMACIÓN DE LÍNEA */
+.card-dashboard:hover::before {
+    left: 0;
+}
+
+/* Hover PRO */
+.card-dashboard:hover {
+    transform: translateY(-10px) scale(1.04);
+    box-shadow: 0 0 30px rgba(0,255,135,0.6);
+}
+
+/* ICONOS */
+.card-dashboard .icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+    transition: 0.3s;
+}
+
+/* ICONO ANIMADO */
+.card-dashboard:hover .icon {
+    transform: scale(1.2) rotate(5deg);
+}
+
+/* TITULO CARD */
+.card-dashboard h5 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #ccc;
+}
+
+/* NUMERO */
+.card-dashboard h2 {
+    font-size: 42px;
+    font-weight: bold;
+}
+
+/* ===== COLORES POR TIPO ===== */
+.card-green h2 {
+    color: #00ff87;
+    text-shadow: 0 0 15px #00ff87;
+}
+
+.card-blue h2 {
+    color: #00c9ff;
+    text-shadow: 0 0 15px #00c9ff;
+}
+
+.card-yellow h2 {
+    color: #ffd700;
+    text-shadow: 0 0 15px #ffd700;
+}
+
+.card-red h2 {
+    color: #ff4d4d;
+    text-shadow: 0 0 15px #ff4d4d;
 }
 
 /* ===== FOOTER ===== */
@@ -93,14 +164,26 @@ footer {
     text-align: center;
     padding: 15px;
     background: #000;
-    color: white;
-    margin-block-start: auto;
-    position: relative;
+    color: rgb(24, 20, 20);
+    margin-top: auto;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ===== ANIMACIONES ===== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-    .card h2 {
+    .card-dashboard h2 {
         font-size: 28px;
     }
 

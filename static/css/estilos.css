@@ -1,95 +1,250 @@
-/* FONDO GENERAL */
-body{
-    background:#f5f5f5;
+/* ------------------------------
+   RESET BÁSICO
+--------------------------------*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* CONTENEDOR */
-.container{
-    margin-top:40px;
+html, body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    background:
+        radial-gradient(circle at top, rgba(0,255,135,0.18), transparent 45%),
+        radial-gradient(circle at bottom, rgba(0,201,255,0.12), transparent 40%),
+        linear-gradient(rgba(0,0,0,0.88), rgba(0,0,0,0.96)),
+        url('/static/img/cancha.jpg');
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
 }
 
-/* TARJETA FORMULARIO */
-.card{
-    border:none;
-    border-radius:10px;
-    overflow:hidden;
-    transition:0.3s;
+/* ------------------------------
+   NAVBAR PRO
+--------------------------------*/
+.navbar {
+    background: rgba(0,0,0,0.78) !important;
+    backdrop-filter: blur(14px);
+    padding: 12px 0;
+    border-bottom: 2px solid #00ff87;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.7);
 }
 
-.card:hover{
-    transform:translateY(-5px);
-    box-shadow:0 10px 20px rgba(0,0,0,0.2);
+.navbar .navbar-brand span {
+    color: #00ff87 !important;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    font-weight: 900;
 }
 
-/* TITULO */
-h3{
-    font-weight:bold;
+.navbar .nav-link {
+    color: #ffffff !important;
+    font-weight: 500;
+    margin-left: 15px;
+    transition: 0.3s;
 }
 
-/* INPUTS */
-.form-control{
-    border-radius:8px;
-    border:1px solid #ccc;
-    transition:0.3s;
+.navbar .nav-link:hover {
+    color: #00ff87 !important;
+    transform: translateY(-2px);
 }
 
-.form-control:focus{
-    border-color:#198754;
-    box-shadow:0 0 5px rgba(25,135,84,0.3);
+/* ------------------------------
+   CONTENIDO PRINCIPAL
+--------------------------------*/
+main {
+    flex: 1;
+    padding: 50px 20px;
 }
 
-/* BOTÓN ENVIAR */
-.btn-success{
-    transition:0.3s;
-    font-weight:500;
+/* ------------------------------
+   TARJETA GLASS
+--------------------------------*/
+.col-md-6 {
+    background: rgba(255,255,255,0.07);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.75);
+    transition: 0.35s ease;
 }
 
-.btn-success:hover{
-    transform:translateY(-2px);
-    box-shadow:0 5px 10px rgba(0,0,0,0.2);
+.col-md-6:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 35px 90px rgba(0,255,135,0.12);
 }
 
-/* BOTÓN VOLVER */
-.btn-dark{
-    transition:0.3s;
+/* ------------------------------
+   IMAGEN
+--------------------------------*/
+.img-producto {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 18px;
+    transition: 0.4s ease;
+    border: 2px solid rgba(0,255,135,0.25);
 }
 
-.btn-dark:hover{
-    transform:translateY(-2px);
+.img-producto:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 35px rgba(0,255,135,0.35);
 }
 
-/* NAVBAR */
-.navbar{
-    background:#000 !important;
-    padding:8px 0;
-    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+/* ------------------------------
+   TEXTOS
+--------------------------------*/
+h2 {
+    color: #00ff87;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-shadow: 0 0 20px rgba(0,255,135,0.35);
 }
 
-.navbar-brand{
-    font-size:18px;
-    font-weight:bold;
-    color:#fff !important;
+h4 {
+    color: #00ff87;
+    font-weight: 700;
 }
 
-/* LOGO MÁS PEQUEÑO */
-.navbar-brand img{
-    width:30px;
-    height:30px;
+p {
+    color: #d1d5db;
 }
 
-/* FOOTER NEGRO Y MÁS DELGADO */
-.footer{
-    background:#000;
-    color:#fff;
-    padding:8px 0; /* 🔥 más pequeño */
-    margin-top:30px;
-    font-size:13px;
-    text-align:center;
+/* ------------------------------
+   INPUTS PRO
+--------------------------------*/
+input,
+select {
+    background: rgba(255,255,255,0.08) !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    color: #fff !important;
+    border-radius: 12px !important;
+    transition: 0.3s;
 }
 
-/* CONTENIDO CENTRADO */
-.footer-content{
-    display:flex;
-    justify-content:center;
-    align-items:center;
+/* 🔥 FIX IMPORTANTE PARA SELECT */
+select option {
+    background: #1e1e1e;
+    color: #ffffff;
+}
+
+/* 🔥 Mejora visual del select */
+select {
+    appearance: none;
+    cursor: pointer;
+}
+
+/* FOCUS */
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #00ff87 !important;
+    box-shadow: 0 0 14px rgba(0,255,135,0.35) !important;
+}
+
+/* ------------------------------
+   INPUT CANTIDAD
+--------------------------------*/
+#cantidad {
+    width: 80px;
+    text-align: center;
+    padding: 8px;
+    font-size: 1rem;
+}
+
+/* ------------------------------
+   BOTÓN PRINCIPAL
+--------------------------------*/
+.btn-success {
+    padding: 12px 25px;
+    font-weight: 900;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+    border: none;
+    background: linear-gradient(135deg, #00ff87, #00c9ff);
+    color: #000;
+}
+
+.btn-success:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(0,255,135,0.45);
+}
+
+/* ------------------------------
+   BOTÓN VOLVER
+--------------------------------*/
+.btn-volver {
+    display: inline-block;
+    padding: 12px 25px;
+    background: rgba(0,0,0,0.75);
+    color: #ffffff !important;
+    border: 1px solid rgba(255,255,255,0.2);
+    font-size: 16px;
+    border-radius: 14px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn-volver:hover {
+    background: #111;
+    border-color: #00ff87;
+    transform: translateY(-2px);
+}
+
+/* ------------------------------
+   FOOTER
+--------------------------------*/
+footer {
+    background: rgba(0,0,0,0.88);
+    backdrop-filter: blur(12px);
+    color: #9ca3af;
+    padding: 15px 0;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+footer p {
+    margin: 0;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+/* ------------------------------
+   ANIMACIÓN
+--------------------------------*/
+.col-md-6 {
+    animation: fadeIn 0.9s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ------------------------------
+   RESPONSIVE
+--------------------------------*/
+@media (max-width: 768px) {
+    .img-producto {
+        height: 250px;
+    }
+
+    .col-md-6 {
+        padding: 18px;
+    }
 }

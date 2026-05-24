@@ -21,14 +21,15 @@
     </div>
 </nav>
 
-<!-- 🔥 CONTENIDO CENTRADO -->
+<!-- CONTENIDO -->
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
 
+    <!-- 🔥 tarjeta -->
     <div class="text-center shadow p-4 rounded bg-white">
 
         <h2 class="mb-4">Reserva Confirmada ✅</h2>
 
-        <!-- 🧾 RESUMEN MEJORADO -->
+        <!-- RESUMEN -->
         <div class="border rounded p-3 mb-3 text-start">
 
             <p><strong>Cancha:</strong> {{ reserva.cancha }}</p>
@@ -38,7 +39,6 @@
             <p><strong>Horas:</strong> {{ reserva.horas }}</p>
             <p><strong>Total:</strong> {{ reserva.total }} COP</p>
 
-            <!-- 🔥 MÉTODO DE PAGO -->
             <p><strong>Método de pago:</strong> Efectivo</p>
 
         </div>
@@ -51,14 +51,13 @@
              width="300" 
              class="img-fluid rounded shadow mb-3">
 
-        <!-- 🔔 RECORDATORIO -->
         <p class="text-muted">
             ⚠ Recuerda llegar 10 minutos antes de tu horario
         </p>
 
-        <!-- 📥 SOLO RECIBO -->
+        <!-- BOTONES -->
         <a href="#" onclick="generarRecibo()" class="btn btn-outline-primary w-100 mt-2">
-       imprimir recibo
+            Imprimir recibo
         </a>
 
         <a href="{% url 'reservas:canchas_publico' %}" class="btn btn-dark w-100 mt-2">
@@ -70,11 +69,15 @@
 </div>
 
 <!-- FOOTER -->
-<footer class="text-center mt-5">
-    <p>© 2026 GOSPORT RESERVAS - Todos los derechos reservados</p>
+<footer>
+    <div class="footer-content">
+        <span>© 2026 GOSPORT RESERVAS</span>
+        <span>•</span>
+        <span>Todos los derechos reservados</span>
+    </div>
 </footer>
 
-<!-- 🧾 SCRIPT RECIBO -->
+<!-- SCRIPT -->
 <script>
 function generarRecibo() {
 
@@ -124,12 +127,10 @@ function generarRecibo() {
 
         <div class="ticket">
 
-            <!-- LOGO -->
             <img src="${data.logo}" class="logo">
 
             <hr>
 
-            <!-- IMAGEN CANCHA -->
             <img src="${data.imagen}" class="cancha-img">
 
             <p><strong>Cancha:</strong> ${data.cancha}</p>
