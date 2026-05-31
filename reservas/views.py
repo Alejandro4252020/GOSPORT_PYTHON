@@ -3,6 +3,8 @@ from django.contrib import messages
 from datetime import datetime
 import calendar
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.auth import update_session_auth_hash
 from .models import Reserva, Compra, DetalleCompra
 from canchas.models import Cancha as CanchaDB
 from productos.models import Producto as ProductoDB
@@ -148,7 +150,6 @@ def reservar(request, id):
             messages.error(request, "Datos inválidos ❌")
             return redirect(request.path)
 
-        # ✅ VALIDACIONES DE LÍMITES
         if personas < 1:
             messages.error(request, "La cantidad mínima de personas es 1 ❌")
             return redirect(request.path)
@@ -197,7 +198,7 @@ def reservar(request, id):
     })
 
 
-# ------------------ RESTO ------------------
+# ------------------ CATÁLOGO ------------------
 def catalogo(request):
     productos_db = ProductoDB.objects.all()
     return render(request, 'catalogo.html', {"productos": PRODUCTOS, "productos_db": productos_db})
@@ -340,14 +341,45 @@ def factura(request, compra_id):
     })
 
 
+# ------------------ PERFIL ------------------
+@login_required
 def perfil(request):
     return render(request, 'perfil.html')
 
 
+@login_required
 def editar_perfil(request):
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre', '').strip()
+        password = request.POST.get('password', '').strip()
+        user = request.user
+
+        # ✅ Actualizar nombre de usuario
+        if nombre and nombre != user.username:
+            if User.objects.filter(username=nombre).exclude(pk=user.pk).exists():
+                messages.error(request, 'Ese nombre de usuario ya está en uso ❌')
+                return redirect('reservas:perfil')
+            user.username = nombre
+
+        # ✅ Actualizar contraseña
+        if password:
+            if len(password) < 8:
+                messages.error(request, 'La contraseña debe tener al menos 8 caracteres ❌')
+                return redirect('reservas:perfil')
+            user.set_password(password)
+
+        user.save()
+
+        # ✅ Mantener sesión activa después de cambiar contraseña
+        update_session_auth_hash(request, user)
+
+        messages.success(request, '✅ Perfil actualizado correctamente')
+        return redirect('reservas:perfil')
+
     return redirect('reservas:perfil')
 
 
+# ------------------ DASHBOARD ------------------
 @login_required
 def dashboard(request):
     if request.user.is_superuser:
