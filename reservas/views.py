@@ -344,7 +344,9 @@ def factura(request, compra_id):
 # ------------------ PERFIL ------------------
 @login_required
 def perfil(request):
-    return render(request, 'perfil.html')
+    from .models import Perfil
+    perfil_obj, _ = Perfil.objects.get_or_create(user=request.user)
+    return render(request, 'perfil.html', {'perfil': perfil_obj})
 
 
 @login_required
@@ -369,9 +371,15 @@ def editar_perfil(request):
             user.set_password(password)
 
         user.save()
-
-        # ✅ Mantener sesión activa después de cambiar contraseña
         update_session_auth_hash(request, user)
+
+        # ✅ Actualizar foto de perfil
+        from .models import Perfil
+        foto = request.FILES.get('foto')
+        if foto:
+            perfil_obj, _ = Perfil.objects.get_or_create(user=user)
+            perfil_obj.foto = foto
+            perfil_obj.save()
 
         messages.success(request, '✅ Perfil actualizado correctamente')
         return redirect('reservas:perfil')

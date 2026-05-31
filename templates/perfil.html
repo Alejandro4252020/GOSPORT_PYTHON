@@ -55,9 +55,16 @@
 
 <h2 class="text-center mb-4">Mi Perfil</h2>
 
-<h4 class="text-center">
-Entonces, parcero, esta cuenta se llama 
-<span class="fw-bold">{{ request.user.username }}</span>
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if 'correctamente' in message.tags or '✅' in message|stringformat:'s' %}alert-success{% else %}alert-danger{% endif %}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<h4 class="text-center mb-3">
+    Hola, <span class="fw-bold">{{ request.user.username }}</span> 👋
 </h4>
 
 <form method="post" action="{% url 'reservas:editar_perfil' %}" enctype="multipart/form-data">
@@ -67,19 +74,29 @@ Entonces, parcero, esta cuenta se llama
 <!-- FOTO PERFIL -->
 <div class="text-center mb-3">
 
-<img src="{% static 'img/perfil.jpg' %}"
-width="150"
-height="150"
-class="rounded-circle mb-2">
+{% if perfil.foto %}
+    <img src="{{ perfil.foto.url }}"
+    width="150" height="150"
+    class="rounded-circle mb-2"
+    style="object-fit:cover; border: 3px solid #0d6efd;">
+{% else %}
+    <img src="{% static 'img/perfil.jpg' %}"
+    width="150" height="150"
+    class="rounded-circle mb-2"
+    style="border: 3px solid #dee2e6;">
+{% endif %}
 
-<input type="file" name="foto" class="form-control mt-2">
+<div class="mt-2">
+    <label class="form-label fw-bold">Cambiar foto</label>
+    <input type="file" name="foto" class="form-control" accept="image/*">
+</div>
 
 </div>
 
 <!-- USUARIO -->
 <div class="mb-3">
 
-<label class="form-label">Nombre de usuario</label>
+<label class="form-label fw-bold">Nombre de usuario</label>
 
 <input type="text"
 name="nombre"
@@ -89,22 +106,37 @@ required>
 
 </div>
 
+<!-- EMAIL (solo lectura) -->
+<div class="mb-3">
+
+<label class="form-label fw-bold">Correo electrónico</label>
+
+<input type="email"
+class="form-control"
+value="{{ request.user.email }}"
+disabled>
+
+</div>
+
 <!-- PASSWORD -->
 <div class="mb-3">
 
-<label class="form-label">Nueva contraseña</label>
+<label class="form-label fw-bold">Nueva contraseña</label>
 
 <input type="password"
 name="password"
 class="form-control"
-placeholder="Dejar vacío si no cambia">
+placeholder="Dejar vacío si no cambia"
+minlength="8">
+
+<small class="text-muted">Mínimo 8 caracteres si deseas cambiarla</small>
 
 </div>
 
 <div class="d-grid">
 
 <button type="submit" class="btn btn-primary btn-lg">
-Actualizar Perfil
+    💾 Actualizar Perfil
 </button>
 
 </div>
