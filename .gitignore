@@ -4,4 +4,6 @@ datos_backup.json
 exportar.py
 *.pyo
 *.pyd
-.idea/
+.idea/.env 
+__pycache__/ 
+*.pyc 
