@@ -1,8 +1,7 @@
- 
-__pycache__/
-*.pyc
-db.sqlite3
-.env
-venv/
-*.log
-.DS_Store
+*.sqlite3
+staticfiles/
+datos_backup.json
+exportar.py
+*.pyo
+*.pyd
+.idea/

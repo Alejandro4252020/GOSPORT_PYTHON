@@ -81,14 +81,16 @@
                 <div class="mb-3 input-icon">
                     <label class="form-label">Cantidad de personas</label>
                     <i class="bi bi-people"></i>
-                    <input type="number" name="personas" class="form-control" min="1" required>
+                    <input type="number" name="personas" class="form-control" min="50" required>
+                    <small class="text-white">Mínimo 50 personas</small>
                 </div>
 
                 <!-- HORAS -->
                 <div class="mb-3 input-icon">
                     <label class="form-label">Horas</label>
                     <i class="bi bi-hourglass-split"></i>
-                    <input type="number" id="horas" name="horas" value="1" min="1" class="form-control">
+                    <input type="number" id="horas" name="horas" value="1" min="1" max="5" class="form-control">
+                    <small class="text-white">Entre 1 y 5 horas</small>
                 </div>
 
                 <!-- PRECIO -->
@@ -137,6 +139,11 @@
         if (isNaN(horas) || horas < 1) {
             horas = 1;
             horasInput.value = 1;
+        }
+
+        if (horas > 5) {
+            horas = 5;
+            horasInput.value = 5;
         }
 
         const total = precioBase * horas;

@@ -41,7 +41,6 @@ CANCHAS_PUBLICO = [
 
 # ------------------ HOME ------------------
 def home(request):
-    # ✅ Canchas y productos de la BD
     canchas = CanchaDB.objects.all()[:6]
     productos = ProductoDB.objects.all()[:6]
 
@@ -78,7 +77,6 @@ def contacto(request):
 
 # ------------------ CANCHAS ------------------
 def canchas_publico(request):
-    # ✅ También pasar canchas de la BD
     canchas_db = CanchaDB.objects.all()
     return render(request, 'canchas.html', {
         "canchas": CANCHAS_PUBLICO,
@@ -106,10 +104,8 @@ def cancha_detalle_db(request, id):
 
 # ------------------ RESERVAR ------------------
 def reservar(request, id):
-    # Intentar primero con canchas hardcodeadas
     cancha = next((c for c in CANCHAS_PUBLICO if c["id"] == id), None)
 
-    # Si no existe, intentar con la BD
     cancha_db = None
     if not cancha:
         cancha_db = CanchaDB.objects.filter(id=id).first()
@@ -150,10 +146,18 @@ def reservar(request, id):
             messages.error(request, "Datos inválidos ❌")
             return redirect(request.path)
 
+        # ✅ VALIDACIONES DE LÍMITES
+        if personas < 50:
+            messages.error(request, "La cantidad mínima de personas es 50 ❌")
+            return redirect(request.path)
+
+        if horas < 1 or horas > 5:
+            messages.error(request, "Las horas deben estar entre 1 y 5 ❌")
+            return redirect(request.path)
+
         total = cancha["precio"] * horas
         fecha_str = f"{dia}/{mes}/{año}"
 
-        # Guardar en base de datos
         reserva_obj = Reserva.objects.create(
             usuario=request.user if request.user.is_authenticated else None,
             cancha_nombre=cancha["nombre"],
@@ -165,7 +169,6 @@ def reservar(request, id):
             imagen=cancha["imagen"]
         )
 
-        # También guardar en sesión para la confirmación
         request.session['reserva'] = {
             "id": reserva_obj.id,
             "cancha": cancha["nombre"],
@@ -187,6 +190,7 @@ def reservar(request, id):
         "horarios": horarios
     })
 
+
 # ------------------ RESTO ------------------
 def catalogo(request):
     productos_db = ProductoDB.objects.all()
@@ -203,12 +207,10 @@ def ver_reserva(request, id):
         "total": request.GET.get("total"),
         "imagen": request.GET.get("imagen"),
     }
-
     return render(request, 'ver_reserva.html', {"reserva": reserva})
 
 
 def carrito(request):
-    # ✅ POST: agregar producto al carrito
     if request.method == 'POST':
         producto_id = int(request.POST.get('productoId', 0))
         cantidad = int(request.POST.get('cantidad', 1))
@@ -217,7 +219,6 @@ def carrito(request):
         producto = None
 
         if source == 'db':
-            # Buscar en la BD primero
             producto_db = ProductoDB.objects.filter(id=producto_id).first()
             if producto_db:
                 producto = {
@@ -227,13 +228,10 @@ def carrito(request):
                     "imagen": producto_db.imagen.url if producto_db.imagen else "",
                 }
         else:
-            # Buscar en productos hardcodeados
             producto = next((p for p in PRODUCTOS if p["id"] == producto_id), None)
 
         if producto:
             carrito_sesion = request.session.get('carrito', [])
-
-            # Verificar si ya existe en el carrito
             pid = producto["id"]
             existente = next((p for p in carrito_sesion if p["id"] == pid), None)
 
@@ -253,7 +251,6 @@ def carrito(request):
 
         return redirect('reservas:carrito')
 
-    # ✅ GET: mostrar carrito
     carrito_sesion = request.session.get('carrito', [])
     total = sum(p["precio"] * p["cantidad"] for p in carrito_sesion)
 
@@ -289,9 +286,6 @@ def vaciar_carrito(request):
     return redirect('reservas:carrito')
 
 
-# ==========================================
-# COMPRAR — Finalizar compra y generar factura
-# ==========================================
 @login_required
 def comprar(request):
     if request.method != 'POST':
@@ -305,13 +299,11 @@ def comprar(request):
 
     total = sum(p["precio"] * p["cantidad"] for p in carrito_sesion)
 
-    # Crear la compra
     compra = Compra.objects.create(
         usuario=request.user,
         total=total
     )
 
-    # Crear los detalles
     for item in carrito_sesion:
         DetalleCompra.objects.create(
             compra=compra,
@@ -321,16 +313,11 @@ def comprar(request):
             cantidad=item["cantidad"]
         )
 
-    # Vaciar el carrito
     request.session['carrito'] = []
-
     messages.success(request, f'✅ Compra realizada — Factura: {compra.factura}')
     return redirect('reservas:factura', compra_id=compra.id)
 
 
-# ==========================================
-# FACTURA — Vista imprimible
-# ==========================================
 @login_required
 def factura(request, compra_id):
     compra = Compra.objects.filter(id=compra_id, usuario=request.user).first()
@@ -355,7 +342,6 @@ def editar_perfil(request):
     return redirect('reservas:perfil')
 
 
-# ------------------ DASHBOARD ------------------
 @login_required
 def dashboard(request):
     if request.user.is_superuser:
