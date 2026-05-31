@@ -38,6 +38,8 @@ CANCHAS_PUBLICO = [
     {"id":8,"nombre":"Cancha Sintética Fútbol 5","precio":58000,"imagen":"cancha13.jpg"},
 ]
 
+MAX_PERSONAS = 50
+
 
 # ------------------ HOME ------------------
 def home(request):
@@ -147,8 +149,12 @@ def reservar(request, id):
             return redirect(request.path)
 
         # ✅ VALIDACIONES DE LÍMITES
-        if personas < 50:
-            messages.error(request, "La cantidad mínima de personas es 50 ❌")
+        if personas < 1:
+            messages.error(request, "La cantidad mínima de personas es 1 ❌")
+            return redirect(request.path)
+
+        if personas > MAX_PERSONAS:
+            messages.error(request, f"La cantidad máxima permitida es {MAX_PERSONAS} personas ❌")
             return redirect(request.path)
 
         if horas < 1 or horas > 5:

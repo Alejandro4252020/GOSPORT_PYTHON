@@ -43,14 +43,14 @@
             {% if messages %}
                 {% for message in messages %}
                     {% if "None" not in message|stringformat:"s" %}
-                        <div class="alert alert-info">
+                        <div class="alert alert-danger">
                             {{ message }}
                         </div>
                     {% endif %}
                 {% endfor %}
             {% endif %}
 
-            <form method="POST">
+            <form method="POST" id="formReserva">
                 {% csrf_token %}
 
                 <!-- FECHA -->
@@ -81,8 +81,12 @@
                 <div class="mb-3 input-icon">
                     <label class="form-label">Cantidad de personas</label>
                     <i class="bi bi-people"></i>
-                    <input type="number" name="personas" class="form-control" min="50" required>
-                    <small class="text-white">Mínimo 50 personas</small>
+                    <input type="number" id="personas" name="personas" class="form-control"
+                           min="1" max="50" required>
+                    <small class="text-white">Máximo 50 personas</small>
+                    <div id="errorPersonas" class="text-danger mt-1" style="display:none;">
+                        ❌ La cantidad máxima permitida es 50 personas.
+                    </div>
                 </div>
 
                 <!-- HORAS -->
@@ -126,28 +130,40 @@
     <p>© 2026 Todos los derechos reservados</p>
 </footer>
 
-<!-- SCRIPT TOTAL -->
 <script>
     const horasInput = document.getElementById("horas");
+    const personasInput = document.getElementById("personas");
     const totalSpan = document.getElementById("total");
-
+    const errorPersonas = document.getElementById("errorPersonas");
     const precioBase = {{ cancha.precio }};
 
+    // Validación personas en tiempo real
+    personasInput.addEventListener("input", function () {
+        const val = parseInt(this.value);
+        if (val > 50) {
+            this.value = 50;
+            errorPersonas.style.display = "block";
+        } else {
+            errorPersonas.style.display = "none";
+        }
+    });
+
+    // Validación al enviar
+    document.getElementById("formReserva").addEventListener("submit", function (e) {
+        const val = parseInt(personasInput.value);
+        if (val > 50 || val < 1 || isNaN(val)) {
+            e.preventDefault();
+            errorPersonas.style.display = "block";
+            personasInput.focus();
+        }
+    });
+
+    // Total por horas
     function actualizarTotal() {
         let horas = parseInt(horasInput.value);
-
-        if (isNaN(horas) || horas < 1) {
-            horas = 1;
-            horasInput.value = 1;
-        }
-
-        if (horas > 5) {
-            horas = 5;
-            horasInput.value = 5;
-        }
-
-        const total = precioBase * horas;
-        totalSpan.textContent = total.toLocaleString('es-CO');
+        if (isNaN(horas) || horas < 1) { horas = 1; horasInput.value = 1; }
+        if (horas > 5) { horas = 5; horasInput.value = 5; }
+        totalSpan.textContent = (precioBase * horas).toLocaleString('es-CO');
     }
 
     horasInput.addEventListener("input", actualizarTotal);
