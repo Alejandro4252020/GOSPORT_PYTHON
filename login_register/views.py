@@ -113,7 +113,6 @@ def home(request):
 
     return render(request, 'home.html', context)
 
-
 # 👑 DASHBOARD
 @login_required
 def dashboard(request):
@@ -122,7 +121,7 @@ def dashboard(request):
         return redirect('auth:home')
 
     context = {
-        'rol': "Superadmin 👑",
+        'rol': "Superadmin 👑" if request.user.is_superuser else "Empleado",
         'total_productos': Producto.objects.count(),
         'total_canchas': Cancha.objects.count(),
         'total_carrito': 0,
