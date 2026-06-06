@@ -9,6 +9,9 @@
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/login.css' %}?v=11">
 
@@ -22,10 +25,13 @@
     <header class="topbar">
         <div class="topbar-content">
             <div class="logo-title">
-                <img src="{% static 'img/icono.jpg' %}" class="me-2" style="height:40px;">
+                <img src="{% static 'img/icono.jpg' %}" alt="Logo" class="me-2" style="height:40px;">
                 <span class="go">Go</span><span class="sports">Sports</span>
             </div>
-            <a href="{% url 'auth:register' %}" class="login-link">Registrarse</a>
+
+            <a href="{% url 'auth:register' %}" class="login-link">
+                Registrarse
+            </a>
         </div>
     </header>
 
@@ -35,11 +41,14 @@
 
             <!-- IZQUIERDA -->
             <div class="logo-section">
-                <img src="{% static 'img/icono.jpg' %}" class="me-2" style="height:80px;">
+                <img src="{% static 'img/icono.jpg' %}" alt="Logo" style="height:80px;">
+
                 <h1>GoSports</h1>
+
                 <p>
                     Organiza tus reservas, administra tus canchas y mantén el control total de tu negocio deportivo.
                 </p>
+
                 <ul>
                     <li>✔ Reservas en tiempo real</li>
                     <li>✔ Gestión de clientes</li>
@@ -49,6 +58,7 @@
 
             <!-- DERECHA -->
             <div class="card-form">
+
                 <h3 class="text-center mb-4">Iniciar Sesión</h3>
 
                 {% if messages %}
@@ -57,36 +67,49 @@
                     {% endfor %}
                 {% endif %}
 
-                <!-- FORMULARIO -->
-                <!-- 🔥 CORREGIDO -->
-            <form method="POST" action="{% url 'auth:login' %}" autocomplete="off">
+                <form method="POST" action="{% url 'auth:login' %}" autocomplete="off">
                     {% csrf_token %}
+
+                    <!-- Correo -->
                     <div class="mb-3">
-                        <input type="email" 
-                               name="email" 
-                               class="form-control" 
-                               placeholder="Correo electrónico" 
-                               required>
+                        <input
+                            type="email"
+                            name="email"
+                            class="form-control"
+                            placeholder="Correo electrónico"
+                            required>
                     </div>
+
+                    <!-- Contraseña -->
                     <div class="input-group mb-3">
-                        <input type="password" 
-                               name="password" 
-                               id="password"
-                               class="form-control"
-                               placeholder="Contraseña"
-                               required
-                               minlength="8">
-                        <button type="button" class="btn" id="togglePass">👁</button>
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            class="form-control"
+                            placeholder="Contraseña"
+                            required
+                            minlength="8">
+
+                        <button type="button"
+                                class="btn btn-outline-secondary"
+                                id="togglePass">
+                            <i class="bi bi-eye"></i>
+                        </button>
                     </div>
+
                     <button type="submit" class="btn btn-custom w-100">
                         Iniciar sesión
                     </button>
                 </form>
 
                 <p class="text-center mt-3">
-                    <!-- 🔥 CORREGIDO -->
-                   ¿No tienes cuenta? <a href="{% url 'auth:register' %}">Regístrate</a>
+                    ¿No tienes cuenta?
+                    <a href="{% url 'auth:register' %}">
+                        Regístrate
+                    </a>
                 </p>
+
             </div>
 
         </div>
@@ -97,11 +120,23 @@
         © 2025 GoSports
     </footer>
 
-    <!-- JS MOSTRAR CONTRASEÑA -->
+    <!-- Mostrar/Ocultar contraseña -->
     <script>
         document.getElementById("togglePass").addEventListener("click", function () {
+
             const pass = document.getElementById("password");
-            pass.type = pass.type === "password" ? "text" : "password";
+            const icon = this.querySelector("i");
+
+            if (pass.type === "password") {
+                pass.type = "text";
+                icon.classList.remove("bi-eye");
+                icon.classList.add("bi-eye-slash");
+            } else {
+                pass.type = "password";
+                icon.classList.remove("bi-eye-slash");
+                icon.classList.add("bi-eye");
+            }
+
         });
     </script>
 
