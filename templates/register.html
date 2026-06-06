@@ -3,9 +3,14 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro - GoSports</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <link rel="stylesheet" href="{% static 'css/register.css' %}">
     <link rel="icon" href="{% static 'img/icono.jpg' %}">
 </head>
@@ -15,7 +20,7 @@
 <header class="topbar">
     <div class="topbar-content">
         <div class="logo-title">
-            <img src="{% static 'img/icono.jpg' %}" class="me-2" style="height:40px;"> 
+            <img src="{% static 'img/icono.jpg' %}" alt="Logo" class="me-2" style="height:40px;">
             <span class="go">Go</span><span class="sports">Sports</span>
         </div>
 
@@ -36,38 +41,70 @@
         <form method="POST" autocomplete="off">
             {% csrf_token %}
 
+            <!-- Correo -->
             <div class="mb-3">
-                <input type="email" name="email" class="form-control" placeholder="Correo electrónico" required autocomplete="email">
+                <input
+                    type="email"
+                    name="email"
+                    class="form-control"
+                    placeholder="Correo electrónico"
+                    required
+                    autocomplete="email">
             </div>
 
+            <!-- Usuario -->
             <div class="mb-3">
-                <input type="text" name="username" class="form-control" placeholder="Usuario" required autocomplete="username">
+                <input
+                    type="text"
+                    name="username"
+                    class="form-control"
+                    placeholder="Usuario"
+                    required
+                    autocomplete="username">
             </div>
 
-           <!-- Contraseña -->
-<div class="input-group mb-3">
-    <input type="password" name="password" id="password" class="form-control"
-        placeholder="Contraseña"
-        required
-        autocomplete="new-password"
-        minlength="8">
-        
-    <button type="button" class="btn" id="togglePass">👁</button>
-</div>
+            <!-- Contraseña -->
+            <div class="input-group mb-3">
+                <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    class="form-control"
+                    placeholder="Contraseña"
+                    required
+                    autocomplete="new-password"
+                    minlength="8">
 
-<!-- Confirmar contraseña -->
-<div class="input-group mb-3">
-    <input type="password" name="password2" id="password2" class="form-control"
-        placeholder="Confirmar contraseña"
-        required
-        autocomplete="new-password"
-        minlength="8">
-        
-    <button type="button" class="btn" id="togglePass2">👁</button>
-</div>
+                <button type="button" class="btn btn-outline-secondary" id="togglePass">
+                    <i class="bi bi-eye"></i>
+                </button>
+            </div>
 
-            <button type="submit" class="btn btn-custom w-100">Registrarse</button>
+            <!-- Confirmar contraseña -->
+            <div class="input-group mb-2">
+                <input
+                    type="password"
+                    name="password2"
+                    id="password2"
+                    class="form-control"
+                    placeholder="Confirmar contraseña"
+                    required
+                    autocomplete="new-password"
+                    minlength="8">
+
+                <button type="button" class="btn btn-outline-secondary" id="togglePass2">
+                    <i class="bi bi-eye"></i>
+                </button>
+            </div>
+
+            <!-- Mensaje de coincidencia -->
+            <small id="matchMsg" style="display:none;"></small>
+
+            <button type="submit" class="btn btn-custom w-100 mt-3">
+                Registrarse
+            </button>
         </form>
+
     </div>
 </main>
 
@@ -77,30 +114,43 @@
 </footer>
 
 <script>
-    // Toggle Password 1
+    // Mostrar/Ocultar contraseña principal
     document.getElementById("togglePass").addEventListener("click", function () {
         const pass = document.getElementById("password");
-        pass.type = pass.type === "password" ? "text" : "password";
-        this.textContent = pass.type === "password" ? "👁" : "🙈";
+        const icon = this.querySelector("i");
+
+        if (pass.type === "password") {
+            pass.type = "text";
+            icon.classList.remove("bi-eye");
+            icon.classList.add("bi-eye-slash");
+        } else {
+            pass.type = "password";
+            icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye");
+        }
     });
 
-    // Toggle Password 2
+    // Mostrar/Ocultar confirmar contraseña
     document.getElementById("togglePass2").addEventListener("click", function () {
         const pass = document.getElementById("password2");
-        pass.type = pass.type === "password" ? "text" : "password";
-        this.textContent = pass.type === "password" ? "👁" : "🙈";
+        const icon = this.querySelector("i");
+
+        if (pass.type === "password") {
+            pass.type = "text";
+            icon.classList.remove("bi-eye");
+            icon.classList.add("bi-eye-slash");
+        } else {
+            pass.type = "password";
+            icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye");
+        }
     });
 
-    // ✅ Validación en tiempo real
+    // Validación en tiempo real
     const pass1 = document.getElementById("password");
     const pass2 = document.getElementById("password2");
     const form = document.querySelector("form");
-
-    // Crear mensaje de ayuda
-    const matchMsg = document.createElement("small");
-    matchMsg.id = "matchMsg";
-    matchMsg.style.display = "none";
-    pass2.parentElement.after(matchMsg);
+    const matchMsg = document.getElementById("matchMsg");
 
     function checkMatch() {
         if (pass2.value === "") {
@@ -108,13 +158,15 @@
             pass2.style.borderColor = "";
             return;
         }
+
         matchMsg.style.display = "block";
+
         if (pass1.value === pass2.value) {
-            matchMsg.textContent = "✅ Las contraseñas coinciden";
-            matchMsg.style.color = "#28a745";
-            pass2.style.borderColor = "#28a745";
+            matchMsg.textContent = "✓ Las contraseñas coinciden";
+            matchMsg.style.color = "#198754";
+            pass2.style.borderColor = "#198754";
         } else {
-            matchMsg.textContent = "❌ Las contraseñas no coinciden";
+            matchMsg.textContent = "✗ Las contraseñas no coinciden";
             matchMsg.style.color = "#dc3545";
             pass2.style.borderColor = "#dc3545";
         }
@@ -123,15 +175,18 @@
     pass1.addEventListener("input", checkMatch);
     pass2.addEventListener("input", checkMatch);
 
-    // ✅ Bloquear envío si no coinciden
+    // Validación antes de enviar
     form.addEventListener("submit", function (e) {
-        if (pass1.value !== pass2.value) {
-            e.preventDefault();
-            alert("Las contraseñas no coinciden");
-        }
+
         if (pass1.value.length < 8) {
             e.preventDefault();
-            alert("La contraseña debe tener al menos 8 caracteres");
+            alert("La contraseña debe tener al menos 8 caracteres.");
+            return;
+        }
+
+        if (pass1.value !== pass2.value) {
+            e.preventDefault();
+            alert("Las contraseñas no coinciden.");
         }
     });
 </script>
