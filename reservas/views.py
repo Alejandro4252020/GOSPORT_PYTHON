@@ -198,6 +198,86 @@ def reservar(request, id):
     })
 
 
+# ------------------ RESERVAR DB ------------------
+@login_required
+def reservar_db(request, id):
+    from django.shortcuts import get_object_or_404
+    cancha_db = get_object_or_404(CanchaDB, id=id)
+    cancha = {
+        "id": cancha_db.id,
+        "nombre": cancha_db.nombre,
+        "precio": int(cancha_db.precio),
+        "imagen": cancha_db.imagen.name if cancha_db.imagen else "cancha.jpg",
+    }
+
+    hoy = datetime.now()
+    año, mes = hoy.year, hoy.month
+    _, total_dias = calendar.monthrange(año, mes)
+    dias = list(range(hoy.day, total_dias + 1))
+    horarios = ["08:00 AM","10:00 AM","12:00 PM","02:00 PM","04:00 PM","06:00 PM","08:00 PM"]
+
+    if request.method == 'POST':
+        dia = request.POST.get('dia')
+        horas = request.POST.get('horas')
+        personas = request.POST.get('personas')
+        horario = request.POST.get('horario')
+
+        if not dia or not horas or not personas or not horario:
+            messages.error(request, "Completa todos los campos ❌")
+            return redirect(request.path)
+
+        try:
+            dia = int(dia)
+            horas = int(horas)
+            personas = int(personas)
+        except ValueError:
+            messages.error(request, "Datos inválidos ❌")
+            return redirect(request.path)
+
+        if personas < 1 or personas > MAX_PERSONAS:
+            messages.error(request, f"Personas debe estar entre 1 y {MAX_PERSONAS} ❌")
+            return redirect(request.path)
+
+        if horas < 1 or horas > 5:
+            messages.error(request, "Las horas deben estar entre 1 y 5 ❌")
+            return redirect(request.path)
+
+        total = cancha["precio"] * horas
+        fecha_str = f"{dia}/{mes}/{año}"
+
+        reserva_obj = Reserva.objects.create(
+            usuario=request.user,
+            cancha_nombre=cancha["nombre"],
+            fecha=fecha_str,
+            horario=horario,
+            personas=personas,
+            horas=horas,
+            total=total,
+            imagen=cancha["imagen"]
+        )
+
+        request.session['reserva'] = {
+            "id": reserva_obj.id,
+            "cancha": cancha["nombre"],
+            "fecha": fecha_str,
+            "horario": horario,
+            "personas": personas,
+            "horas": horas,
+            "total": total,
+            "imagen": cancha["imagen"]
+        }
+
+        return redirect('reservas:confirmacion_reserva')
+
+    return render(request, 'reservar.html', {
+        "cancha": cancha,
+        "dias": dias,
+        "mes": mes,
+        "año": año,
+        "horarios": horarios
+    })
+
+
 # ------------------ CATÁLOGO ------------------
 def catalogo(request):
     productos_db = ProductoDB.objects.all()
@@ -365,8 +445,18 @@ def editar_perfil(request):
 
         # ✅ Actualizar contraseña
         if password:
+            import re
             if len(password) < 8:
                 messages.error(request, 'La contraseña debe tener al menos 8 caracteres ❌')
+                return redirect('reservas:perfil')
+            if not re.search(r'[A-Z]', password):
+                messages.error(request, 'La contraseña debe tener al menos una mayúscula ❌')
+                return redirect('reservas:perfil')
+            if not re.search(r'[0-9]', password):
+                messages.error(request, 'La contraseña debe tener al menos un número ❌')
+                return redirect('reservas:perfil')
+            if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+                messages.error(request, 'La contraseña debe tener al menos un carácter especial ❌')
                 return redirect('reservas:perfil')
             user.set_password(password)
 

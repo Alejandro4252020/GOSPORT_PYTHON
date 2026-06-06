@@ -29,6 +29,7 @@ urlpatterns = [
 
     # RESERVAS
     path('reservar/<int:id>/', login_required(views.reservar), name='reservar'),
+    path('reservar-db/<int:id>/', login_required(views.reservar_db), name='reservar_db'),
     path('confirmacion/', login_required(views.confirmacion_reserva), name='confirmacion_reserva'),
     path('reserva/<int:id>/', login_required(views.ver_reserva), name='ver_reserva'),
 ]

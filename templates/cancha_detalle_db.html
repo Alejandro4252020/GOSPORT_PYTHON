@@ -72,7 +72,7 @@
             </div>
 
             <!-- FORMULARIO RESERVAR -->
-            <form method="POST" action="{% url 'reservas:reservar' cancha.id %}">
+            <form method="POST" action="{% url 'reservas:reservar_db' cancha.id %}">
                 {% csrf_token %}
 
                 <div class="mb-3">
