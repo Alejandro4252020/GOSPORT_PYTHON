@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title>confirmacion</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
@@ -24,32 +23,34 @@
 <!-- CONTENIDO -->
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
 
-    <!-- 🔥 tarjeta -->
     <div class="text-center shadow p-4 rounded bg-white">
 
         <h2 class="mb-4">Reserva Confirmada ✅</h2>
 
         <!-- RESUMEN -->
         <div class="border rounded p-3 mb-3 text-start">
-
             <p><strong>Cancha:</strong> {{ reserva.cancha }}</p>
             <p><strong>Fecha:</strong> {{ reserva.fecha }}</p>
             <p><strong>Horario:</strong> {{ reserva.horario }}</p>
             <p><strong>Personas:</strong> {{ reserva.personas }}</p>
             <p><strong>Horas:</strong> {{ reserva.horas }}</p>
             <p><strong>Total:</strong> {{ reserva.total }} COP</p>
-
             <p><strong>Método de pago:</strong> Efectivo</p>
-
         </div>
 
         <hr>
 
         <h5>Cancha reservada</h5>
 
-        <img src="{% static 'img/' %}{{ reserva.imagen }}" 
-             width="300" 
-             class="img-fluid rounded shadow mb-3">
+        {% if reserva.imagen|slice:":1" == "/" or reserva.imagen|slice:":4" == "http" %}
+            <img src="{{ reserva.imagen }}"
+                 width="300"
+                 class="img-fluid rounded shadow mb-3">
+        {% else %}
+            <img src="{% static 'img/' %}{{ reserva.imagen }}"
+                 width="300"
+                 class="img-fluid rounded shadow mb-3">
+        {% endif %}
 
         <p class="text-muted">
             ⚠ Recuerda llegar 10 minutos antes de tu horario
@@ -77,9 +78,12 @@
     </div>
 </footer>
 
-<!-- SCRIPT -->
 <script>
 function generarRecibo() {
+    const imagen = "{{ reserva.imagen }}";
+    const imagenUrl = (imagen.startsWith("/") || imagen.startsWith("http"))
+        ? imagen
+        : "/static/img/" + imagen;
 
     const data = {
         cancha: "{{ reserva.cancha }}",
@@ -88,7 +92,7 @@ function generarRecibo() {
         personas: "{{ reserva.personas }}",
         horas: "{{ reserva.horas }}",
         total: "{{ reserva.total }}",
-        imagen: "/static/img/{{ reserva.imagen }}",
+        imagen: imagenUrl,
         logo: "/static/img/icono.jpg"
     };
 
@@ -110,10 +114,7 @@ function generarRecibo() {
                     background: white;
                     border-radius: 10px;
                 }
-                .logo {
-                    height: 60px;
-                    margin-bottom: 10px;
-                }
+                .logo { height: 60px; margin-bottom: 10px; }
                 .cancha-img {
                     width: 100%;
                     max-height: 200px;
@@ -124,32 +125,21 @@ function generarRecibo() {
             </style>
         </head>
         <body>
-
         <div class="ticket">
-
             <img src="${data.logo}" class="logo">
-
             <hr>
-
             <img src="${data.imagen}" class="cancha-img">
-
             <p><strong>Cancha:</strong> ${data.cancha}</p>
             <p><strong>Fecha:</strong> ${data.fecha}</p>
             <p><strong>Horario:</strong> ${data.horario}</p>
             <p><strong>Personas:</strong> ${data.personas}</p>
             <p><strong>Horas:</strong> ${data.horas}</p>
             <p><strong>Total:</strong> ${data.total} COP</p>
-
             <p><strong>Método de pago:</strong> Efectivo</p>
-
             <hr>
             <p>✔ Gracias por tu reserva</p>
         </div>
-
-        <script>
-            window.print();
-        <\/script>
-
+        <script>window.print();<\/script>
         </body>
         </html>
     `);
