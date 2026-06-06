@@ -207,7 +207,7 @@ def reservar_db(request, id):
         "id": cancha_db.id,
         "nombre": cancha_db.nombre,
         "precio": int(cancha_db.precio),
-        "imagen": cancha_db.imagen.name if cancha_db.imagen else "cancha.jpg",
+        "imagen": cancha_db.imagen.url if cancha_db.imagen else "cancha.jpg",
     }
 
     hoy = datetime.now()
