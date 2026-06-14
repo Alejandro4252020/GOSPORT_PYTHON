@@ -2,25 +2,41 @@
 Django settings for GOSPORT_RESERVAS project.
 """
 
-import pymysql
-pymysql.install_as_MySQLdb()
-
-from pathlib import Path
 import os
+from pathlib import Path
+
+import pymysql
 import environ
+
+pymysql.install_as_MySQLdb()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Cargar variables del .env
+# =====================================================
+# VARIABLES DE ENTORNO
+# =====================================================
+
 env = environ.Env()
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-SECRET_KEY = env('SECRET_KEY')
+env_file = os.path.join(BASE_DIR, ".env")
+if os.path.exists(env_file):
+    environ.Env.read_env(env_file)
 
-DEBUG = env.bool('DEBUG', default=False)
+SECRET_KEY = env(
+    "SECRET_KEY",
+    default="django-insecure-change-this-in-production"
+)
 
-ALLOWED_HOSTS = ['*']
+DEBUG = env.bool("DEBUG", default=False)
 
+ALLOWED_HOSTS = env.list(
+    "ALLOWED_HOSTS",
+    default=["*"]
+)
+
+# =====================================================
+# APLICACIONES
+# =====================================================
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -30,7 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # apps del proyecto
+    # Apps del proyecto
     'login_register',
     'reservas',
     'usuarios',
@@ -39,10 +55,14 @@ INSTALLED_APPS = [
     'canchas',
 ]
 
+# =====================================================
+# MIDDLEWARE
+# =====================================================
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -51,9 +71,17 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# =====================================================
+# URLS Y WSGI
+# =====================================================
 
 ROOT_URLCONF = 'GOSPORT_RESERVAS.urls'
 
+WSGI_APPLICATION = 'GOSPORT_RESERVAS.wsgi.application'
+
+# =====================================================
+# TEMPLATES
+# =====================================================
 
 TEMPLATES = [
     {
@@ -71,13 +99,16 @@ TEMPLATES = [
     },
 ]
 
-
-WSGI_APPLICATION = 'GOSPORT_RESERVAS.wsgi.application'
-
+# =====================================================
+# BASE DE DATOS MYSQL (RAILWAY)
+# =====================================================
 
 DATABASES = {
     'default': {
-        'ENGINE': env('DB_ENGINE', default='django.db.backends.mysql'),
+        'ENGINE': env(
+            'DB_ENGINE',
+            default='django.db.backends.mysql'
+        ),
         'NAME': env('DB_NAME'),
         'USER': env('DB_USER'),
         'PASSWORD': env('DB_PASSWORD', default=''),
@@ -89,38 +120,96 @@ DATABASES = {
     }
 }
 
+# =====================================================
+# CACHÉ EN MEMORIA (mejora rendimiento bajo carga)
+# =====================================================
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "gosport-cache",
+    }
+}
+
+# =====================================================
+# VALIDADORES DE CONTRASEÑA
+# =====================================================
 
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'
+    },
 ]
 
+# =====================================================
+# INTERNACIONALIZACIÓN
+# =====================================================
 
 LANGUAGE_CODE = 'es-co'
+
 TIME_ZONE = 'America/Bogota'
+
 USE_I18N = True
+
 USE_TZ = True
 
+# =====================================================
+# ARCHIVOS ESTÁTICOS
+# =====================================================
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATICFILES_STORAGE = (
+    'whitenoise.storage.CompressedManifestStaticFilesStorage'
+)
+
+# =====================================================
+# MEDIA
+# =====================================================
 
 MEDIA_URL = '/media/'
+
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# =====================================================
+# AUTENTICACIÓN
+# =====================================================
+
 LOGIN_URL = '/auth/login/'
+
 LOGIN_REDIRECT_URL = '/reservas/'
+
 LOGOUT_REDIRECT_URL = '/auth/login/'
+
+# =====================================================
+# CSRF
+# =====================================================
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.railway.app",
+    "https://*.up.railway.app",
     "https://modulator-slit-frolic.ngrok-free.dev",
     "https://*.ngrok-free.app",
     "https://*.ngrok-free.dev",
 ]
+
+# =====================================================
+# MODELOS
+# =====================================================
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -5,6 +5,8 @@ import calendar
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import update_session_auth_hash
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 from .models import Reserva, Compra, DetalleCompra
 from canchas.models import Cancha as CanchaDB
 from productos.models import Producto as ProductoDB
@@ -28,7 +30,6 @@ PRODUCTOS = [
     {"id":15, "nombre":"Uniforme Gambeta", "precio":80000, "imagen":"Uniforme-Gambeta.jpg", "descripcion":"Uniforme Gambeta deportivo"},
 ]
 
-
 CANCHAS_PUBLICO = [
     {"id":1,"nombre":"Canchas Sintéticas Bogotá Jardin Club","precio":50000,"imagen":"Cancha1.jpg"},
     {"id":2,"nombre":"Canchas Sintéticas Jompibe","precio":60000,"imagen":"cancha2.jpg"},
@@ -43,10 +44,32 @@ CANCHAS_PUBLICO = [
 MAX_PERSONAS = 50
 
 
-# ------------------ HOME ------------------
+# ─── HELPERS DE CACHÉ ────────────────────────────────────────────────────────
+
+def get_canchas_db():
+    """Devuelve todas las canchas desde caché (5 minutos)."""
+    canchas = cache.get('canchas_db_all')
+    if canchas is None:
+        canchas = list(CanchaDB.objects.all())
+        cache.set('canchas_db_all', canchas, 300)
+    return canchas
+
+def get_productos_db():
+    """Devuelve todos los productos desde caché (5 minutos)."""
+    productos = cache.get('productos_db_all')
+    if productos is None:
+        productos = list(ProductoDB.objects.all())
+        cache.set('productos_db_all', productos, 300)
+    return productos
+
+
+# ─── HOME ─────────────────────────────────────────────────────────────────────
+
+# NOTA: No se usa @cache_page aquí porque el contenido varía según el usuario
+# (rol: ADMIN / EMPLEADO / USUARIO / INVITADO). Se cachean solo las queries.
 def home(request):
-    canchas = CanchaDB.objects.all()[:6]
-    productos = ProductoDB.objects.all()[:6]
+    canchas = get_canchas_db()[:6]
+    productos = get_productos_db()[:6]
 
     if request.user.is_authenticated:
         if request.user.is_superuser:
@@ -65,7 +88,8 @@ def home(request):
     })
 
 
-# ------------------ CONTACTO ------------------
+# ─── CONTACTO ─────────────────────────────────────────────────────────────────
+
 def contacto(request):
     if request.method == "POST":
         nombre = request.POST.get('nombre')
@@ -79,16 +103,20 @@ def contacto(request):
     return render(request, 'contacto.html')
 
 
-# ------------------ CANCHAS ------------------
+# ─── CANCHAS PÚBLICO ──────────────────────────────────────────────────────────
+
+# Cacheada 5 minutos — es la vista más lenta según JMeter
+@cache_page(60 * 5)
 def canchas_publico(request):
-    canchas_db = CanchaDB.objects.all()
+    canchas_db = get_canchas_db()
     return render(request, 'canchas.html', {
         "canchas": CANCHAS_PUBLICO,
         "canchas_db": canchas_db,
     })
 
 
-# ------------------ DETALLE CANCHA ------------------
+# ─── DETALLE CANCHA ───────────────────────────────────────────────────────────
+
 def cancha_detalle(request, id):
     cancha = next((c for c in CANCHAS_PUBLICO if c["id"] == id), None)
 
@@ -99,20 +127,22 @@ def cancha_detalle(request, id):
     return render(request, 'cancha_detalle.html', {"cancha": cancha})
 
 
-# ------------------ DETALLE CANCHA BD ------------------
 def cancha_detalle_db(request, id):
     from django.shortcuts import get_object_or_404
     cancha = get_object_or_404(CanchaDB, id=id)
     return render(request, 'cancha_detalle_db.html', {"cancha": cancha})
 
 
-# ------------------ RESERVAR ------------------
+# ─── RESERVAR ─────────────────────────────────────────────────────────────────
+
 def reservar(request, id):
     cancha = next((c for c in CANCHAS_PUBLICO if c["id"] == id), None)
 
     cancha_db = None
     if not cancha:
-        cancha_db = CanchaDB.objects.filter(id=id).first()
+        # Busca en caché antes de ir a BD
+        canchas_db = get_canchas_db()
+        cancha_db = next((c for c in canchas_db if c.id == id), None)
         if cancha_db:
             cancha = {
                 "id": cancha_db.id,
@@ -129,7 +159,6 @@ def reservar(request, id):
     año, mes = hoy.year, hoy.month
     _, total_dias = calendar.monthrange(año, mes)
     dias = list(range(hoy.day, total_dias + 1))
-
     horarios = ["08:00 AM","10:00 AM","12:00 PM","02:00 PM","04:00 PM","06:00 PM","08:00 PM"]
 
     if request.method == 'POST':
@@ -198,7 +227,8 @@ def reservar(request, id):
     })
 
 
-# ------------------ RESERVAR DB ------------------
+# ─── RESERVAR DB ──────────────────────────────────────────────────────────────
+
 @login_required
 def reservar_db(request, id):
     from django.shortcuts import get_object_or_404
@@ -278,11 +308,16 @@ def reservar_db(request, id):
     })
 
 
-# ------------------ CATÁLOGO ------------------
+# ─── CATÁLOGO ─────────────────────────────────────────────────────────────────
+
+# Cacheada 5 minutos — productos cambian poco
+@cache_page(60 * 5)
 def catalogo(request):
-    productos_db = ProductoDB.objects.all()
+    productos_db = get_productos_db()
     return render(request, 'catalogo.html', {"productos": PRODUCTOS, "productos_db": productos_db})
 
+
+# ─── VER RESERVA ──────────────────────────────────────────────────────────────
 
 def ver_reserva(request, id):
     reserva = {
@@ -297,6 +332,8 @@ def ver_reserva(request, id):
     return render(request, 'ver_reserva.html', {"reserva": reserva})
 
 
+# ─── CARRITO ──────────────────────────────────────────────────────────────────
+
 def carrito(request):
     if request.method == 'POST':
         producto_id = int(request.POST.get('productoId', 0))
@@ -306,7 +343,9 @@ def carrito(request):
         producto = None
 
         if source == 'db':
-            producto_db = ProductoDB.objects.filter(id=producto_id).first()
+            # Busca en caché antes de ir a BD
+            productos_db = get_productos_db()
+            producto_db = next((p for p in productos_db if p.id == producto_id), None)
             if producto_db:
                 producto = {
                     "id": f"db-{producto_db.id}",
@@ -373,6 +412,8 @@ def vaciar_carrito(request):
     return redirect('reservas:carrito')
 
 
+# ─── COMPRAR ──────────────────────────────────────────────────────────────────
+
 @login_required
 def comprar(request):
     if request.method != 'POST':
@@ -391,19 +432,25 @@ def comprar(request):
         total=total
     )
 
-    for item in carrito_sesion:
-        DetalleCompra.objects.create(
+    # bulk_create evita una query por cada item del carrito
+    detalles = [
+        DetalleCompra(
             compra=compra,
             producto_nombre=item["nombre"],
             producto_imagen=item.get("imagen", ""),
             precio=item["precio"],
             cantidad=item["cantidad"]
         )
+        for item in carrito_sesion
+    ]
+    DetalleCompra.objects.bulk_create(detalles)
 
     request.session['carrito'] = []
     messages.success(request, f'✅ Compra realizada — Factura: {compra.factura}')
     return redirect('reservas:factura', compra_id=compra.id)
 
+
+# ─── FACTURA ──────────────────────────────────────────────────────────────────
 
 @login_required
 def factura(request, compra_id):
@@ -413,6 +460,7 @@ def factura(request, compra_id):
         messages.error(request, 'Factura no encontrada ❌')
         return redirect('reservas:carrito')
 
+    # select_related evita query extra por cada detalle
     detalles = compra.detalles.all()
 
     return render(request, 'factura.html', {
@@ -421,7 +469,8 @@ def factura(request, compra_id):
     })
 
 
-# ------------------ PERFIL ------------------
+# ─── PERFIL ───────────────────────────────────────────────────────────────────
+
 @login_required
 def perfil(request):
     from .models import Perfil
@@ -436,14 +485,12 @@ def editar_perfil(request):
         password = request.POST.get('password', '').strip()
         user = request.user
 
-        # ✅ Actualizar nombre de usuario
         if nombre and nombre != user.username:
             if User.objects.filter(username=nombre).exclude(pk=user.pk).exists():
                 messages.error(request, 'Ese nombre de usuario ya está en uso ❌')
                 return redirect('reservas:perfil')
             user.username = nombre
 
-        # ✅ Actualizar contraseña
         if password:
             import re
             if len(password) < 8:
@@ -463,7 +510,6 @@ def editar_perfil(request):
         user.save()
         update_session_auth_hash(request, user)
 
-        # ✅ Actualizar foto de perfil
         from .models import Perfil
         foto = request.FILES.get('foto')
         if foto:
@@ -477,7 +523,8 @@ def editar_perfil(request):
     return redirect('reservas:perfil')
 
 
-# ------------------ DASHBOARD ------------------
+# ─── DASHBOARD ────────────────────────────────────────────────────────────────
+
 @login_required
 def dashboard(request):
     if request.user.is_superuser:
@@ -487,17 +534,27 @@ def dashboard(request):
     else:
         rol = "usuario"
 
+    # Todos los counts en un solo bloque cacheado por 2 minutos
+    stats = cache.get('dashboard_stats')
+    if stats is None:
+        stats = {
+            "total_productos": ProductoDB.objects.count(),
+            "total_canchas": CanchaDB.objects.count(),
+            "total_reservas": Reserva.objects.count(),
+        }
+        cache.set('dashboard_stats', stats, 120)
+
     context = {
         "rol": rol,
-        "total_productos": ProductoDB.objects.count(),
         "total_carrito": len(request.session.get("carrito", [])),
         "total_dinero": 0,
-        "total_canchas": CanchaDB.objects.count(),
-        "total_reservas": Reserva.objects.count(),
+        **stats,
     }
 
     return render(request, "dashboard.html", context)
 
+
+# ─── CONFIRMAR / CONFIRMACIÓN ─────────────────────────────────────────────────
 
 def confirmar(request):
     reserva = request.session.get('reserva')
