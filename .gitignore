@@ -1,9 +1,29 @@
-*.sqlite3
-staticfiles/
-datos_backup.json
-exportar.py
+# Python
+__pycache__/
+*.pyc
 *.pyo
 *.pyd
-.idea/.env 
-__pycache__/ 
-*.pyc 
+
+# Virtual environment
+venv/
+.env
+
+# Django
+staticfiles/
+media/
+
+# IDE
+.idea/
+.vscode/
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Backups
+datos_backup.json
+exportar.py
+
+# SQLite (opcional)
+*.sqlite3
