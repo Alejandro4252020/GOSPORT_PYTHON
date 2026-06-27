@@ -91,10 +91,21 @@
 
                 <td>
                     <a href="{% url 'canchas:editar_cancha' c.id %}" class="btn editar">Editar</a>
-                    <form method="POST" action="{% url 'canchas:eliminar_cancha' c.id %}" style="display:inline;"
-                          onsubmit="return confirm('¿Estás seguro de eliminar esta cancha?')">
+                    <form method="POST" action="{% url 'canchas:eliminar_cancha' c.id %}" style="display:inline;">
                         {% csrf_token %}
-                        <button type="submit" class="btn eliminar">Eliminar</button>
+                        {% if c.estado == "mantenimiento" %}
+                        <button type="submit" class="btn editar"
+                            onclick="return confirm('¿Habilitar la cancha {{ c.nombre }}?')"
+                            title="Habilitar cancha">
+                            ✅ Habilitar
+                        </button>
+                        {% else %}
+                        <button type="submit" class="btn eliminar"
+                            onclick="return confirm('¿Deshabilitar la cancha {{ c.nombre }}?')"
+                            title="Deshabilitar cancha">
+                            🚫 Deshabilitar
+                        </button>
+                        {% endif %}
                     </form>
                 </td>
             </tr>

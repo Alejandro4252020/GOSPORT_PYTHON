@@ -58,18 +58,23 @@ def editar_cancha(request, id):
     })
 
 
-# ELIMINAR (solo POST)
+# DESHABILITAR/HABILITAR CANCHA (en lugar de eliminar)
 @login_required
 def eliminar_cancha(request, id):
     if not (request.user.is_superuser or request.user.is_staff):
-        messages.error(request, 'No tienes permiso para eliminar canchas ❌')
+        messages.error(request, 'No tienes permiso para realizar esta acción ❌')
         return redirect('reservas:home')
 
     cancha = get_object_or_404(Cancha, id=id)
 
     if request.method == 'POST':
-        nombre = cancha.nombre
-        cancha.delete()
-        messages.success(request, f'Cancha "{nombre}" eliminada ✅')
+        if cancha.estado == 'mantenimiento':
+            cancha.estado = 'disponible'
+            cancha.save()
+            messages.success(request, f'Cancha "{cancha.nombre}" habilitada ✅')
+        else:
+            cancha.estado = 'mantenimiento'
+            cancha.save()
+            messages.success(request, f'Cancha "{cancha.nombre}" deshabilitada ⛔')
 
     return redirect('canchas:lista_canchas')
