@@ -11,7 +11,16 @@ def reporte_reservas(request):
     fecha = request.GET.get('fecha')
 
     if fecha:
-        reservas = reservas.filter(fecha__icontains=fecha)
+        # El input type="date" envía "2026-06-27"
+        # pero la BD guarda "27/6/2026" → convertimos
+        try:
+            from datetime import datetime
+            fecha_obj = datetime.strptime(fecha, '%Y-%m-%d')
+            # Formato sin cero inicial para coincidir con la BD: "27/6/2026"
+            fecha_bd = f"{fecha_obj.day}/{fecha_obj.month}/{fecha_obj.year}"
+            reservas = reservas.filter(fecha=fecha_bd)
+        except ValueError:
+            reservas = reservas.filter(fecha__icontains=fecha)
 
     return render(request, 'reportes/reporte.html', {
         'reservas': reservas,

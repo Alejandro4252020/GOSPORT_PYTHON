@@ -22,6 +22,12 @@ def register_view(request):
             messages.error(request, 'Todos los campos son obligatorios')
             return redirect('auth:register')
 
+        # ✅ Validar formato de email (debe tener dominio completo, ej: .com)
+        import re
+        if not re.match(r'^[\w\.-]+@[\w\.-]+\.\w{2,}$', email):
+            messages.error(request, 'El correo electrónico no es válido. Ej: usuario@gmail.com')
+            return redirect('auth:register')
+
         # ✅ Contraseñas coinciden
         if password != password2:
             messages.error(request, 'Las contraseñas no coinciden')
