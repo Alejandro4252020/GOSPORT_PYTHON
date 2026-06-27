@@ -63,6 +63,19 @@ def crear_usuario(request):
         password = request.POST.get('password')
         rol = request.POST.get('rol')
 
+        # ✅ Validar parámetros de seguridad de la contraseña
+        from django.core.exceptions import ValidationError
+        from usuarios.validators import validar_seguridad_contrasena
+        try:
+            validar_seguridad_contrasena(password)
+        except ValidationError as e:
+            messages.error(request, e.message)
+            return render(request, 'usuario/crear_usuario.html', {
+                'username': username,
+                'email': email,
+                'rol': rol
+            })
+
         # ✅ Crear en tabla usuarios.Usuario
         Usuario.objects.create(
             username=username,

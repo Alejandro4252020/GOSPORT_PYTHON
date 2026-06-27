@@ -136,11 +136,12 @@
     const totalSpan = document.getElementById("total");
     const errorPersonas = document.getElementById("errorPersonas");
     const precioBase = {{ cancha.precio }};
+    const maxCapacidad = 50;
 
     personasInput.addEventListener("input", function () {
         const val = parseInt(this.value);
-        if (val > 50) {
-            this.value = 50;
+        if (val > maxCapacidad) {
+            this.value = maxCapacidad;
             errorPersonas.style.display = "block";
         } else {
             errorPersonas.style.display = "none";
@@ -149,7 +150,7 @@
 
     document.getElementById("formReserva").addEventListener("submit", function (e) {
         const val = parseInt(personasInput.value);
-        if (val > 50 || val < 1 || isNaN(val)) {
+        if (val > maxCapacidad || val < 1 || isNaN(val)) {
             e.preventDefault();
             errorPersonas.style.display = "block";
             personasInput.focus();

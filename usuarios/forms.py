@@ -19,6 +19,13 @@ class UsuarioForm(forms.ModelForm):
             'rol': forms.Select(attrs={'class': 'form-select'}),
         }
 
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        if password:
+            from .validators import validar_seguridad_contrasena
+            validar_seguridad_contrasena(password)
+        return password
+
     def save(self, commit=True):
         usuario = super().save(commit=False)
         password = self.cleaned_data.get('password')

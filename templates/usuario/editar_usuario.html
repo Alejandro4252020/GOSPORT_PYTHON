@@ -56,8 +56,16 @@
                     <button type="button" onclick="togglePassword()">👁</button>
                 </div>
 
+                <!-- Requisitos de Contraseña -->
+                <div id="password-requirements" class="mb-3 p-2 bg-light rounded text-start" style="font-size: 0.85em; display: none; border: 1px solid #dee2e6; margin-top: 10px;">
+                    <div id="req-length" class="text-danger">❌ Mínimo 8 caracteres</div>
+                    <div id="req-upper" class="text-danger">❌ La primera letra debe ser mayúscula</div>
+                    <div id="req-number" class="text-danger">❌ Al menos un número</div>
+                    <div id="req-special" class="text-danger">❌ Al menos un carácter especial (ej. !, @, #, $, etc.)</div>
+                </div>
+
                 {% if form.password.errors %}
-                    <div class="error">{{ form.password.errors }}</div>
+                    <div class="error" style="color: #dc3545; font-size: 0.85em; margin-top: 5px;">{{ form.password.errors }}</div>
                 {% endif %}
 
                 <!-- Rol -->
@@ -86,6 +94,89 @@
         const passwordInput = document.getElementById("id_password");
         passwordInput.type = passwordInput.type === "password" ? "text" : "password";
     }
+
+    const passInput = document.getElementById("id_password");
+    const reqLength = document.getElementById("req-length");
+    const reqUpper = document.getElementById("req-upper");
+    const reqNumber = document.getElementById("req-number");
+    const reqSpecial = document.getElementById("req-special");
+    const reqContainer = document.getElementById("password-requirements");
+    const form = document.querySelector("form");
+
+    function checkPasswordStrength() {
+        const val = passInput.value;
+
+        if (val === "") {
+            reqContainer.style.display = "none";
+            return;
+        }
+
+        reqContainer.style.display = "block";
+
+        // Mínimo 8 caracteres
+        const hasLength = val.length >= 8;
+        if (hasLength) {
+            reqLength.innerHTML = "✓ Mínimo 8 caracteres";
+            reqLength.className = "text-success";
+        } else {
+            reqLength.innerHTML = "❌ Mínimo 8 caracteres";
+            reqLength.className = "text-danger";
+        }
+
+        // Primera letra mayúscula
+        const hasUpper = val.length > 0 && /^[A-Z]/.test(val);
+        if (hasUpper) {
+            reqUpper.innerHTML = "✓ La primera letra debe ser mayúscula";
+            reqUpper.className = "text-success";
+        } else {
+            reqUpper.innerHTML = "❌ La primera letra debe ser mayúscula";
+            reqUpper.className = "text-danger";
+        }
+
+        // Al menos un número
+        const hasNumber = /\d/.test(val);
+        if (hasNumber) {
+            reqNumber.innerHTML = "✓ Al menos un número";
+            reqNumber.className = "text-success";
+        } else {
+            reqNumber.innerHTML = "❌ Al menos un número";
+            reqNumber.className = "text-danger";
+        }
+
+        // Al menos un carácter especial
+        const hasSpecial = /[^a-zA-Z0-9]/.test(val);
+        if (hasSpecial) {
+            reqSpecial.innerHTML = "✓ Al menos un carácter especial";
+            reqSpecial.className = "text-success";
+        } else {
+            reqSpecial.innerHTML = "❌ Al menos un carácter especial";
+            reqSpecial.className = "text-danger";
+        }
+    }
+
+    passInput.addEventListener("focus", function() {
+        if (passInput.value !== "") {
+            reqContainer.style.display = "block";
+        }
+    });
+
+    passInput.addEventListener("input", checkPasswordStrength);
+
+    // Validación antes de enviar
+    form.addEventListener("submit", function (e) {
+        const val = passInput.value;
+        if (val !== "") {
+            const validLength = val.length >= 8;
+            const validUpper = val.length > 0 && /^[A-Z]/.test(val);
+            const validNumber = /\d/.test(val);
+            const validSpecial = /[^a-zA-Z0-9]/.test(val);
+
+            if (!validLength || !validUpper || !validNumber || !validSpecial) {
+                e.preventDefault();
+                alert("La contraseña no cumple con los requisitos de seguridad.");
+            }
+        }
+    });
     </script>
 
 </body>

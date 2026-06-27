@@ -149,6 +149,7 @@ def reservar(request, id):
                 "nombre": cancha_db.nombre,
                 "precio": int(cancha_db.precio),
                 "imagen": cancha_db.imagen.name if cancha_db.imagen else "cancha.jpg",
+                "capacidad": cancha_db.capacidad,
             }
 
     if not cancha:
@@ -192,6 +193,10 @@ def reservar(request, id):
             return redirect(request.path)
 
         total = cancha["precio"] * horas
+        if total > 1000000:
+            messages.error(request, "El precio total de la reserva no puede superar 1'000.000 de pesos colombianos ❌")
+            return redirect(request.path)
+
         fecha_str = f"{dia}/{mes}/{año}"
 
         reserva_obj = Reserva.objects.create(
@@ -238,6 +243,7 @@ def reservar_db(request, id):
         "nombre": cancha_db.nombre,
         "precio": int(cancha_db.precio),
         "imagen": cancha_db.imagen.url if cancha_db.imagen else "cancha.jpg",
+        "capacidad": cancha_db.capacidad,
     }
 
     hoy = datetime.now()
@@ -264,7 +270,11 @@ def reservar_db(request, id):
             messages.error(request, "Datos inválidos ❌")
             return redirect(request.path)
 
-        if personas < 1 or personas > MAX_PERSONAS:
+        if personas < 1:
+            messages.error(request, "La cantidad mínima de personas es 1 ❌")
+            return redirect(request.path)
+
+        if personas > MAX_PERSONAS:
             messages.error(request, f"Personas debe estar entre 1 y {MAX_PERSONAS} ❌")
             return redirect(request.path)
 
@@ -273,6 +283,10 @@ def reservar_db(request, id):
             return redirect(request.path)
 
         total = cancha["precio"] * horas
+        if total > 1000000:
+            messages.error(request, "El precio total de la reserva no puede superar 1'000.000 de pesos colombianos ❌")
+            return redirect(request.path)
+
         fecha_str = f"{dia}/{mes}/{año}"
 
         reserva_obj = Reserva.objects.create(
@@ -492,18 +506,12 @@ def editar_perfil(request):
             user.username = nombre
 
         if password:
-            import re
-            if len(password) < 8:
-                messages.error(request, 'La contraseña debe tener al menos 8 caracteres ❌')
-                return redirect('reservas:perfil')
-            if not re.search(r'[A-Z]', password):
-                messages.error(request, 'La contraseña debe tener al menos una mayúscula ❌')
-                return redirect('reservas:perfil')
-            if not re.search(r'[0-9]', password):
-                messages.error(request, 'La contraseña debe tener al menos un número ❌')
-                return redirect('reservas:perfil')
-            if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
-                messages.error(request, 'La contraseña debe tener al menos un carácter especial ❌')
+            from django.core.exceptions import ValidationError
+            from usuarios.validators import validar_seguridad_contrasena
+            try:
+                validar_seguridad_contrasena(password)
+            except ValidationError as e:
+                messages.error(request, e.message + " ❌")
                 return redirect('reservas:perfil')
             user.set_password(password)
 

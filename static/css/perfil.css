@@ -1,124 +1,200 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
 /* ------------------------------
-   ESTILOS GENERALES
---------------------------------*/
+   ESTILOS GENERALES (FONDO PREMIUM)
+   --------------------------------*/
 body {
-    background: #d5d8df;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: 
+        radial-gradient(circle at 10% 20%, rgba(0, 242, 254, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(79, 172, 254, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 1) 0%, rgba(9, 12, 25, 1) 100%);
+    font-family: 'Outfit', "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
+    color: #ffffff;
+    min-height: 100vh;
 }
 
 /* ------------------------------
-   NAVBAR
---------------------------------*/
+   NAVBAR (GLASSMORPHISM)
+   --------------------------------*/
 .navbar {
-    background: linear-gradient(90deg, #000000, #1b1b1b);
-    padding: 10px 0;
+    background: rgba(9, 12, 25, 0.8) !important;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 15px 0;
+    transition: all 0.3s ease;
 }
 
-.navbar .navbar-brand span {
-    color: #ffffff;
-    font-size: 1.4rem;
-    letter-spacing: 1px;
+.navbar .navbar-brand {
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    background: linear-gradient(135deg, #ffffff 0%, #a5c7f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .navbar .nav-link {
-    color: #ffffff;
+    color: rgba(255, 255, 255, 0.7) !important;
     font-weight: 500;
     margin-left: 15px;
-    transition: 0.3s;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    padding: 8px 16px !important;
 }
 
 .navbar .nav-link:hover {
-    color: #dbe9ff;
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.05);
     transform: translateY(-1px);
 }
 
-/* Botón cerrar sesión */
 .navbar .btn-danger {
-    background-color: #ff4b4b;
+    background-color: #ff3366;
     border: none;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(255, 51, 102, 0.2);
+    transition: all 0.3s ease;
 }
 
 .navbar .btn-danger:hover {
-    background-color: #e63939;
+    background-color: #ff0044;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(255, 51, 102, 0.4);
 }
 
 /* ------------------------------
-   PERFIL DE USUARIO
---------------------------------*/
-/* Imagen de perfil */
-img.rounded-circle {
-    width: 150px; /* Más proporcional dentro de la card */
-    height: 150px;
-    border: 4px solid #c9c9c9;
-    background: #9b9b9b;
-    margin: 0 auto 15px; /* Separación inferior */
-    border-radius: 60pxs;
-    transition: opacity 0.2s ease-in-out;
-}
-
-img:not([src]) {
-    opacity: 0;
-}
-
-img.loaded {
-    opacity: 1;
-}
-
-/* ------------------------------
-   TARJETA DE PERFIL
---------------------------------*/
+   TARJETA DE PERFIL (GLASS)
+   --------------------------------*/
 .card {
-    width: 150%;          
-    max-width: 520px;     /* Más angosta */
-    margin: 20px auto;    /* Menos separación */
-    padding: 40px 40px;   /* Más compacta */
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    text-align: center;
-
-    /* Más pequeña en altura */
-    overflow-y: auto;
-
-
+    border-radius: 30px !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    width: 100% !important;
+    max-width: 520px !important;
+    margin: 40px auto !important;
+    padding: 40px !important;
+    box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(15px);
+    animation: fadeIn 0.6s ease-in-out;
+    color: #ffffff;
 }
 
-/* Título de la card */
-.card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Campos de formulario */
-.form-control {
+.card h2 {
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #ffffff 0%, #9bc5ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.card h4 {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* ------------------------------
+   IMAGEN DE PERFIL (AVATAR)
+   --------------------------------*/
+img.rounded-circle {
+    width: 150px;
+    height: 150px;
+    border: 3px solid rgba(0, 242, 254, 0.5) !important;
+    background: rgba(255, 255, 255, 0.05);
+    margin: 0 auto 15px;
+    object-fit: cover;
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+    transition: all 0.3s ease;
+}
+
+img.rounded-circle:hover {
+    border-color: rgba(0, 242, 254, 0.8) !important;
+    box-shadow: 0 0 25px rgba(0, 242, 254, 0.4);
+}
+
+/* ------------------------------
+   FORMULARIOS
+   --------------------------------*/
+.form-label {
+    color: rgba(255, 255, 255, 0.85);
     font-size: 0.95rem;
-    padding: 8px 10px;
-    margin-bottom: 15px;
+    font-weight: 600;
 }
 
-/* Botón de acción */
-.btn-lg {
-    padding: 10px 0;
-    font-size: 1rem;
+.form-control {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    border-radius: 12px !important;
+    font-size: 0.95rem;
+    padding: 10px 14px !important;
+    transition: all 0.3s ease;
 }
 
-/* Centrar inputs tipo file */
-input[type="file"] {
-    display: block;
-    margin: 10px auto 0;
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border-color: rgba(0, 242, 254, 0.5) !important;
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.2) !important;
+    color: #ffffff !important;
 }
+
+.form-control:disabled {
+    background: rgba(255, 255, 255, 0.01) !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+    color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.3) !important;
+}
+
+small.text-muted {
+    color: rgba(255, 255, 255, 0.4) !important;
+    font-size: 0.85rem;
+}
+
+/* ------------------------------
+   BOTONES
+   --------------------------------*/
+.btn-primary {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+    color: #0b0f19 !important;
+    border: none !important;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-radius: 12px;
+    padding: 12px 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 242, 254, 0.4);
+    filter: brightness(1.1);
+}
+
 /* ------------------------------
    FOOTER
---------------------------------*/
+   --------------------------------*/
 footer {
-    background: #000000;
-    color: #ffffff;
+    background: rgba(9, 12, 25, 0.95);
+    color: rgba(255, 255, 255, 0.6);
+    padding: 20px 0;
+    margin-top: 50px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
     text-align: center;
 }
 
-footer  {
+footer p {
     margin: 0;
+    font-size: 0.9rem;
     letter-spacing: 0.5px;
 }

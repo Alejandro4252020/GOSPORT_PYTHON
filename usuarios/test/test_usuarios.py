@@ -69,3 +69,23 @@ class UsuarioViewsTest(TestCase):
         self.client.login(username="cliente", password="Cliente123!")
         self.client.post(reverse("usuarios:eliminar_usuario", args=[self.usuario.id]))
         self.assertEqual(Usuario.objects.filter(id=self.usuario.id).count(), 1)
+
+    def test_crear_usuario_admin_password_invalido(self):
+        self.client.login(username="admin", password="Admin123!")
+        # Contraseña sin mayúscula inicial
+        self.client.post(reverse("usuarios:crear_usuario"), {
+            "username": "nuevo_usuario_invalido", "email": "nuevo_inv@test.com",
+            "password": "nuevo123!", "rol": "cliente"
+        })
+        self.assertEqual(Usuario.objects.filter(username="nuevo_usuario_invalido").count(), 0)
+
+    def test_editar_usuario_admin_password_invalido(self):
+        self.client.login(username="admin", password="Admin123!")
+        # Contraseña sin carácter especial
+        response = self.client.post(reverse("usuarios:editar_usuario", args=[self.usuario.id]), {
+            "username": "usuario_crud", "email": "crud@test.com",
+            "password": "Nuevo1234", "rol": "cliente"
+        })
+        # Debe re-renderizar la página con errores de formulario
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(response.context['form'], 'password', 'La contraseña debe contener al menos un carácter especial (ej. !, @, #, $, etc.).')

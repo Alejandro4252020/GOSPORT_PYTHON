@@ -108,3 +108,21 @@ class CanchaViewsTest(TestCase):
         self.client.login(username="cliente", password="Cliente123!")
         self.client.post(reverse("canchas:eliminar_cancha", args=[self.cancha.id]))
         self.assertEqual(Cancha.objects.filter(id=self.cancha.id).count(), 1)
+
+    def test_crear_cancha_capacidad_invalida_demasiadas_personas(self):
+        self.client.login(username="admin", password="Admin123!")
+        response = self.client.post(reverse("canchas:crear_cancha"), {
+            "nombre": "Cancha Capacidad Invalida", "tipo": "Fútbol", "precio": "60000",
+            "capacidad": "101", "estado": "disponible", "direccion": "Av. Principal 456",
+            "imagen": crear_imagen_test("test.jpg"),
+        })
+        self.assertEqual(Cancha.objects.filter(nombre="Cancha Capacidad Invalida").count(), 0)
+
+    def test_crear_cancha_precio_invalido_demasiado_alto(self):
+        self.client.login(username="admin", password="Admin123!")
+        response = self.client.post(reverse("canchas:crear_cancha"), {
+            "nombre": "Cancha Precio Invalido", "tipo": "Fútbol", "precio": "500001",
+            "capacidad": "15", "estado": "disponible", "direccion": "Av. Principal 456",
+            "imagen": crear_imagen_test("test.jpg"),
+        })
+        self.assertEqual(Cancha.objects.filter(nombre="Cancha Precio Invalido").count(), 0)

@@ -27,9 +27,13 @@ def register_view(request):
             messages.error(request, 'Las contraseñas no coinciden')
             return redirect('auth:register')
 
-        # ✅ Longitud mínima
-        if len(password) < 8:
-            messages.error(request, 'La contraseña debe tener al menos 8 caracteres')
+        # ✅ Validar parámetros de seguridad de la contraseña
+        from django.core.exceptions import ValidationError
+        from usuarios.validators import validar_seguridad_contrasena
+        try:
+            validar_seguridad_contrasena(password)
+        except ValidationError as e:
+            messages.error(request, e.message)
             return redirect('auth:register')
 
         # ✅ Usuario existente

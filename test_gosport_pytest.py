@@ -113,6 +113,28 @@ def test_crear_cancha_admin(client, admin_user):
 
 
 @pytest.mark.django_db
+def test_crear_cancha_capacidad_invalida(client, admin_user):
+    client.login(username="admin", password="Admin123!")
+    client.post(reverse("canchas:crear_cancha"), {
+        "nombre": "Cancha Nueva Invalida", "tipo": "Fútbol", "precio": "60000",
+        "capacidad": "101", "estado": "disponible", "direccion": "Av. 456",
+        "imagen": imagen_test(),
+    })
+    assert Cancha.objects.filter(nombre="Cancha Nueva Invalida").count() == 0
+
+
+@pytest.mark.django_db
+def test_crear_cancha_precio_invalido(client, admin_user):
+    client.login(username="admin", password="Admin123!")
+    client.post(reverse("canchas:crear_cancha"), {
+        "nombre": "Cancha Precio Invalido", "tipo": "Fútbol", "precio": "500001",
+        "capacidad": "12", "estado": "disponible", "direccion": "Av. 456",
+        "imagen": imagen_test(),
+    })
+    assert Cancha.objects.filter(nombre="Cancha Precio Invalido").count() == 0
+
+
+@pytest.mark.django_db
 def test_crear_cancha_cliente_denegado(client, cliente_user):
     client.login(username="cliente", password="Cliente123!")
     client.post(reverse("canchas:crear_cancha"), {
@@ -373,6 +395,30 @@ def test_perfil_requiere_login(client):
 def test_reservar_db_requiere_login(client, cancha):
     response = client.get(reverse("reservas:reservar_db", args=[cancha.id]))
     assert response.status_code == 302
+
+
+@pytest.mark.django_db
+def test_reservar_db_personas_invalidas(client, cliente_user, cancha):
+    client.login(username="cliente", password="Cliente123!")
+    # 51 is invalid because MAX_PERSONAS is 50
+    client.post(reverse("reservas:reservar_db", args=[cancha.id]), {
+        "dia": "20", "horas": "2", "personas": "51", "horario": "08:00 AM"
+    })
+    assert Reserva.objects.count() == 0
+
+
+@pytest.mark.django_db
+def test_reservar_db_precio_invalido(client, cliente_user):
+    cancha_cara = Cancha.objects.create(
+        nombre="Cancha Cara", tipo="Futsal", precio=300000,
+        capacidad=10, estado="disponible", direccion="Calle 2", imagen=""
+    )
+    client.login(username="cliente", password="Cliente123!")
+    # 4 hours at 300,000 is 1,200,000 COP, which exceeds 1,000,000 COP limit
+    client.post(reverse("reservas:reservar_db", args=[cancha_cara.id]), {
+        "dia": "20", "horas": "4", "personas": "5", "horario": "08:00 AM"
+    })
+    assert Reserva.objects.filter(cancha_nombre="Cancha Cara").count() == 0
 
 
 @pytest.mark.django_db

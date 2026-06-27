@@ -37,14 +37,22 @@
         <div class="card-form">
             <h2>Crear Usuario</h2>
 
+            {% if messages %}
+                <div class="mb-3">
+                    {% for message in messages %}
+                        <p class="error-msg text-danger small" style="margin-bottom: 5px;">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
             <form method="POST">
                 {% csrf_token %}
 
                 <label>Nombre de usuario:</label>
-                <input type="text" name="username" required>
+                <input type="text" name="username" value="{{ username|default:'' }}" required>
 
                 <label>Correo electrónico:</label>
-                <input type="email" name="email" required>
+                <input type="email" name="email" value="{{ email|default:'' }}" required>
 
                 <label>Contraseña:</label>
                 <div class="password-container">
@@ -52,14 +60,22 @@
                     <button type="button" onclick="togglePassword()">👁</button>
                 </div>
 
-                <label>Rol:</label>
+                <!-- Requisitos de Contraseña -->
+                <div id="password-requirements" class="mb-3 p-2 bg-light rounded text-start" style="font-size: 0.85em; display: none; border: 1px solid #dee2e6; margin-top: 10px;">
+                    <div id="req-length" class="text-danger">❌ Mínimo 8 caracteres</div>
+                    <div id="req-upper" class="text-danger">❌ La primera letra debe ser mayúscula</div>
+                    <div id="req-number" class="text-danger">❌ Al menos un número</div>
+                    <div id="req-special" class="text-danger">❌ Al menos un carácter especial (ej. !, @, #, $, etc.)</div>
+                </div>
+
+                <label style="margin-top: 10px;">Rol:</label>
                 <select name="rol">
-                    <option value="cliente">Cliente</option>
-                    <option value="empleado">Empleado</option>
-                    <option value="admin">Administrador</option>
+                    <option value="cliente" {% if rol == 'cliente' %}selected{% endif %}>Cliente</option>
+                    <option value="empleado" {% if rol == 'empleado' %}selected{% endif %}>Empleado</option>
+                    <option value="admin" {% if rol == 'admin' %}selected{% endif %}>Administrador</option>
                 </select>
 
-                <button type="submit" class="btn-submit">Crear Usuario</button>
+                <button type="submit" class="btn-submit" style="margin-top: 20px;">Crear Usuario</button>
             </form>
         </div>
     </div>
@@ -75,6 +91,79 @@
         const input = document.getElementById("password");
         input.type = input.type === "password" ? "text" : "password";
     }
+
+    // Validación en tiempo real
+    const passInput = document.getElementById("password");
+    const reqLength = document.getElementById("req-length");
+    const reqUpper = document.getElementById("req-upper");
+    const reqNumber = document.getElementById("req-number");
+    const reqSpecial = document.getElementById("req-special");
+    const reqContainer = document.getElementById("password-requirements");
+    const form = document.querySelector("form");
+
+    passInput.addEventListener("focus", function() {
+        reqContainer.style.display = "block";
+    });
+
+    function checkPasswordStrength() {
+        const val = passInput.value;
+
+        // Mínimo 8 caracteres
+        const hasLength = val.length >= 8;
+        if (hasLength) {
+            reqLength.innerHTML = "✓ Mínimo 8 caracteres";
+            reqLength.className = "text-success";
+        } else {
+            reqLength.innerHTML = "❌ Mínimo 8 caracteres";
+            reqLength.className = "text-danger";
+        }
+
+        // Primera letra mayúscula
+        const hasUpper = val.length > 0 && /^[A-Z]/.test(val);
+        if (hasUpper) {
+            reqUpper.innerHTML = "✓ La primera letra debe ser mayúscula";
+            reqUpper.className = "text-success";
+        } else {
+            reqUpper.innerHTML = "❌ La primera letra debe ser mayúscula";
+            reqUpper.className = "text-danger";
+        }
+
+        // Al menos un número
+        const hasNumber = /\d/.test(val);
+        if (hasNumber) {
+            reqNumber.innerHTML = "✓ Al menos un número";
+            reqNumber.className = "text-success";
+        } else {
+            reqNumber.innerHTML = "❌ Al menos un número";
+            reqNumber.className = "text-danger";
+        }
+
+        // Al menos un carácter especial
+        const hasSpecial = /[^a-zA-Z0-9]/.test(val);
+        if (hasSpecial) {
+            reqSpecial.innerHTML = "✓ Al menos un carácter especial";
+            reqSpecial.className = "text-success";
+        } else {
+            reqSpecial.innerHTML = "❌ Al menos un carácter especial";
+            reqSpecial.className = "text-danger";
+        }
+    }
+
+    passInput.addEventListener("input", checkPasswordStrength);
+
+    // Validación antes de enviar
+    form.addEventListener("submit", function (e) {
+        const val = passInput.value;
+        const validLength = val.length >= 8;
+        const validUpper = val.length > 0 && /^[A-Z]/.test(val);
+        const validNumber = /\d/.test(val);
+        const validSpecial = /[^a-zA-Z0-9]/.test(val);
+
+        if (!validLength || !validUpper || !validNumber || !validSpecial) {
+            e.preventDefault();
+            alert("La contraseña no cumple con los requisitos de seguridad.");
+        }
+    });
     </script>
 
 </body>

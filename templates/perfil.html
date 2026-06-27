@@ -16,18 +16,62 @@
 <body>
 
 <!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg bg-white shadow-sm py-3">
-<div class="container">
+<nav class="navbar navbar-expand-lg py-3 navbar-dark">
+<div class="container d-flex align-items-center justify-content-between">
 
 <a class="navbar-brand d-flex align-items-center" href="{% url 'reservas:home' %}">
-<img src="{% static 'img/icono.jpg' %}" style="height:40px" class="me-2">
+<img src="{% static 'img/icono.jpg' %}" style="height:40px; border-radius: 8px;" class="me-2">
 <span class="fw-bold">GOSPORT</span>
 </a>
 
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+data-bs-target="#navbarNav">
+<span class="navbar-toggler-icon"></span>
+</button>
+
+<div class="collapse navbar-collapse" id="navbarNav">
+
 <ul class="navbar-nav ms-auto">
 
+{% if request.user.is_superuser or request.user.is_staff %}
 <li class="nav-item">
-<a class="nav-link" href="{% url 'reservas:home' %}">Inicio</a>
+    <a class="nav-link fw-bold text-success" href="{% url 'reservas:dashboard' %}">
+        📊 Dashboard
+    </a>
+</li>
+{% endif %}
+
+{% if request.user.is_superuser %}
+<li class="nav-item">
+    <a class="nav-link fw-bold text-warning" href="{% url 'usuarios:lista_usuarios' %}">
+        👥 Usuarios
+    </a>
+</li>
+<li class="nav-item">
+    <a class="nav-link fw-bold text-info" href="{% url 'reportes:reporte_reservas' %}">
+        📋 Reservas
+    </a>
+</li>
+{% endif %}
+
+<li class="nav-item">
+<a class="nav-link" href="{% url 'reservas:carrito' %}">Mi Carrito</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="{% url 'reservas:catalogo' %}">Tienda GS</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="{% url 'reservas:canchas_publico' %}">Canchas</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="{% url 'reservas:contacto' %}">Contacto</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="{% url 'reservas:perfil' %}">Mi Perfil</a>
 </li>
 
 <li class="nav-item">
@@ -40,7 +84,7 @@
 </li>
 
 </ul>
-
+</div>
 </div>
 </nav>
 

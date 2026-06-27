@@ -211,12 +211,28 @@ class ReservaViewsTest(TestCase):
         self.assertEqual(Reserva.objects.count(), 1)
 
     def test_reservar_personas_invalidas(self):
+        self.client.login(username="reservador", password="Reserva123!")
+        # 51 is invalid because MAX_PERSONAS is 50
         self.client.post(reverse("reservas:reservar", args=[self.cancha.id]), {
-            "dia": "20", "horas": "2", "personas": "100", "horario": "08:00 AM"
+            "dia": "20", "horas": "2", "personas": "51", "horario": "08:00 AM"
         })
         self.assertEqual(Reserva.objects.count(), 0)
 
+    def test_reservar_excede_tope_precio(self):
+        self.client.login(username="reservador", password="Reserva123!")
+        # Create a cancha with price 300,000
+        cancha_cara = Cancha.objects.create(
+            nombre="Cancha Cara", tipo="Futsal", precio=300000,
+            capacidad=10, estado="disponible", direccion="Calle 2", imagen=""
+        )
+        # Reserving for 4 hours yields 1,200,000 COP, which exceeds 1,000,000 COP
+        self.client.post(reverse("reservas:reservar_db", args=[cancha_cara.id]), {
+            "dia": "20", "horas": "4", "personas": "5", "horario": "08:00 AM"
+        })
+        self.assertEqual(Reserva.objects.filter(cancha_nombre="Cancha Cara").count(), 0)
+
     def test_reservar_horas_invalidas(self):
+        self.client.login(username="reservador", password="Reserva123!")
         self.client.post(reverse("reservas:reservar", args=[self.cancha.id]), {
             "dia": "20", "horas": "10", "personas": "5", "horario": "08:00 AM"
         })

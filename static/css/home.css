@@ -1,60 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
 /* ------------------------------
-   ESTILOS GENERALES (FONDO DARK)
---------------------------------*/
+   ESTILOS GENERALES (FONDO PREMIUM)
+   --------------------------------*/
 body {
-    background: linear-gradient(135deg, #000000 0%, #020c2b 40%, #001f4d 100%);
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: 
+        radial-gradient(circle at 10% 20%, rgba(0, 242, 254, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(79, 172, 254, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 1) 0%, rgba(9, 12, 25, 1) 100%);
+    font-family: 'Outfit', "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    color: #ffffff; /* 🔥 texto visible */
+    color: #ffffff;
+    min-height: 100vh;
 }
 
 /* ------------------------------
-   NAVBAR (SE MANTIENE)
---------------------------------*/
+   NAVBAR (GLASSMORPHISM)
+   --------------------------------*/
 .navbar {
-    background: linear-gradient(90deg, #000000, #1b1b1b);
-    padding: 10px 0;
+    background: rgba(9, 12, 25, 0.8) !important;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 15px 0;
+    transition: all 0.3s ease;
 }
 
-.navbar .navbar-brand span {
-    color: #ffffff;
-    font-size: 1.4rem;
-    letter-spacing: 1px;
+.navbar .navbar-brand {
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    background: linear-gradient(135deg, #ffffff 0%, #a5c7f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .navbar .nav-link {
-    color: #ffffff;
+    color: rgba(255, 255, 255, 0.7) !important;
     font-weight: 500;
     margin-left: 15px;
-    transition: 0.3s;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    padding: 8px 16px !important;
 }
 
 .navbar .nav-link:hover {
-    color: #dbe9ff;
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.05);
     transform: translateY(-1px);
 }
 
 .navbar .btn-danger {
-    background-color: #ff4b4b;
+    background-color: #ff3366;
     border: none;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(255, 51, 102, 0.2);
+    transition: all 0.3s ease;
 }
 
 .navbar .btn-danger:hover {
-    background-color: #e63939;
+    background-color: #ff0044;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(255, 51, 102, 0.4);
 }
 
 /* ------------------------------
-   TARJETA PRINCIPAL (GLASS)
---------------------------------*/
-.card {
-    border-radius: 25px !important;
-    background: rgba(255, 255, 255, 0.06); /* 🔥 efecto vidrio */
+   TARJETA PRINCIPAL (GLASS CONTAINER)
+   --------------------------------*/
+.main-card {
+    border-radius: 30px !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
     width: 100% !important;
     max-width: 1300px !important;
-    padding: 35px !important;
-    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(12px);
+    padding: 40px !important;
+    box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(15px);
     animation: fadeIn 0.6s ease-in-out;
 }
 
@@ -66,153 +88,175 @@ body {
 
 /* ------------------------------
    TÍTULOS
---------------------------------*/
-h2, h4 {
+   --------------------------------*/
+h2 {
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #ffffff 0%, #9bc5ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+}
+
+h4 {
     color: #ffffff;
     font-weight: 700;
+    letter-spacing: -0.2px;
 }
 
 /* ------------------------------
-   TARJETAS DE CANCHAS
---------------------------------*/
+   TARJETAS DE CANCHAS (NEW GLASS DESIGN)
+   --------------------------------*/
 .cancha-card {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(0,255,150,0.3);
-    border-radius: 18px;
-    padding: 25px;
-    transition: 0.3s;
-    min-height: 300px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 20px;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .cancha-card:hover {
-    background: rgba(255,255,255,0.08);
-    transform: translateY(-6px);
-    box-shadow: 0px 8px 25px rgba(0,255,150,0.2);
+    background: rgba(255, 255, 255, 0.07);
+    transform: translateY(-8px);
+    border-color: rgba(0, 242, 254, 0.4);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 242, 254, 0.15);
 }
 
 .cancha-card img {
     width: 100%;
-    height: 210px;
+    height: 150px;
     object-fit: cover;
     border-radius: 12px;
+    transition: transform 0.5s ease;
+}
+
+.cancha-card:hover img {
+    transform: scale(1.02);
+}
+
+.cancha-card h6 {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1.1rem;
 }
 
 /* ------------------------------
    BOTONES
---------------------------------*/
+   --------------------------------*/
 .btn-primary {
-    background: #000000;
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: #0b0f19 !important;
     border: none;
-    font-weight: 600;
-    border-radius: 10px;
-    transition: 0.3s;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-radius: 12px;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
 }
 
 .btn-primary:hover {
-    background: #383838;
-    transform: scale(1.03);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 242, 254, 0.4);
+    filter: brightness(1.1);
 }
 
 /* ------------------------------
-   PRODUCTOS Y PROMOCIONES
---------------------------------*/
+   PRODUCTOS Y PROMOCIONES (GLASS PRODUCT CARD)
+   --------------------------------*/
 .product-card {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(0,255,150,0.3);
-    border-radius: 15px;
-    transition: 0.3s;
-    padding: 10px;
-    max-width: 260px;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 20px !important;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+    backdrop-filter: blur(10px);
+    padding: 15px !important;
+    max-width: 280px;
     margin: auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+}
+
+.product-card:hover {
+    background: rgba(255, 255, 255, 0.07) !important;
+    transform: translateY(-8px);
+    border-color: rgba(0, 230, 118, 0.4) !important;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 230, 118, 0.15) !important;
 }
 
 .product-img {
     width: 100%;
     object-fit: contain;
     border-radius: 12px;
-    transition: 0.3s;
+    transition: all 0.3s ease;
 }
 
 .product-card h6 {
-    font-size: 0.9rem;
-    margin-bottom: 4px;
+    font-size: 1rem;
+    margin-top: 10px;
+    font-weight: 700;
     color: #ffffff;
 }
 
-.product-card p {
-    font-size: 0.85rem;
-    margin-bottom: 0;
-    color: #cccccc;
-}
-
-.product-card:hover {
-    background: rgba(255,255,255,0.08);
-    transform: translateY(-6px);
-    box-shadow: 0px 8px 25px rgba(0,255,150,0.2);
-}
-
-.product-card img {
-    width: 100%;
-    height: 110px;
-    object-fit: contain;
-    border-radius: 10px;
-}
-
-/* PRECIOS */
-.text-success,
-.text-primary {
+/* PRECIOS Y ESTADOS */
+.text-success {
     color: #00e676 !important;
     font-weight: 700;
+    text-shadow: 0 0 10px rgba(0, 230, 118, 0.2);
+}
+
+/* ------------------------------
+   BOTÓN COMPRAR & ACCIONES
+   --------------------------------*/
+.btn-dark {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+
+.btn-dark:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+}
+
+/* ------------------------------
+   BANNER (AJUSTADO AL DARK)
+   --------------------------------*/
+.banner-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.banner-img {
+    width: 100%;
+    border-radius: 20px;
+    object-fit: cover;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* ------------------------------
    FOOTER
---------------------------------*/
+   --------------------------------*/
 footer {
-    background: #000000;
-    color: #ffffff;
-    padding: 15px 0;
-    margin-top: 40px;
-    text-align: center;
+    background: rgba(9, 12, 25, 0.95);
+    color: rgba(255, 255, 255, 0.6);
+    padding: 20px 0;
+    margin-top: 50px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 footer p {
     margin: 0;
     font-size: 0.9rem;
     letter-spacing: 0.5px;
-}
-
-/* ------------------------------
-   BOTÓN COMPRAR
---------------------------------*/
-.btn-success {
-    background-color: #000000;
-    border: none;
-    font-weight: 600;
-    border-radius: 10px;
-    transition: 0.3s;
-}
-
-.btn-success:hover {
-    background-color: #646464;
-    transform: scale(1.03);
-}
-
-/* ------------------------------
-   BANNER (AJUSTADO AL DARK)
---------------------------------*/
-.banner-container {
-    width: 100%;
-    background: transparent; /* 🔥 quita fondo gris */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px 0;
-}
-
-.banner-img {
-    width: 90%;
-    max-width: 1200px;
-    border-radius: 15px;
-    object-fit: cover;
 }
