@@ -5,6 +5,10 @@ class CanchaForm(forms.ModelForm):
     class Meta:
         model = Cancha
         fields = '__all__'
+        widgets = {
+            'latitud': forms.HiddenInput(),
+            'longitud': forms.HiddenInput(),
+        }
 
     def clean_capacidad(self):
         capacidad = self.cleaned_data.get('capacidad')

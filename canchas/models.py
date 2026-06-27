@@ -15,6 +15,8 @@ class Cancha(models.Model):
     estado = models.CharField(max_length=20, choices=ESTADOS)
     direccion = models.CharField(max_length=255)
     imagen = models.ImageField(upload_to='canchas/')
+    latitud = models.FloatField(null=True, blank=True)
+    longitud = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return self.nombre
