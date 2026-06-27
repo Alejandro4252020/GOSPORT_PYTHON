@@ -133,20 +133,31 @@ def editar_usuario(request, id):
 
 
 # =========================
-# ELIMINAR USUARIO
+# DESHABILITAR/HABILITAR USUARIO
 # =========================
 @login_required
 def eliminar_usuario(request, id):
-    # ✅ Solo admin y superusuario pueden eliminar usuarios
+    # ✅ Solo admin y superusuario pueden deshabilitar usuarios
     if not (request.user.is_superuser or request.user.is_staff):
-        messages.error(request, 'No tienes permiso para eliminar usuarios ❌')
+        messages.error(request, 'No tienes permiso para realizar esta acción ❌')
         return redirect('reservas:home')
 
     usuario = get_object_or_404(Usuario, id=id)
 
     if request.method == 'POST':
-        usuario.delete()
-        messages.success(request, f'Usuario "{usuario.username}" eliminado ✅')
+        usuario.activo = not usuario.activo
+        usuario.save()
+
+        # También deshabilitar/habilitar en auth.User para bloquear el login
+        try:
+            auth_user = User.objects.get(username=usuario.username)
+            auth_user.is_active = usuario.activo
+            auth_user.save()
+        except User.DoesNotExist:
+            pass
+
+        estado = 'habilitado ✅' if usuario.activo else 'deshabilitado ⛔'
+        messages.success(request, f'Usuario "{usuario.username}" {estado}')
 
     return redirect('usuarios:lista_usuarios')
 

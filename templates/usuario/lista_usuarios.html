@@ -134,6 +134,7 @@
                         <th>#</th>
                         <th>Usuario</th>
                         <th>Rol</th>
+                        <th>Estado</th>
                         <th class="no-print">Acciones</th>
                     </tr>
                 </thead>
@@ -152,6 +153,13 @@
                                 {{ usuario.get_rol_display }}
                             </span>
                         </td>
+                        <td>
+                            {% if usuario.activo %}
+                                <span class="badge bg-success">Activo</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Inactivo</span>
+                            {% endif %}
+                        </td>
                         <td class="no-print">
                             <a href="{% url 'usuarios:editar_usuario' usuario.id %}" class="btn btn-warning btn-sm">
                                 ✏️ Editar
@@ -159,17 +167,26 @@
 
                             <form action="{% url 'usuarios:eliminar_usuario' usuario.id %}" method="POST" style="display:inline;">
                                 {% csrf_token %}
+                                {% if usuario.activo %}
                                 <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('¿Eliminar a {{ usuario.username }}?')">
-                                    🗑️
+                                    onclick="return confirm('¿Deshabilitar a {{ usuario.username }}?')"
+                                    title="Deshabilitar usuario">
+                                    🚫
                                 </button>
+                                {% else %}
+                                <button type="submit" class="btn btn-success btn-sm"
+                                    onclick="return confirm('¿Habilitar a {{ usuario.username }}?')"
+                                    title="Habilitar usuario">
+                                    ✅
+                                </button>
+                                {% endif %}
                             </form>
                         </td>
                     </tr>
 
                     {% empty %}
                     <tr>
-                        <td colspan="4">No hay usuarios registrados</td>
+                        <td colspan="5">No hay usuarios registrados</td>
                     </tr>
                     {% endfor %}
                 </tbody>
