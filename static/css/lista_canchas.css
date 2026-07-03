@@ -118,6 +118,33 @@ html, body {
     box-shadow: 0 0 25px rgba(0,255,135,0.7);
 }
 
+/* ===== MENSAJES ===== */
+.mensajes {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 25px 0;
+}
+
+.mensajes li {
+    padding: 14px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    font-weight: bold;
+    backdrop-filter: blur(6px);
+}
+
+/* SUCCESS */
+.success {
+    background: linear-gradient(45deg, #00ff87, #00c9ff);
+    color: #000;
+}
+
+/* ERROR */
+.error {
+    background: linear-gradient(45deg, #ff1744, #ff6b6b);
+    color: #fff;
+}
+
 /* ===== TABLA ===== */
 .tabla {
     width: 100%;
@@ -179,6 +206,8 @@ html, body {
     font-size: 12px;
     font-weight: 600;
     transition: 0.3s;
+    border: none;
+    cursor: pointer;
 }
 
 .btn:hover {
