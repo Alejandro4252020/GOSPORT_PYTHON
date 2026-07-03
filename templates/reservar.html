@@ -154,6 +154,21 @@
             e.preventDefault();
             errorPersonas.style.display = "block";
             personasInput.focus();
+            return;
+        }
+
+        // Confirmación del monto total antes de reservar
+        let horas = parseInt(horasInput.value) || 1;
+        const totalPago = precioBase * horas;
+        const totalFormateado = totalPago.toLocaleString('es-CO', {
+            style: 'currency',
+            currency: 'COP',
+            minimumFractionDigits: 0
+        });
+
+        const confirmar = confirm(`¿Estás seguro de pagar ${totalFormateado}?`);
+        if (!confirmar) {
+            e.preventDefault();
         }
     });
 
