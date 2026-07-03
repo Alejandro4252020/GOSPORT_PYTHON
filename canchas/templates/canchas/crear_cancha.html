@@ -49,7 +49,7 @@
 
             <h2>Crear Cancha</h2>
 
-            <form method="POST" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data" id="form-crear-cancha">
                 {% csrf_token %}
 
                 {{ form.nombre.label_tag }} {{ form.nombre }}
@@ -111,6 +111,30 @@
                 marker.setLatLng(e.latlng);
             } else {
                 marker = L.marker(e.latlng).addTo(map);
+            }
+        });
+    </script>
+
+    <!-- Confirmación del precio antes de guardar -->
+    <script>
+        const formCancha = document.getElementById('form-crear-cancha');
+        const precioInput = document.getElementById('id_precio');
+
+        formCancha.addEventListener('submit', function(e) {
+            const valor = parseFloat(precioInput.value);
+
+            if (!isNaN(valor)) {
+                const precioFormateado = valor.toLocaleString('es-CO', {
+                    style: 'currency',
+                    currency: 'COP',
+                    minimumFractionDigits: 0
+                });
+
+                const confirmar = confirm(`¿Confirmas que el precio de la cancha es ${precioFormateado}?`);
+
+                if (!confirmar) {
+                    e.preventDefault();
+                }
             }
         });
     </script>
