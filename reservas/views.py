@@ -193,9 +193,6 @@ def reservar(request, id):
             return redirect(request.path)
 
         total = cancha["precio"] * horas
-        if total > 1000000:
-            messages.error(request, "El precio total de la reserva no puede superar 1'000.000 de pesos colombianos ❌")
-            return redirect(request.path)
 
         fecha_str = f"{dia}/{mes}/{año}"
 
@@ -283,9 +280,6 @@ def reservar_db(request, id):
             return redirect(request.path)
 
         total = cancha["precio"] * horas
-        if total > 1000000:
-            messages.error(request, "El precio total de la reserva no puede superar 1'000.000 de pesos colombianos ❌")
-            return redirect(request.path)
 
         fecha_str = f"{dia}/{mes}/{año}"
 
@@ -567,8 +561,6 @@ def dashboard(request):
 def confirmar(request):
     reserva = request.session.get('reserva')
     return render(request, 'confirmar.html', {"reserva": reserva})
-
-
 def confirmacion_reserva(request):
     reserva = request.session.get('reserva')
 
