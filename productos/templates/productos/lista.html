@@ -65,6 +65,7 @@
                     <th>Stock</th>
                     <th>Categoría</th>
                     <th>Imagen</th>
+                    <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -87,17 +88,29 @@
                     </td>
 
                     <td>
+                        {% if p.activo %}
+                            <span class="badge-activo">Activo</span>
+                        {% else %}
+                            <span class="badge-inactivo">Inactivo</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
                        <a href="{% url 'productos:editar_producto' p.id %}" class="btn editar">Editar</a>
                        <form method="POST" action="{% url 'productos:eliminar_producto' p.id %}" style="display:inline;"
-                             onsubmit="return confirm('¿Estás seguro de eliminar este producto?')">
+                             onsubmit="return confirm('¿{% if p.activo %}Deshabilitar{% else %}Habilitar{% endif %} este producto?')">
                            {% csrf_token %}
-                           <button type="submit" class="btn eliminar">Eliminar</button>
+                           {% if p.activo %}
+                               <button type="submit" class="btn eliminar">Deshabilitar</button>
+                           {% else %}
+                               <button type="submit" class="btn habilitar">Habilitar</button>
+                           {% endif %}
                        </form>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="7">No hay productos registrados</td>
+                    <td colspan="8">No hay productos registrados</td>
                 </tr>
                 {% endfor %}
             </tbody>

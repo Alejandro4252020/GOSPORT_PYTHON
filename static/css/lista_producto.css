@@ -193,6 +193,8 @@ html, body {
     font-size: 12px;
     transition: 0.3s;
     font-weight: 600;
+    border: none;
+    cursor: pointer;
 }
 
 .btn:hover {
@@ -209,13 +211,46 @@ html, body {
     box-shadow: 0 0 20px rgba(255,215,0,0.8);
 }
 
-/* ELIMINAR */
+/* ELIMINAR / DESHABILITAR */
 .eliminar {
     background: linear-gradient(45deg, #ff1744, #ff6b6b);
 }
 
 .eliminar:hover {
     box-shadow: 0 0 20px rgba(255,0,0,0.7);
+}
+
+/* HABILITAR */
+.habilitar {
+    background: linear-gradient(45deg, #00ff87, #00c9ff);
+    color: #000;
+}
+
+.habilitar:hover {
+    box-shadow: 0 0 20px rgba(0,255,135,0.7);
+}
+
+/* ===== BADGES DE ESTADO ===== */
+.badge-activo {
+    display: inline-block;
+    background: linear-gradient(45deg, #00ff87, #00c9ff);
+    color: #000;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-shadow: none;
+}
+
+.badge-inactivo {
+    display: inline-block;
+    background: rgba(255,255,255,0.1);
+    color: #aaa;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid rgba(255,255,255,0.2);
 }
 
 /* ===== FOOTER ===== */

@@ -64,19 +64,19 @@ def editar_producto(request, id):
 
     return render(request, 'productos/editar.html', {'producto': producto})
 
-
-# ===== ELIMINAR (solo POST) =====
+# ===== HABILITAR / DESHABILITAR (solo POST) =====
 @login_required
 def eliminar_producto(request, id):
     if not (request.user.is_superuser or request.user.is_staff):
-        messages.error(request, 'No tienes permiso para eliminar productos ❌')
+        messages.error(request, 'No tienes permiso para modificar productos ❌')
         return redirect('reservas:home')
 
     producto = get_object_or_404(Producto, id=id)
 
     if request.method == 'POST':
-        nombre = producto.nombre
-        producto.delete()
-        messages.success(request, f'Producto "{nombre}" eliminado correctamente ✅')
+        producto.activo = not producto.activo
+        producto.save()
+        estado = 'habilitado' if producto.activo else 'deshabilitado'
+        messages.success(request, f'Producto "{producto.nombre}" {estado} correctamente ✅')
 
     return redirect('productos:lista_productos')
