@@ -168,6 +168,15 @@
         </button>
     </div>
 
+    <!-- MENSAJES -->
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} no-print" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+    {% endif %}
+
     <!-- FACTURA -->
     <div class="factura-card">
 
