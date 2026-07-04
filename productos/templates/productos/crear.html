@@ -41,14 +41,15 @@
 
             <h2>Agregar Producto</h2>
 
-            <form method="POST" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data" id="form-crear-producto">
                 {% csrf_token %}
 
                 <label>Nombre:</label>
                 <input type="text" name="nombre" required>
 
                 <label>Precio:</label>
-                <input type="number" name="precio" step="0.01" required>
+                <input type="text" id="precio_visual" inputmode="numeric" placeholder="Ej: 280.000" required>
+                <input type="hidden" name="precio" id="precio_real">
 
                 <label>Stock:</label>
                 <input type="number" name="stock" min="0" required>
@@ -77,6 +78,37 @@
     <footer class="footer">
         © 2026 GoSports - Sistema de gestión deportiva
     </footer>
+
+    <!-- Formateo de precio con puntos de miles -->
+    <script>
+        const precioVisual = document.getElementById('precio_visual');
+        const precioReal = document.getElementById('precio_real');
+        const formCrearProducto = document.getElementById('form-crear-producto');
+
+        precioVisual.addEventListener('input', function () {
+            // Deja solo dígitos
+            let soloNumeros = this.value.replace(/\D/g, '');
+
+            if (soloNumeros === '') {
+                this.value = '';
+                precioReal.value = '';
+                return;
+            }
+
+            // Formatea con puntos de miles para mostrar
+            this.value = parseInt(soloNumeros, 10).toLocaleString('es-CO');
+
+            // Guarda el valor real (sin puntos) en el campo oculto
+            precioReal.value = soloNumeros;
+        });
+
+        formCrearProducto.addEventListener('submit', function (e) {
+            if (!precioReal.value) {
+                e.preventDefault();
+                precioVisual.focus();
+            }
+        });
+    </script>
 
 </body>
 </html>

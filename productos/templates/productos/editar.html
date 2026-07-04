@@ -41,14 +41,15 @@
 
             <h2>Editar Producto</h2>
 
-            <form method="POST" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data" id="form-editar-producto">
                 {% csrf_token %}
 
                 <label>Nombre:</label>
                 <input type="text" name="nombre" value="{{ producto.nombre }}" required>
 
                 <label>Precio:</label>
-                <input type="number" name="precio" step="0.01" value="{{ producto.precio }}" required>
+                <input type="text" id="precio_visual" inputmode="numeric" placeholder="Ej: 280.000" required>
+                <input type="hidden" name="precio" id="precio_real" value="{{ producto.precio|floatformat:0 }}">
 
                 <label>Stock:</label>
                 <input type="number" name="stock" min="0" value="{{ producto.stock }}" required>
@@ -86,6 +87,38 @@
     <footer class="footer">
         © 2026 GoSports - Sistema de gestión deportiva
     </footer>
+
+    <!-- Formateo de precio con puntos de miles -->
+    <script>
+        const precioVisual = document.getElementById('precio_visual');
+        const precioReal = document.getElementById('precio_real');
+        const formEditarProducto = document.getElementById('form-editar-producto');
+
+        // Precarga el valor actual ya formateado con puntos de miles
+        if (precioReal.value) {
+            precioVisual.value = parseInt(precioReal.value, 10).toLocaleString('es-CO');
+        }
+
+        precioVisual.addEventListener('input', function () {
+            let soloNumeros = this.value.replace(/\D/g, '');
+
+            if (soloNumeros === '') {
+                this.value = '';
+                precioReal.value = '';
+                return;
+            }
+
+            this.value = parseInt(soloNumeros, 10).toLocaleString('es-CO');
+            precioReal.value = soloNumeros;
+        });
+
+        formEditarProducto.addEventListener('submit', function (e) {
+            if (!precioReal.value) {
+                e.preventDefault();
+                precioVisual.focus();
+            }
+        });
+    </script>
 
 </body>
 </html>
