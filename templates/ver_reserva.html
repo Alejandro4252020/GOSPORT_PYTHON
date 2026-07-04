@@ -1,4 +1,5 @@
 {% load static %}
+{% load precio_filters %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -18,7 +19,7 @@
     <p><strong>Horario:</strong> {{ reserva.horario }}</p>
     <p><strong>Personas:</strong> {{ reserva.personas }}</p>
     <p><strong>Horas:</strong> {{ reserva.horas }}</p>
-    <p><strong>Total:</strong> {{ reserva.total }} COP</p>
+    <p><strong>Total:</strong> ${{ reserva.total|moneda_co }} COP</p>
 
     <hr>
 

@@ -1,4 +1,5 @@
 {% load static %}
+{% load precio_filters %}
 
 <!DOCTYPE html>
 <html lang="es">
@@ -185,7 +186,7 @@ alt="{{ producto.nombre }}">
 </h6>
 
 <p class="text-success fw-semibold mb-0">
-{{ producto.precio }} COP
+${{ producto.precio|moneda_co }} COP
 </p>
 
 </div>

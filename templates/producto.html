@@ -1,4 +1,5 @@
 {% load static %}
+{% load precio_filters %}
 <!DOCTYPE html>
 <html lang="es">
 
@@ -68,7 +69,7 @@
                 </p>
 
                 <h4 class="text-primary fw-bold mt-3">
-                    ${{ producto.precio }} COP
+                    ${{ producto.precio|moneda_co }} COP
                 </h4>
 
                 <!-- CANTIDAD -->

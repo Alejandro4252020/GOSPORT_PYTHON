@@ -1,4 +1,5 @@
 {% load static %}
+{% load precio_filters %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -51,7 +52,7 @@
         <!-- INFO -->
         <div class="col-md-6">
             <h2>{{ cancha.nombre }}</h2>
-            <h4 class="text-success mb-3">${{ cancha.precio }} COP</h4>
+            <h4 class="text-success mb-3">${{ cancha.precio|moneda_co }} COP</h4>
             
             <p class="text-muted">{{ cancha.tipo }} — {{ cancha.direccion }}</p>
             

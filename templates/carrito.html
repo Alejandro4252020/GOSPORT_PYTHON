@@ -1,4 +1,5 @@
 {% load static %}
+{% load precio_filters %}
 
 <!DOCTYPE html>
 <html lang="es">
@@ -112,7 +113,7 @@ style="max-height:80px;">
 </td>
 
 <td>
-${{ c.precio|floatformat:0 }}
+${{ c.precio|moneda_co }}
 </td>
 
 <td class="text-center">
@@ -125,7 +126,7 @@ ${{ c.precio|floatformat:0 }}
 
 <td class="fw-bold text-success">
 {% widthratio c.precio 1 c.cantidad as subtotal %}
-${{ subtotal }}
+${{ subtotal|moneda_co }}
 </td>
 
 <td>
@@ -151,7 +152,7 @@ ${{ subtotal }}
 <h3>
 Total:
 <span class="fw-bold text-primary">
-$ {{ total|floatformat:0 }} COP
+$ {{ total|moneda_co }} COP
 </span>
 </h3>
 
